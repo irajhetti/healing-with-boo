@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fireflies } from "@/components/ui/Fireflies";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
           unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/90" />
+        <Fireflies />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
           <span className="inline-block font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary-container mb-6">
             Holistic Healing &amp; Massage in Boscombe
