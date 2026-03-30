@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: "What's your cancellation policy?",
-    answer: "We ask for at least 24 hours notice for cancellations or rescheduling. Cancellations made less than 24 hours before the appointment may be charged a fee of 50% of the session price. No-shows are charged the full amount.",
+    answer: "I am always happy to reschedule with enough notice, life is nuts sometimes and I fully understand, but getting my business head on, I do need to still charge if it's less than 24 hours notice.",
   },
   {
     question: "Is parking available?",
@@ -122,7 +122,7 @@ export default function ContactPage() {
                 <span className="material-symbols-outlined text-primary text-2xl mt-0.5">call</span>
                 <div>
                   <p className="font-label font-medium text-on-surface mb-1">Phone</p>
-                  <a href="tel:+441234567890" className="text-secondary hover:underline">01onal 234 567 890</a>
+                  <a href="tel:+447425018335" className="text-secondary hover:underline">07425 018 335</a>
                   <p className="text-xs text-on-surface-variant mt-1">Call or text</p>
                 </div>
               </div>
@@ -134,7 +134,7 @@ export default function ContactPage() {
                 <span className="material-symbols-outlined text-primary text-2xl mt-0.5">mail</span>
                 <div>
                   <p className="font-label font-medium text-on-surface mb-1">Email</p>
-                  <a href="mailto:hello@healingwithboo.co.uk" className="text-secondary hover:underline">hello@healingwithboo.co.uk</a>
+                  <a href="mailto:zonedoutbeauty@gmail.com" className="text-secondary hover:underline">zonedoutbeauty@gmail.com</a>
                   <p className="text-xs text-on-surface-variant mt-1">We reply within 24 hours</p>
                 </div>
               </div>
@@ -146,9 +146,8 @@ export default function ContactPage() {
                 <span className="material-symbols-outlined text-primary text-2xl mt-0.5">location_on</span>
                 <div>
                   <p className="font-label font-medium text-on-surface mb-1">Location</p>
-                  <p className="text-on-surface-variant text-sm">Boscombe, Bournemouth</p>
-                  <p className="text-on-surface-variant text-sm">Dorset, BH5</p>
-                  <p className="text-xs text-on-surface-variant mt-1">Exact address shared upon booking</p>
+                  <p className="text-on-surface-variant text-sm">22 Churchill Road</p>
+                  <p className="text-on-surface-variant text-sm">Boscombe BH1 4ES</p>
                 </div>
               </div>
             </div>
@@ -162,8 +161,24 @@ export default function ContactPage() {
                   <table className="w-full text-sm">
                     <tbody>
                       <tr className="border-b border-outline-variant/10">
-                        <td className="py-1.5 text-on-surface-variant">Mon — Fri</td>
-                        <td className="py-1.5 text-on-surface text-right">9:00 AM — 7:00 PM</td>
+                        <td className="py-1.5 text-on-surface-variant">Monday</td>
+                        <td className="py-1.5 text-on-surface text-right">2:00 PM — 8:00 PM</td>
+                      </tr>
+                      <tr className="border-b border-outline-variant/10">
+                        <td className="py-1.5 text-on-surface-variant">Tuesday</td>
+                        <td className="py-1.5 text-on-surface text-right">4:00 PM — 8:00 PM</td>
+                      </tr>
+                      <tr className="border-b border-outline-variant/10">
+                        <td className="py-1.5 text-on-surface-variant">Wednesday</td>
+                        <td className="py-1.5 text-on-surface text-right">11:00 AM — 8:30 PM</td>
+                      </tr>
+                      <tr className="border-b border-outline-variant/10">
+                        <td className="py-1.5 text-on-surface-variant">Thursday</td>
+                        <td className="py-1.5 text-on-surface text-right">10:30 AM — 9:30 PM</td>
+                      </tr>
+                      <tr className="border-b border-outline-variant/10">
+                        <td className="py-1.5 text-on-surface-variant">Friday</td>
+                        <td className="py-1.5 text-on-surface text-right">3:00 PM — 8:30 PM</td>
                       </tr>
                       <tr className="border-b border-outline-variant/10">
                         <td className="py-1.5 text-on-surface-variant">Saturday</td>
@@ -186,8 +201,8 @@ export default function ContactPage() {
           <div className="rounded-2xl overflow-hidden bg-surface-container-high h-64 md:h-80 flex items-center justify-center relative">
             <div className="text-center">
               <span className="material-symbols-outlined text-outline text-5xl mb-3 block">map</span>
-              <p className="font-headline text-xl text-on-surface">Boscombe, Bournemouth, UK</p>
-              <p className="text-sm text-on-surface-variant mt-1">Dorset, BH5</p>
+              <p className="font-headline text-xl text-on-surface">22 Churchill Road</p>
+              <p className="text-sm text-on-surface-variant mt-1">Boscombe BH1 4ES</p>
             </div>
           </div>
         </section>

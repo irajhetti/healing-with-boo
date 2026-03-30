@@ -82,9 +82,9 @@ export function Footer() {
                 location_on
               </span>
               <span>
-                Boscombe, Bournemouth
+                22 Churchill Road
                 <br />
-                United Kingdom
+                Boscombe BH1 4ES
               </span>
             </li>
           </ul>

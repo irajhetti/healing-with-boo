@@ -17,21 +17,23 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/90" />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
           <span className="inline-block font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary-container mb-6">
-            Shamanic Healing &amp; Massage Therapy
+            Holistic Healing &amp; Massage in Boscombe
           </span>
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
             Personal, Intentional &amp; Deep Healing
           </h1>
           <p className="font-body text-surface-container-low/90 text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
-            A sacred space for body and soul restoration in the heart of Boscombe, Bournemouth.
+            A sacred space for body and soul restoration at 22 Churchill Road, Boscombe.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/booking"
+            <a
+              href="https://bookwithboo.setmore.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95"
             >
               Book a Session
-            </Link>
+            </a>
             <Link
               href="/services"
               className="border-2 border-white/30 text-white px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:bg-white/10 transition-all duration-300 active:scale-95"
@@ -77,10 +79,10 @@ export default function Home() {
                   Massage Therapy
                 </h3>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
-                  Deep tissue, therapeutic, and restorative bodywork tailored to release tension, ease pain, and restore your body&apos;s natural flow.
+                  Deep to fix, relaxing to soothe or a bit of both. Tailored bodywork from 30 to 90 minutes.
                 </p>
                 <span className="inline-flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">
-                  From &pound;45
+                  From &pound;27
                   <span className="material-symbols-outlined text-[18px] ml-1">arrow_forward</span>
                 </span>
               </div>
@@ -107,10 +109,10 @@ export default function Home() {
                   Shamanic Healing
                 </h3>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
-                  Ancient healing practices to clear energetic blockages, retrieve lost soul parts, and reconnect you with your inner power.
+                  Energy healing with spirit, sound healing, and herbs. Sessions for all ages, from kids healing to deep shamanic release.
                 </p>
                 <span className="inline-flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">
-                  From &pound;55
+                  From &pound;25
                   <span className="material-symbols-outlined text-[18px] ml-1">arrow_forward</span>
                 </span>
               </div>
@@ -145,10 +147,10 @@ export default function Home() {
               Meet Leah
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              With a deep reverence for the body&apos;s wisdom and the spirit&apos;s journey, Leah brings years of training in therapeutic massage and shamanic traditions to every session.
+              Hello my lovely people. Leah appreciates every single one of her clients &mdash; and if you&apos;re new here, welcome. She&apos;s just her, and she hopes you&apos;re just being you too.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
-              Based in Boscombe, Bournemouth, her practice is a sanctuary where healing is personal, intentional, and deeply held.
+              Based at 22 Churchill Road in Boscombe, Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
             </p>
             <Link
               href="/about"
@@ -237,12 +239,14 @@ export default function Home() {
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Whether you seek physical relief or spiritual reconnection, there is a place for you here. Book your session today.
           </p>
-          <Link
-            href="/booking"
+          <a
+            href="https://bookwithboo.setmore.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
-          </Link>
+          </a>
         </div>
       </section>
 

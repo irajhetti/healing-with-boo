@@ -1,53 +1,76 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+// Link import removed - all booking links now use <a> tags to Setmore
 
 export const metadata: Metadata = {
   title: "Massage Therapy",
   description:
-    "Deep tissue, therapeutic, relaxation, and hot stone massage in Boscombe, Bournemouth. Personalised bodywork from £45 with Leah at Healing with Boo.",
+    "Massage therapy in Boscombe, Bournemouth. From 30-minute sessions to 90-minute deep work, scalp rituals, and pelvic health massage. From £12 with Leah at Healing with Boo.",
 };
 
 const treatments = [
   {
-    name: "Deep Tissue Massage",
+    name: "30 Minute Massage",
     description:
-      "Focused, firm pressure that reaches the deepest layers of muscle and fascia. Ideal for chronic tension, injury recovery, and stubborn knots that won\u2019t release with lighter work. Leah works slowly and intentionally, allowing your body to open at its own pace.",
+      "Deep to fix, relaxing to soothe or a bit of both. You pick. A focused half-hour session to target exactly where you need it most.",
     prices: [
-      { duration: "60 min", price: "\u00a355" },
-      { duration: "90 min", price: "\u00a375" },
+      { duration: "30 min", price: "\u00a327" },
     ],
-    icon: "fitness_center",
+    icon: "timer",
   },
   {
-    name: "Therapeutic Massage",
+    name: "45 Minute Massage",
     description:
-      "A tailored blend of techniques addressing your specific areas of concern. Whether it\u2019s a stiff neck from desk work, lower back tension, or general aches, this session adapts to what your body needs most on the day.",
+      "A little more time to work through tension and stress. Deep or relaxing \u2014 your call. Enough time to really make a difference without taking up your whole day.",
     prices: [
-      { duration: "60 min", price: "\u00a350" },
-      { duration: "90 min", price: "\u00a370" },
+      { duration: "45 min", price: "\u00a337" },
     ],
     icon: "healing",
   },
   {
-    name: "Relaxation Massage",
+    name: "60 Minute Massage",
     description:
-      "Long, flowing strokes designed to calm the nervous system and invite deep relaxation. Perfect if you\u2019re feeling overwhelmed, struggling with sleep, or simply need to let go. This is nurturing, gentle bodywork that soothes the soul as much as the muscles.",
+      "A full hour of tailored bodywork. Whether you need deep pressure to release stubborn knots or flowing strokes to calm your nervous system, this session adapts to what your body is asking for.",
     prices: [
-      { duration: "60 min", price: "\u00a345" },
-      { duration: "90 min", price: "\u00a365" },
+      { duration: "60 min", price: "\u00a347" },
     ],
     icon: "spa",
   },
   {
-    name: "Hot Stone Massage",
+    name: "90 Minute Massage",
     description:
-      "Warm basalt stones are placed on key energy points and used as massage tools to melt away deep-seated tension. The heat penetrates layers of muscle that hands alone can\u2019t reach, creating a profoundly soothing and grounding experience.",
+      "The full works. Ninety minutes gives Leah the time to really get into every area that needs attention \u2014 no rushing, no compromises. Deep to fix, relaxing to soothe, or a bit of both.",
     prices: [
-      { duration: "75 min", price: "\u00a365" },
-      { duration: "90 min", price: "\u00a385" },
+      { duration: "90 min", price: "\u00a367" },
     ],
-    icon: "local_fire_department",
+    icon: "fitness_center",
+  },
+  {
+    name: "Women\u2019s Pelvic Health Massage",
+    description:
+      "Targeted work for tight hips, post-pregnancy recovery, endometriosis, PCOS, and scar tissue. A specialist massage designed to support women\u2019s pelvic health and comfort.",
+    prices: [
+      { duration: "45 min", price: "\u00a337" },
+    ],
+    icon: "favorite",
+  },
+  {
+    name: "Scalp Pressure Ritual (Mini)",
+    description:
+      "A luxurious oil hair mask with scalp massage. Fifteen minutes of bliss to release tension from your head and nourish your hair. Perfect as an add-on or a quick treat.",
+    prices: [
+      { duration: "15 min", price: "\u00a312" },
+    ],
+    icon: "self_improvement",
+  },
+  {
+    name: "Scalp Pressure Ritual",
+    description:
+      "Facial massage with trigger points plus a full scalp oil treatment. Thirty minutes of deep pressure work across your face, temples, and scalp to melt away stress and tension.",
+    prices: [
+      { duration: "30 min", price: "\u00a325" },
+    ],
+    icon: "face_retouching_natural",
   },
 ];
 
@@ -74,24 +97,29 @@ const steps = [
 
 const faqs = [
   {
-    question: "Do I need to undress completely?",
+    question: "What\u2019s the difference between the session lengths?",
     answer:
-      "Not at all. You undress to your own comfort level. Leah uses professional draping throughout the session so only the area being worked on is exposed. Your comfort and dignity are always the priority.",
+      "The 30-minute session is great for targeting a specific area. 45 minutes gives a bit more time to work through things. 60 minutes is a full body session, and 90 minutes is the full works \u2014 no rushing, no compromises. Leah will tailor any session to what your body needs.",
   },
   {
-    question: "How often should I have a massage?",
+    question: "What is the Women\u2019s Pelvic Health Massage?",
     answer:
-      "It depends on your needs. For chronic pain or tension, fortnightly sessions often work well initially. For general maintenance and wellbeing, monthly sessions can keep your body balanced. Leah will recommend a plan tailored to you.",
+      "This is a specialist massage targeting tight hips, post-pregnancy recovery, endometriosis, PCOS, and scar tissue. It\u2019s designed to support women\u2019s pelvic health and comfort. Leah will talk you through everything before the session.",
   },
   {
-    question: "Is deep tissue massage painful?",
+    question: "What are the Scalp Pressure Rituals?",
     answer:
-      "Deep tissue work can involve firm pressure, but it should never be unbearable. Leah works within your comfort zone and checks in regularly. There\u2019s a difference between \u2018good pain\u2019 (a satisfying release) and actual discomfort \u2014 you\u2019ll always be in control.",
+      "The Mini (15 min, \u00a312) is an oil hair mask with scalp massage \u2014 perfect as a quick treat or add-on. The full Scalp Pressure Ritual (30 min, \u00a325) includes facial massage with trigger points plus a scalp oil treatment for deep tension release.",
   },
   {
-    question: "Can I book if I\u2019m pregnant?",
+    question: "What\u2019s your cancellation policy?",
     answer:
-      "Please get in touch before booking so Leah can discuss your stage of pregnancy and any considerations. Massage can be wonderfully supportive during pregnancy, but certain techniques and positions need to be adapted for your safety and comfort.",
+      "Leah is always happy to reschedule with enough notice \u2014 life is nuts sometimes and she fully understands. But she does need to charge if it\u2019s less than 24 hours notice.",
+  },
+  {
+    question: "How do I book?",
+    answer:
+      "All bookings are made through Setmore at bookwithboo.setmore.com. Just pick the treatment and time that works for you. If you\u2019re not sure what to book, message Leah on +447425018335.",
   },
 ];
 
@@ -122,10 +150,10 @@ export default function MassagePage() {
       {/* ── Intro ── */}
       <section className="py-16 md:py-24 px-6 md:px-12 max-w-3xl mx-auto text-center">
         <p className="font-body text-on-surface-variant text-lg md:text-xl leading-relaxed mb-4">
-          This isn&apos;t a spa experience &mdash; it&apos;s something deeper.
+          Deep to fix, relaxing to soothe or a bit of both &mdash; you pick.
         </p>
         <p className="font-body text-on-surface-variant text-base leading-relaxed">
-          Leah&apos;s massage work is personal, intuitive, and deeply therapeutic. She listens to your body with her hands, finding the places where tension, pain, and stress have taken hold. Every session is tailored to you &mdash; because no two bodies carry the same story.
+          Leah&apos;s massage work is personal and tailored to what your body needs on the day. From a quick 30-minute fix to a luxurious 90-minute full body session, plus specialist treatments like pelvic health massage and scalp pressure rituals. Every session is different because every body is different.
         </p>
       </section>
 
@@ -162,13 +190,15 @@ export default function MassagePage() {
                 </span>
               ))}
             </div>
-            <Link
-              href="/booking"
+            <a
+              href="https://bookwithboo.setmore.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all duration-300"
             >
               Book This Treatment
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </Link>
+            </a>
           </div>
         ))}
       </section>
@@ -256,12 +286,14 @@ export default function MassagePage() {
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Your body is ready to let go. Book your massage session with Leah today.
           </p>
-          <Link
-            href="/booking"
+          <a
+            href="https://bookwithboo.setmore.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
-          </Link>
+          </a>
         </div>
       </section>
     </>

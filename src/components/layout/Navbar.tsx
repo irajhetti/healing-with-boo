@@ -46,12 +46,14 @@ export function Navbar() {
             >
               Members
             </Link>
-            <Link
-              href="/booking"
+            <a
+              href="https://bookwithboo.setmore.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide hover:opacity-80 transition-all duration-300 active:scale-95"
             >
               Book Now
-            </Link>
+            </a>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden text-primary"

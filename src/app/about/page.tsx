@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About Leah",
@@ -22,7 +21,7 @@ export default function AboutPage() {
               About Leah
             </h1>
             <p className="font-body text-on-surface-variant text-lg leading-relaxed max-w-lg">
-              A healer, bodyworker, and guide dedicated to holding sacred space for your transformation.
+              Hello my lovely people. I appreciate all of my clients very much, to the new ones reading this... Hello and welcome.
             </p>
           </div>
           <div className="relative">
@@ -64,10 +63,10 @@ export default function AboutPage() {
               Discovering the Healing Path
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              Leah&apos;s journey into healing began not in a classroom, but through her own experience of deep personal transformation. After years of navigating chronic pain and emotional upheaval, she discovered that true healing required attention to both the physical body and the energetic spirit.
+              I&apos;m just me &mdash; hopefully you are just being you too. My journey into healing wasn&apos;t some grand plan. It came from my own experience of needing to feel better, in my body and in my soul. I learned that you can&apos;t separate the two &mdash; they&apos;re wrapped up together.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
-              This revelation set her on a path that would change not only her own life, but the lives of countless others who would later find their way to her treatment room.
+              That understanding changed everything for me, and now it&apos;s what I bring into every session. No pretence, no script &mdash; just real, honest, grounded work.
             </p>
           </div>
         </div>
@@ -94,10 +93,10 @@ export default function AboutPage() {
               Bodywork &amp; Shamanic Traditions
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              Leah trained extensively in therapeutic and deep tissue massage, developing a keen intuition for the body&apos;s held patterns of tension and trauma. Her hands learned to listen, finding the places where the body was asking for release.
+              I trained in therapeutic and deep tissue massage, and my hands learned to listen &mdash; finding where your body is holding on and helping it let go. But bodywork was only half the picture.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
-              Alongside her bodywork training, Leah studied shamanic healing traditions, learning the ancient practices of energy clearing, soul retrieval, and journeying. This dual training gives her a unique ability to work with clients on both physical and spiritual levels.
+              I also studied shamanic healing traditions &mdash; energy clearing, soul retrieval, journeying, sound healing with drums and rattles, breathwork, herbs, and tarot. It all weaves together. The body and spirit aren&apos;t separate, so the work shouldn&apos;t be either.
             </p>
           </div>
         </div>
@@ -121,13 +120,13 @@ export default function AboutPage() {
               The Practice
             </span>
             <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-6">
-              A Sacred Space in Boscombe
+              Boo&apos;s Healing Bubble
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              Today, Leah&apos;s practice in Boscombe, Bournemouth, is a sanctuary for those seeking genuine, deep healing. Every session is personal and intentional &mdash; no two are ever the same, because no two people carry the same story in their body.
+              My treatment room at 22 Churchill Road, Boscombe BH1 4ES is my little bubble &mdash; a warm, safe space where you can properly switch off. Every session is different because every person is different. I work with what you need on the day, not from a script.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
-              Whether you come for the physical relief of massage or the spiritual depth of shamanic work, you&apos;ll find a space that is warm, safe, and held with care. Healing with Boo is more than a practice &mdash; it&apos;s a homecoming.
+              Whether you come for massage, energy work, shamanic healing, sound healing, or you&apos;re not even sure what you need &mdash; that&apos;s absolutely fine. Come as you are. Healing with Boo is about being real and feeling safe enough to let go.
             </p>
           </div>
         </div>
@@ -153,25 +152,25 @@ export default function AboutPage() {
               icon: "spa",
               title: "Qualified Massage Therapist",
               description:
-                "Fully qualified in deep tissue, therapeutic, relaxation, and hot stone massage techniques.",
+                "Deep tissue, therapeutic, relaxation, and hot stone massage. My hands listen to what your body needs.",
             },
             {
               icon: "auto_awesome",
               title: "Shamanic Practitioner",
               description:
-                "Trained in shamanic journeying, soul retrieval, power animal retrieval, and energy clearing.",
+                "Shamanic journeying, soul retrieval, energy clearing, drums, rattles, herbs, and breathwork.",
             },
             {
               icon: "self_improvement",
-              title: "Holistic Wellness Certified",
+              title: "Sound & Energy Healer",
               description:
-                "Certified in holistic wellness practices with a whole-person approach to health and healing.",
+                "Sound healing, tarot, and holistic energy work. I use whatever tools feel right for you on the day.",
             },
             {
               icon: "emergency",
               title: "First Aid Trained",
               description:
-                "Current first aid certification ensuring client safety and professional standards of care.",
+                "Fully first aid certified, because keeping you safe matters just as much as helping you heal.",
             },
           ].map((credential) => (
             <div
@@ -201,7 +200,7 @@ export default function AboutPage() {
             format_quote
           </span>
           <blockquote className="font-headline text-2xl md:text-3xl font-bold text-on-surface leading-snug mb-8 italic">
-            &ldquo;I believe healing happens when we feel truly safe and held. My practice creates a sacred space where the body and soul can begin to remember their wholeness.&rdquo;
+            &ldquo;I&apos;m just me. Hopefully you are just being you too. Come as you are &mdash; that&apos;s all you ever need to be.&rdquo;
           </blockquote>
           <p className="font-label text-sm font-bold text-secondary tracking-wide uppercase">
             &mdash; Leah, Healing with Boo
@@ -218,12 +217,14 @@ export default function AboutPage() {
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Whether you&apos;re drawn to bodywork, energy healing, or simply seeking a safe space to exhale &mdash; you are welcome here.
           </p>
-          <Link
-            href="/booking"
+          <a
+            href="https://bookwithboo.setmore.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
-          </Link>
+          </a>
         </div>
       </section>
     </>
