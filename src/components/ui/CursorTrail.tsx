@@ -77,8 +77,8 @@ export function CursorTrail() {
       {Array.from({ length: POOL_SIZE }).map((_, i) => (
         <span
           key={i}
-          className="absolute rounded-full opacity-0"
-          style={{ width: 0, height: 0 }}
+          className="absolute rounded-full"
+          style={{ width: 0, height: 0, opacity: 0 }}
         />
       ))}
     </div>

@@ -6,68 +6,68 @@
   --font-body: var(--font-manrope);
   --font-label: var(--font-manrope);
 
-  /* ── Primary (Forest Green) ── */
-  --color-primary: #0c4915;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #28612a;
-  --color-on-primary-container: #9cda95;
+  /* ── Primary (Enchanted Green — luminous against dark) ── */
+  --color-primary: #7bc47a;
+  --color-on-primary: #003910;
+  --color-primary-container: #1a4d1e;
+  --color-on-primary-container: #a8e6a3;
   --color-primary-fixed: #b3f2ab;
-  --color-primary-fixed-dim: #98d691;
+  --color-primary-fixed-dim: #7bc47a;
   --color-on-primary-fixed: #002204;
   --color-on-primary-fixed-variant: #17521d;
 
-  /* ── Secondary (Gold) ── */
-  --color-secondary: #735c00;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #fed65b;
-  --color-on-secondary-container: #745c00;
+  /* ── Secondary (Warm Gold — glowing embers) ── */
+  --color-secondary: #e9c349;
+  --color-on-secondary: #3d2e00;
+  --color-secondary-container: #574500;
+  --color-on-secondary-container: #ffe088;
   --color-secondary-fixed: #ffe088;
   --color-secondary-fixed-dim: #e9c349;
   --color-on-secondary-fixed: #241a00;
   --color-on-secondary-fixed-variant: #574500;
 
-  /* ── Tertiary (Lavender/Charcoal) ── */
-  --color-tertiary: #443a4e;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #5c5166;
-  --color-on-tertiary-container: #d4c5de;
+  /* ── Tertiary (Mystic Purple — the witch's signature) ── */
+  --color-tertiary: #c9b0e0;
+  --color-on-tertiary: #2d1a42;
+  --color-tertiary-container: #3a2550;
+  --color-on-tertiary-container: #ddc8f0;
   --color-tertiary-fixed: #ecddf6;
-  --color-tertiary-fixed-dim: #d0c1da;
+  --color-tertiary-fixed-dim: #c9b0e0;
   --color-on-tertiary-fixed: #20182a;
   --color-on-tertiary-fixed-variant: #4d4357;
 
   /* ── Error ── */
-  --color-error: #ba1a1a;
-  --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
 
-  /* ── Surface Hierarchy ── */
-  --color-surface: #fafaf5;
-  --color-surface-dim: #dadad5;
-  --color-surface-bright: #fafaf5;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f4f4ef;
-  --color-surface-container: #eeeee9;
-  --color-surface-container-high: #e8e8e3;
-  --color-surface-container-highest: #e3e3de;
-  --color-surface-variant: #e3e3de;
-  --color-surface-tint: #316a32;
+  /* ── Surface Hierarchy (Deep Forest Floor) ── */
+  --color-surface: #0e1210;
+  --color-surface-dim: #0e1210;
+  --color-surface-bright: #1e2420;
+  --color-surface-container-lowest: #080c09;
+  --color-surface-container-low: #141a16;
+  --color-surface-container: #1a211c;
+  --color-surface-container-high: #212822;
+  --color-surface-container-highest: #2a322c;
+  --color-surface-variant: #2a322c;
+  --color-surface-tint: #7bc47a;
 
   /* ── On Surface ── */
-  --color-on-surface: #1a1c19;
-  --color-on-surface-variant: #41493f;
-  --color-on-background: #1a1c19;
-  --color-background: #fafaf5;
+  --color-on-surface: #e2e8e0;
+  --color-on-surface-variant: #b0baa9;
+  --color-on-background: #e2e8e0;
+  --color-background: #0a0f0b;
 
   /* ── Outline ── */
-  --color-outline: #71796e;
-  --color-outline-variant: #c1c9bb;
+  --color-outline: #586255;
+  --color-outline-variant: #343d32;
 
   /* ── Inverse ── */
-  --color-inverse-surface: #2f312e;
-  --color-inverse-on-surface: #f1f1ec;
-  --color-inverse-primary: #98d691;
+  --color-inverse-surface: #e2e8e0;
+  --color-inverse-on-surface: #1a1c19;
+  --color-inverse-primary: #0c4915;
 
   /* ── Border Radius ── */
   --radius: 0.125rem;
@@ -103,8 +103,8 @@
 
 /* ── Selection ── */
 ::selection {
-  background-color: var(--color-secondary-fixed);
-  color: var(--color-on-secondary-fixed);
+  background-color: #3a2550;
+  color: #ddc8f0;
 }
 
 /* ── Smooth scrolling ── */
@@ -170,10 +170,10 @@ body {
 /* ── Mystical Divider ── */
 @keyframes moon-glow {
   0%, 100% {
-    filter: drop-shadow(0 0 3px #7c3aed40);
+    filter: drop-shadow(0 0 4px #7c3aed50) drop-shadow(0 0 8px #7c3aed20);
   }
   50% {
-    filter: drop-shadow(0 0 10px #7c3aed90);
+    filter: drop-shadow(0 0 14px #7c3aedc0) drop-shadow(0 0 28px #7c3aed40);
   }
 }
 
@@ -235,8 +235,8 @@ body {
 }
 
 @keyframes constellation-twinkle {
-  0%, 100% { opacity: 0.08; }
-  50% { opacity: 0.45; }
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.8; }
 }
 
 @keyframes mist-pulse {

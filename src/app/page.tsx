@@ -17,16 +17,16 @@ export default function Home() {
           priority
           unoptimized
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0b]/85 via-[#0c1a0e]/70 to-[#0a0f0b]/95" />
         <Fireflies />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-          <span className="inline-block font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary-container mb-6">
+          <span className="inline-block font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-6">
             Holistic Healing &amp; Massage in Boscombe
           </span>
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
             Personal, Intentional &amp; Deep Healing
           </h1>
-          <p className="font-body text-surface-container-low/90 text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="font-body text-on-surface-variant text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
             A sacred space for body and soul restoration at 22 Churchill Road, Boscombe.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -34,7 +34,7 @@ export default function Home() {
               href="https://bookwithboo.setmore.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95"
+              className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95"
             >
               Book a Session
             </a>
@@ -248,17 +248,17 @@ export default function Home() {
       <section className="bg-primary-container py-16 md:py-20">
         <ScrollReveal animation="glow">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-secondary-container mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
             Your Healing Journey Starts Here
           </h2>
-          <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="font-body text-on-primary-container/70 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Whether you seek physical relief or spiritual reconnection, there is a place for you here. Book your session today.
           </p>
           <a
             href="https://bookwithboo.setmore.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
+            className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
           </a>

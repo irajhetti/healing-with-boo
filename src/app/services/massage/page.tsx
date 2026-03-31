@@ -139,7 +139,7 @@ export default function MassagePage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-12 pb-12 max-w-7xl mx-auto w-full">
-          <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary-container mb-3 block">
+          <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-on-primary-container mb-3 block">
             Body Work
           </span>
           <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-white">
@@ -224,7 +224,7 @@ export default function MassagePage() {
               key={step.title}
               className="bg-surface-container-low rounded-xl p-8 shadow-sm text-center"
             >
-              <div className="w-10 h-10 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-sm">
+              <div className="w-10 h-10 bg-secondary text-on-secondary rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-sm">
                 {i + 1}
               </div>
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -281,7 +281,7 @@ export default function MassagePage() {
       {/* ── CTA ── */}
       <section className="bg-primary-container py-16 md:py-20">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-secondary-container mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
             Ready to Release &amp; Restore?
           </h2>
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -291,7 +291,7 @@ export default function MassagePage() {
             href="https://bookwithboo.setmore.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
+            className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
           </a>

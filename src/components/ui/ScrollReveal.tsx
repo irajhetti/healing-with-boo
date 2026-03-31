@@ -57,7 +57,7 @@ export function ScrollReveal({
           className="absolute inset-0 pointer-events-none opacity-0"
           style={{
             background:
-              "linear-gradient(105deg, transparent 40%, #7c3aed15 48%, #15803d10 52%, transparent 60%)",
+              "linear-gradient(105deg, transparent 38%, #7c3aed25 46%, #4ade8018 54%, transparent 62%)",
           }}
           data-shimmer=""
         />
@@ -66,7 +66,7 @@ export function ScrollReveal({
         <div
           className="absolute inset-0 pointer-events-none opacity-0 rounded-xl"
           style={{
-            boxShadow: "inset 0 0 30px 5px #7c3aed10, inset 0 0 60px 10px #15803d08",
+            boxShadow: "inset 0 0 30px 5px #7c3aed20, inset 0 0 60px 10px #15803d15",
           }}
           data-glow=""
         />

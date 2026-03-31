@@ -27,7 +27,7 @@ const constellations = [
 export function AmbientMagic() {
   return (
     <div
-      className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
+      className="fixed inset-0 z-10 overflow-hidden pointer-events-none"
       aria-hidden="true"
     >
       {/* Floating orbs */}
@@ -41,7 +41,7 @@ export function AmbientMagic() {
             width: orb.size,
             height: orb.size,
             backgroundColor: orb.color,
-            opacity: 0.07,
+            opacity: 0.3,
             filter: "blur(40px)",
             animationDelay: orb.delay,
           }}
@@ -59,7 +59,7 @@ export function AmbientMagic() {
             width: dot.size,
             height: dot.size,
             backgroundColor: i % 2 === 0 ? "#7c3aed" : "#15803d",
-            boxShadow: `0 0 4px 1px ${i % 2 === 0 ? "#7c3aed" : "#15803d"}60`,
+            boxShadow: `0 0 6px 3px ${i % 2 === 0 ? "#7c3aed" : "#15803d"}90`,
             animationDelay: dot.delay,
           }}
         />
@@ -70,7 +70,7 @@ export function AmbientMagic() {
         className="ambient-mist absolute bottom-0 left-0 right-0 h-64"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 100%, #6b21a810 0%, #16653408 40%, transparent 70%)",
+            "radial-gradient(ellipse at 50% 100%, #6b21a830 0%, #16653420 40%, transparent 70%)",
         }}
       />
     </div>

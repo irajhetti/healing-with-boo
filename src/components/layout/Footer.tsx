@@ -2,24 +2,24 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-primary w-full pt-16 pb-8">
+    <footer className="bg-surface-container-lowest w-full pt-16 pb-8 border-t border-outline-variant/30">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="col-span-1">
-          <span className="font-headline text-xl text-surface-container-low mb-4 block">
+          <span className="font-headline text-xl text-primary mb-4 block">
             Healing with Boo
           </span>
-          <p className="text-surface-container/80 font-body text-sm mb-6 leading-relaxed">
+          <p className="text-on-surface-variant/80 font-body text-sm mb-6 leading-relaxed">
             A sacred space for deep physical restoration and spiritual
             exploration in the heart of Boscombe.
           </p>
           <div className="flex space-x-4">
-            <span className="material-symbols-outlined text-surface-container-low cursor-pointer hover:text-secondary">
+            <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">
               public
             </span>
-            <span className="material-symbols-outlined text-surface-container-low cursor-pointer hover:text-secondary">
+            <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">
               nest_eco_leaf
             </span>
-            <span className="material-symbols-outlined text-surface-container-low cursor-pointer hover:text-secondary">
+            <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">
               auto_awesome
             </span>
           </div>
@@ -41,7 +41,7 @@ export function Footer() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-surface-container-low/80 hover:text-secondary font-body text-sm transition-transform hover:translate-x-1 inline-block"
+                  className="text-on-surface-variant/70 hover:text-secondary font-body text-sm transition-transform hover:translate-x-1 inline-block"
                 >
                   {link.label}
                 </Link>
@@ -58,7 +58,7 @@ export function Footer() {
             <li>
               <a
                 href="tel:07425018335"
-                className="text-surface-container-low/80 hover:text-secondary font-body text-sm flex items-center"
+                className="text-on-surface-variant/70 hover:text-secondary font-body text-sm flex items-center"
               >
                 <span className="material-symbols-outlined text-[16px] mr-2">
                   call
@@ -69,7 +69,7 @@ export function Footer() {
             <li>
               <a
                 href="mailto:zonedoutbeauty@gmail.com"
-                className="text-surface-container-low/80 hover:text-secondary font-body text-sm flex items-center"
+                className="text-on-surface-variant/70 hover:text-secondary font-body text-sm flex items-center"
               >
                 <span className="material-symbols-outlined text-[16px] mr-2">
                   mail
@@ -77,7 +77,7 @@ export function Footer() {
                 zonedoutbeauty@gmail.com
               </a>
             </li>
-            <li className="text-surface-container-low/80 font-body text-sm flex items-start">
+            <li className="text-on-surface-variant/70 font-body text-sm flex items-start">
               <span className="material-symbols-outlined text-[16px] mr-2 mt-0.5">
                 location_on
               </span>
@@ -100,7 +100,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href="#"
-                    className="text-surface-container-low/80 hover:text-secondary font-body text-sm transition-transform hover:translate-x-1 inline-block"
+                    className="text-on-surface-variant/70 hover:text-secondary font-body text-sm transition-transform hover:translate-x-1 inline-block"
                   >
                     {item}
                   </Link>
@@ -111,8 +111,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-16 pt-8 border-t border-surface-container-low/10 max-w-7xl mx-auto px-12 text-center">
-        <p className="text-surface-container/40 text-xs tracking-wide">
+      <div className="mt-16 pt-8 border-t border-outline-variant/20 max-w-7xl mx-auto px-12 text-center">
+        <p className="text-on-surface-variant/40 text-xs tracking-wide">
           &copy; {new Date().getFullYear()} Healing with Boo. All Rights
           Reserved.
         </p>

@@ -212,7 +212,7 @@ export default function AboutPage() {
       {/* ── CTA ── */}
       <section className="bg-primary-container py-16 md:py-20">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-secondary-container mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
             Begin Your Healing Journey
           </h2>
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -222,7 +222,7 @@ export default function AboutPage() {
             href="https://bookwithboo.setmore.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-secondary-container text-on-secondary-container px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
+            className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
           </a>

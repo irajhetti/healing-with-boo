@@ -18,7 +18,7 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-[#fafaf5]/80 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(23,82,29,0.06)]">
+      <nav className="fixed top-0 w-full z-50 bg-[#0a0f0b]/85 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(0,0,0,0.3)] border-b border-[#343d32]/40">
         <div className="flex justify-between items-center w-full px-6 md:px-8 py-4 max-w-full mx-auto">
           <Link
             href="/"
@@ -68,7 +68,7 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden bg-surface/95 backdrop-blur-xl border-t border-outline-variant/20 px-6 py-6 space-y-4">
+          <div className="md:hidden bg-[#0a0f0b]/95 backdrop-blur-xl border-t border-[#343d32]/40 px-6 py-6 space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
