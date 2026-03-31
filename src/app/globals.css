@@ -149,3 +149,124 @@ body {
     opacity: 0.4;
   }
 }
+
+/* ── Cursor Trail Sparkles ── */
+@keyframes sparkle-fade {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(-25px) scale(0);
+    opacity: 0;
+  }
+}
+
+.cursor-sparkle {
+  animation: sparkle-fade 0.7s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* ── Mystical Divider ── */
+@keyframes moon-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px #7c3aed40);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #7c3aed90);
+  }
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.mystical-moon-glow {
+  animation: moon-glow 4s ease-in-out infinite;
+}
+
+.mystical-star {
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+
+/* ── Scroll Reveal ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Ambient Magic ── */
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(40px, -50px); }
+  66% { transform: translate(-30px, -30px); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-50px, -40px); }
+  66% { transform: translate(20px, -60px); }
+}
+
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, 40px); }
+  66% { transform: translate(-40px, 20px); }
+}
+
+@keyframes constellation-twinkle {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes mist-pulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.1; }
+}
+
+.ambient-orb {
+  will-change: transform;
+}
+
+.ambient-orb-1 { animation: orb-drift-1 22s ease-in-out infinite; }
+.ambient-orb-2 { animation: orb-drift-2 26s ease-in-out infinite; }
+.ambient-orb-3 { animation: orb-drift-3 30s ease-in-out infinite; }
+
+.constellation-dot {
+  animation: constellation-twinkle 5s ease-in-out infinite;
+}
+
+.ambient-mist {
+  animation: mist-pulse 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-sparkle { animation: none; display: none; }
+  .mystical-moon-glow { animation: none; }
+  .mystical-star { animation: none; opacity: 0.5; }
+  .scroll-reveal { opacity: 1; transform: none; transition: none; }
+  .ambient-orb { animation: none; opacity: 0.15; }
+  .ambient-orb-1, .ambient-orb-2, .ambient-orb-3 { animation: none; }
+  .constellation-dot { animation: none; opacity: 0.2; }
+  .ambient-mist { animation: none; }
+}

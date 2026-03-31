@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 // Link import removed - all booking links now use <a> tags to Setmore
 
 export const metadata: Metadata = {
@@ -288,7 +289,7 @@ export default function ShamanicHealingPage() {
       </section>
 
       {/* ── Botanical Divider ── */}
-      <div className="botanical-divider my-2" />
+      <MysticalDivider />
 
       {/* ── How a Session Works ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-5xl mx-auto">

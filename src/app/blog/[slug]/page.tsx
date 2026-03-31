@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -165,7 +166,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Botanical Divider */}
-        <div className="botanical-divider my-12" />
+        <MysticalDivider />
 
         {/* Author Card */}
         <div className="flex items-center gap-5 bg-surface-container rounded-xl p-6 mb-16">

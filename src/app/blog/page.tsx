@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 
 export const metadata: Metadata = {
   title: "The Divine Grimoire",
@@ -159,7 +160,7 @@ export default function BlogPage() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="botanical-divider mb-12" />
+        <MysticalDivider />
         <section className="text-center max-w-xl mx-auto">
           <span className="material-symbols-outlined text-secondary text-4xl mb-4 block">mail</span>
           <h2 className="font-headline text-3xl text-on-surface mb-3">Join the Healing Circle</h2>

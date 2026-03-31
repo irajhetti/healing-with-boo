@@ -3,6 +3,8 @@ import { Noto_Serif, Manrope } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { AmbientMagic } from "@/components/ui/AmbientMagic";
+import { CursorTrail } from "@/components/ui/CursorTrail";
 
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
@@ -57,6 +59,8 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-background font-body antialiased">
+        <AmbientMagic />
+        <CursorTrail />
         <Navbar />
         <main>{children}</main>
         <Footer />

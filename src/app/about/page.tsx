@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 
 export const metadata: Metadata = {
   title: "About Leah",
@@ -133,7 +134,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Botanical Divider ── */}
-      <div className="botanical-divider my-2" />
+      <MysticalDivider />
 
       {/* ── Credentials ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-7xl mx-auto">

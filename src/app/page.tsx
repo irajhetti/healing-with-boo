@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Fireflies } from "@/components/ui/Fireflies";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export default function Home() {
   return (
@@ -47,21 +49,24 @@ export default function Home() {
       </section>
 
       {/* ── Botanical Divider ── */}
-      <div className="botanical-divider my-2" />
+      <MysticalDivider />
 
       {/* ── Services Preview ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
-            Sacred Modalities
-          </span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
-            Our Healing Services
-          </h2>
-        </div>
+        <ScrollReveal animation="shimmer">
+          <div className="text-center mb-16">
+            <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
+              Sacred Modalities
+            </span>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+              Our Healing Services
+            </h2>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Massage Therapy Card */}
+          <ScrollReveal animation="glow" delay={100}>
           <Link href="/services/massage" className="group block">
             <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-72 md:h-80 overflow-hidden">
@@ -90,8 +95,10 @@ export default function Home() {
               </div>
             </div>
           </Link>
+          </ScrollReveal>
 
           {/* Shamanic Healing Card */}
+          <ScrollReveal animation="glow" delay={250}>
           <Link href="/services/shamanic-healing" className="group block md:mt-12">
             <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-72 md:h-80 overflow-hidden">
@@ -120,14 +127,16 @@ export default function Home() {
               </div>
             </div>
           </Link>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Botanical Divider ── */}
-      <div className="botanical-divider my-2" />
+      <MysticalDivider />
 
       {/* ── About Teaser ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-7xl mx-auto">
+        <ScrollReveal animation="shimmer">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="relative">
             <div className="asymmetric-mask overflow-hidden rounded-xl">
@@ -163,11 +172,13 @@ export default function Home() {
             </Link>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* ── Testimonials ── */}
       <section className="py-20 md:py-28 bg-surface-container-low">
         <div className="px-6 md:px-12 max-w-7xl mx-auto">
+          <ScrollReveal animation="shimmer">
           <div className="text-center mb-16">
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               Kind Words
@@ -176,6 +187,7 @@ export default function Home() {
               What Clients Say
             </h2>
           </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -234,6 +246,7 @@ export default function Home() {
 
       {/* ── CTA Banner ── */}
       <section className="bg-primary-container py-16 md:py-20">
+        <ScrollReveal animation="glow">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-secondary-container mb-4">
             Your Healing Journey Starts Here
@@ -250,10 +263,12 @@ export default function Home() {
             Book Now
           </a>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* ── Blog Preview ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-7xl mx-auto">
+        <ScrollReveal animation="shimmer">
         <div className="text-center mb-16">
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             From the Journal
@@ -262,6 +277,7 @@ export default function Home() {
             Latest Writings
           </h2>
         </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[

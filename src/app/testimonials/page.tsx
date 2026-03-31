@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 
 export const metadata: Metadata = {
   title: "Testimonials",
@@ -127,7 +128,7 @@ export default function TestimonialsPage() {
         </div>
 
         {/* CTA */}
-        <div className="botanical-divider mb-12" />
+        <MysticalDivider />
         <section className="text-center max-w-xl mx-auto">
           <h2 className="font-headline text-3xl text-on-surface mb-3">Experience It Yourself</h2>
           <p className="text-on-surface-variant mb-8">

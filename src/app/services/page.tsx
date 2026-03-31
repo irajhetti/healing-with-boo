@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { MysticalDivider } from "@/components/ui/MysticalDivider";
 
 export const metadata: Metadata = {
   title: "Our Healing Services",
@@ -122,7 +123,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Botanical Divider ── */}
-      <div className="botanical-divider my-2" />
+      <MysticalDivider />
 
       {/* ── Comparison ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-5xl mx-auto">
