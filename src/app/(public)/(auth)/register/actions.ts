@@ -2,6 +2,7 @@
 
 import { hashSync } from "bcryptjs";
 import { getPrisma } from "@/lib/db";
+import { registerSchema } from "@/lib/validations/auth";
 
 export async function registerUser(data: {
   name: string;
@@ -9,11 +10,16 @@ export async function registerUser(data: {
   phone: string;
   password: string;
 }): Promise<{ error: string | null }> {
+  const parsed = registerSchema.safeParse(data);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0].message };
+  }
+
   const prisma = getPrisma();
 
   // Check if email already exists
   const existing = await prisma.user.findUnique({
-    where: { email: data.email.toLowerCase() },
+    where: { email: parsed.data.email.toLowerCase() },
   });
   if (existing) {
     return { error: "An account with this email already exists." };
@@ -22,10 +28,10 @@ export async function registerUser(data: {
   // Create user
   const user = await prisma.user.create({
     data: {
-      name: data.name,
-      email: data.email.toLowerCase(),
-      phone: data.phone || null,
-      hashedPassword: hashSync(data.password, 12),
+      name: parsed.data.name,
+      email: parsed.data.email.toLowerCase(),
+      phone: parsed.data.phone || null,
+      hashedPassword: hashSync(parsed.data.password, 12),
       role: "CLIENT",
     },
   });
@@ -33,7 +39,7 @@ export async function registerUser(data: {
   // Auto-link any guest bookings with same email
   await prisma.booking.updateMany({
     where: {
-      guestEmail: data.email.toLowerCase(),
+      guestEmail: parsed.data.email.toLowerCase(),
       userId: null,
     },
     data: { userId: user.id },

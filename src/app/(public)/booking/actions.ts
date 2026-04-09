@@ -4,6 +4,7 @@ import { getPrisma } from "@/lib/db";
 import { getStripeClient } from "@/lib/stripe";
 import { getAvailableSlots } from "@/lib/availability";
 import { bookingFormSchema } from "@/lib/validations/booking";
+import { auth } from "@/lib/auth";
 import type { ServiceCategory } from "@prisma/client";
 
 export type ServiceWithCategory = {
@@ -78,6 +79,17 @@ export async function createCheckoutSession(formData: {
   const endTime = new Date(startTime);
   endTime.setMinutes(endTime.getMinutes() + service.duration);
 
+  // Check if user is signed in to link booking
+  const authSession = await auth();
+  let userId: string | null = null;
+  if (authSession?.user?.email) {
+    const user = await getPrisma().user.findUnique({
+      where: { email: authSession.user.email },
+      select: { id: true },
+    });
+    userId = user?.id ?? null;
+  }
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3034";
 
   // Create Stripe Checkout Session
@@ -107,6 +119,7 @@ export async function createCheckoutSession(formData: {
       guestPhone: phone,
       notes: notes || "",
       price: service.price.toString(),
+      ...(userId && { userId }),
     },
     success_url: `${baseUrl}/booking/confirmation?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/booking`,
@@ -151,27 +164,72 @@ export async function createCashBooking(formData: {
   const endTime = new Date(startTime);
   endTime.setMinutes(endTime.getMinutes() + service.duration);
 
-  const { generateReference } = await import("@/lib/utils");
-
-  let reference = generateReference();
-  while (await getPrisma().booking.findUnique({ where: { reference } })) {
-    reference = generateReference();
+  // Check if user is signed in to link booking
+  const authSession = await auth();
+  let userId: string | null = null;
+  if (authSession?.user?.email) {
+    const user = await getPrisma().user.findUnique({
+      where: { email: authSession.user.email },
+      select: { id: true },
+    });
+    userId = user?.id ?? null;
   }
 
-  await getPrisma().booking.create({
-    data: {
-      reference,
-      status: "CONFIRMED",
-      serviceId,
-      guestName: name,
-      guestEmail: email,
-      guestPhone: phone,
-      startTime,
-      endTime,
-      price: service.price,
-      notes: notes || null,
-    },
-  });
+  const { generateReference } = await import("@/lib/utils");
+  const prisma = getPrisma();
+
+  // Use serializable transaction to prevent double-booking
+  let reference: string;
+  try {
+    reference = await prisma.$transaction(async (tx) => {
+      // Re-check for conflicts inside the transaction
+      const conflicting = await tx.booking.findFirst({
+        where: {
+          status: "CONFIRMED",
+          startTime: { lt: endTime },
+          endTime: { gt: startTime },
+        },
+      });
+      if (conflicting) {
+        throw new Error("SLOT_TAKEN");
+      }
+
+      let ref = generateReference();
+      while (await tx.booking.findUnique({ where: { reference: ref } })) {
+        ref = generateReference();
+      }
+
+      await tx.booking.create({
+        data: {
+          reference: ref,
+          status: "CONFIRMED",
+          serviceId,
+          userId,
+          guestName: name,
+          guestEmail: email,
+          guestPhone: phone,
+          startTime,
+          endTime,
+          price: service.price,
+          notes: notes || null,
+        },
+      });
+
+      return ref;
+    }, { isolationLevel: "Serializable" });
+  } catch (err) {
+    // SLOT_TAKEN = our explicit check; P2034 = PostgreSQL serialization failure
+    const isSlotConflict =
+      (err instanceof Error && err.message === "SLOT_TAKEN") ||
+      (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2034");
+    if (isSlotConflict) {
+      return {
+        reference: null,
+        error: "This time slot is no longer available. Please choose another.",
+      };
+    }
+    throw err;
+  }
 
   // Send emails
   try {

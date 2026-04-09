@@ -2,16 +2,21 @@
 
 import { getResendClient, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/email";
 import { buildContactEmail } from "@/lib/emails/contact-form";
+import { contactFormSchema } from "@/lib/validations/contact";
 
 export async function submitContactForm(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const subject = formData.get("subject") as string;
-  const message = formData.get("message") as string;
+  const parsed = contactFormSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    subject: formData.get("subject"),
+    message: formData.get("message"),
+  });
 
-  if (!name || !email || !subject || !message) {
-    return { success: false, message: "All fields are required." };
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0].message };
   }
+
+  const { name, email, subject, message } = parsed.data;
 
   try {
     const resend = getResendClient();

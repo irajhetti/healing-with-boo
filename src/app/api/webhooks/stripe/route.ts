@@ -49,47 +49,67 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true });
     }
 
-    // Race condition guard: re-check availability
-    const conflicting = await getPrisma().booking.findFirst({
-      where: {
-        status: "CONFIRMED",
-        startTime: { lt: endTime },
-        endTime: { gt: startTime },
-      },
-    });
+    const prisma = getPrisma();
+    let reference: string;
 
-    if (conflicting) {
-      if (session.payment_intent) {
-        await getStripeClient().refunds.create({
-          payment_intent: session.payment_intent as string,
+    // Use serializable transaction to prevent double-booking
+    try {
+      reference = await prisma.$transaction(async (tx) => {
+        // Re-check availability inside the transaction
+        const conflicting = await tx.booking.findFirst({
+          where: {
+            status: "CONFIRMED",
+            startTime: { lt: endTime },
+            endTime: { gt: startTime },
+          },
         });
+
+        if (conflicting) {
+          throw new Error("SLOT_CONFLICT");
+        }
+
+        let ref = generateReference();
+        while (await tx.booking.findUnique({ where: { reference: ref } })) {
+          ref = generateReference();
+        }
+
+        await tx.booking.create({
+          data: {
+            reference: ref,
+            status: "CONFIRMED",
+            serviceId: metadata.serviceId,
+            userId: metadata.userId || null,
+            guestName: metadata.guestName || null,
+            guestEmail: metadata.guestEmail || null,
+            guestPhone: metadata.guestPhone || null,
+            startTime,
+            endTime,
+            price: parseInt(metadata.price || "0"),
+            stripeSessionId: session.id,
+            stripePaymentId: session.payment_intent as string | null,
+            notes: metadata.notes || null,
+          },
+        });
+
+        return ref;
+      }, { isolationLevel: "Serializable" });
+    } catch (err) {
+      // SLOT_CONFLICT = our explicit check; P2034 = PostgreSQL serialization failure
+      const isSlotConflict =
+        (err instanceof Error && err.message === "SLOT_CONFLICT") ||
+        (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2034");
+      if (isSlotConflict) {
+        // Refund the payment since the slot is taken
+        if (session.payment_intent) {
+          await getStripeClient().refunds.create({
+            payment_intent: session.payment_intent as string,
+          });
+        }
+        console.error(`Slot conflict for session ${session.id} — refunded`);
+        return NextResponse.json({ received: true });
       }
-      console.error(`Slot conflict for session ${session.id} — refunded`);
-      return NextResponse.json({ received: true });
+      throw err;
     }
-
-    // Create the booking
-    let reference = generateReference();
-    while (await getPrisma().booking.findUnique({ where: { reference } })) {
-      reference = generateReference();
-    }
-
-    await getPrisma().booking.create({
-      data: {
-        reference,
-        status: "CONFIRMED",
-        serviceId: metadata.serviceId,
-        guestName: metadata.guestName || null,
-        guestEmail: metadata.guestEmail || null,
-        guestPhone: metadata.guestPhone || null,
-        startTime,
-        endTime,
-        price: parseInt(metadata.price || "0"),
-        stripeSessionId: session.id,
-        stripePaymentId: session.payment_intent as string | null,
-        notes: metadata.notes || null,
-      },
-    });
 
     console.log(`Booking created: ${reference} for ${metadata.guestName}`);
 

@@ -1,26 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 
 const POOL_SIZE = 20;
 const COLORS = ["#7c3aed", "#6b21a8", "#15803d", "#166534"];
+
+function subscribeNoop() {
+  return () => {};
+}
+
+function getCanAnimate() {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const isFinPointer = window.matchMedia("(pointer: fine)").matches;
+  return !prefersReducedMotion && isFinPointer;
+}
 
 export function CursorTrail() {
   const containerRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef(0);
   const rafRef = useRef<number | null>(null);
   const lastPos = useRef({ x: 0, y: 0 });
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    const isFinPointer = window.matchMedia("(pointer: fine)").matches;
-
-    if (prefersReducedMotion || !isFinPointer) return;
-    setEnabled(true);
-  }, []);
+  const enabled = useSyncExternalStore(subscribeNoop, getCanAnimate, () => false);
 
   useEffect(() => {
     if (!enabled) return;

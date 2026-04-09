@@ -4,6 +4,7 @@ import { getPrisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { hashSync, compareSync } from "bcryptjs";
+import { profileSchema } from "@/lib/validations/profile";
 
 async function requireUser() {
   const session = await auth();
@@ -60,20 +61,26 @@ export async function updateMemberProfile(data: {
   phone: string;
   pressurePref: string;
   healthNotes: string;
-}) {
+}): Promise<{ error: string | null }> {
+  const parsed = profileSchema.safeParse(data);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0].message };
+  }
+
   const user = await requireUser();
 
   await getPrisma().user.update({
     where: { id: user.id },
     data: {
-      name: data.name,
-      phone: data.phone || null,
-      pressurePref: data.pressurePref,
-      healthNotes: data.healthNotes || null,
+      name: parsed.data.name,
+      phone: parsed.data.phone || null,
+      pressurePref: parsed.data.pressurePref,
+      healthNotes: parsed.data.healthNotes || null,
     },
   });
 
   revalidatePath("/members/profile");
+  return { error: null };
 }
 
 export async function changePassword(data: {
