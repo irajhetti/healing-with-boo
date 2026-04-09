@@ -13,12 +13,6 @@ export async function proxy(request: NextRequest) {
       secureCookie: request.nextUrl.protocol === "https:",
     });
 
-    console.log("[proxy] /iws-admin check:", {
-      hasToken: !!token,
-      role: token?.role,
-      cookies: request.cookies.getAll().map((c) => c.name),
-    });
-
     if (!token || token.role !== "ADMIN") {
       return NextResponse.redirect(new URL("/iws-admin/login", request.url));
     }
