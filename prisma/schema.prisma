@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Auth.js required models ──
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  phone          String?
+  pressurePref   String?   @default("Medium")
+  healthNotes    String?
+  role           Role      @default(CLIENT)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  bookings Booking[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ── Business models ──
+
+model Service {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  category    ServiceCategory
+  description String?
+  duration    Int // minutes
+  price       Int // pence (£27 = 2700)
+  active      Boolean         @default(true)
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  bookings Booking[]
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  reference       String        @unique
+  status          BookingStatus @default(CONFIRMED)
+  serviceId       String
+  userId          String?
+  guestName       String?
+  guestEmail      String?
+  guestPhone      String?
+  startTime       DateTime
+  endTime         DateTime
+  price           Int // pence, snapshot at booking time
+  stripeSessionId String?       @unique
+  stripePaymentId String?
+  notes           String?
+  cancelledAt     DateTime?
+  reminderSentAt  DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  service Service @relation(fields: [serviceId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id])
+
+  @@index([startTime])
+  @@index([userId])
+  @@index([status])
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum ServiceCategory {
+  MASSAGE
+  HEALING
+  COMBINED
+  SIGNATURE
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// ── Admin: Availability ──
+
+model BusinessHours {
+  id        String   @id @default(cuid())
+  dayOfWeek Int      @unique // 0=Sunday .. 6=Saturday
+  open      String? // "14:00" — null means closed
+  close     String? // "20:00"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlockedDate {
+  id             String   @id @default(cuid())
+  date           DateTime @unique // stored as midnight UTC
+  reason         String?
+  openOverride   String? // if set, day has custom hours instead of being blocked
+  closeOverride  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

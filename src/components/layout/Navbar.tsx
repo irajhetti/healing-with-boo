@@ -8,7 +8,6 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/booking", label: "Booking" },
-  { href: "/blog", label: "Blog" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/contact", label: "Contact" },
 ];
@@ -47,9 +46,7 @@ export function Navbar() {
               Members
             </Link>
             <a
-              href="https://bookwithboo.setmore.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/booking"
               className="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide hover:opacity-80 transition-all duration-300 active:scale-95"
             >
               Book Now

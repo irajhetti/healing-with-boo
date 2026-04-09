@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Serif, Manrope } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { AmbientMagic } from "@/components/ui/AmbientMagic";
-import { CursorTrail } from "@/components/ui/CursorTrail";
 
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
@@ -28,20 +24,9 @@ export const metadata: Metadata = {
   },
   description:
     "Personal, intentional and deep healing massage and shamanic energy work in Boscombe, Bournemouth. Book with Leah today.",
-  keywords: [
-    "massage therapy Boscombe",
-    "shamanic healing Bournemouth",
-    "deep tissue massage",
-    "energy healing UK",
-    "holistic therapy",
-    "Healing with Boo",
-  ],
-  openGraph: {
-    title: "Healing with Boo | Deep Shamanic & Massage Therapy",
-    description:
-      "Personal, intentional and deep healing massage and shamanic energy work in Boscombe, Bournemouth.",
-    locale: "en_GB",
-    type: "website",
+  robots: {
+    index: false,
+    follow: false,
   },
 };
 
@@ -59,11 +44,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-background font-body antialiased">
-        <AmbientMagic />
-        <CursorTrail />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
