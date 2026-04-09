@@ -5,9 +5,10 @@ import { compareSync } from "bcryptjs";
 import { getPrisma } from "@/lib/db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   adapter: PrismaAdapter(getPrisma()),
   session: { strategy: "jwt" },
-  pages: { signIn: "/iws-admin/login" },
+  pages: { signIn: "/login" },
   providers: [
     Credentials({
       name: "credentials",
