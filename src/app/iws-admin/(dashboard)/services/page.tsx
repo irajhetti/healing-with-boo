@@ -71,7 +71,7 @@ export default function ServicesPage() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between gap-4 mb-8">
         <h1 className="font-headline text-2xl font-bold text-on-surface">
           Services
         </h1>
@@ -214,7 +214,7 @@ export default function ServicesPage() {
                     </div>
                   </form>
                 ) : (
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span
