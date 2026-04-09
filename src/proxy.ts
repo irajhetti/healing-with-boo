@@ -10,6 +10,13 @@ export async function proxy(request: NextRequest) {
     const token = await getToken({
       req: request,
       secret: process.env.AUTH_SECRET,
+      secureCookie: request.nextUrl.protocol === "https:",
+    });
+
+    console.log("[proxy] /iws-admin check:", {
+      hasToken: !!token,
+      role: token?.role,
+      cookies: request.cookies.getAll().map((c) => c.name),
     });
 
     if (!token || token.role !== "ADMIN") {
@@ -22,6 +29,7 @@ export async function proxy(request: NextRequest) {
     const token = await getToken({
       req: request,
       secret: process.env.AUTH_SECRET,
+      secureCookie: request.nextUrl.protocol === "https:",
     });
 
     if (!token) {
