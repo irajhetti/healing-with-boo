@@ -57,7 +57,7 @@ export default function RegisterPage() {
     if (signInResult?.error) {
       setError("Account created but sign in failed. Please log in manually.");
     } else {
-      router.push("/members");
+      window.location.href = "/members";
     }
   }
 
