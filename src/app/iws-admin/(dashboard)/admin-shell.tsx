@@ -10,6 +10,8 @@ const navItems = [
   { href: "/iws-admin/availability", label: "Availability", icon: "schedule" },
   { href: "/iws-admin/services", label: "Services", icon: "spa" },
   { href: "/iws-admin/discount-codes", label: "Discounts", icon: "sell" },
+  { href: "/iws-admin/consultation", label: "Consultation", icon: "assignment" },
+  { href: "/iws-admin/members", label: "Members", icon: "group" },
 ];
 
 export function AdminShell({

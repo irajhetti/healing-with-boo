@@ -458,6 +458,48 @@ export async function createCashBooking(formData: {
   return { reference, error: null };
 }
 
+export async function checkConsultationStatus(): Promise<{
+  signedIn: boolean;
+  consultationComplete: boolean;
+}> {
+  const session = await auth();
+  if (!session?.user?.email) {
+    return { signedIn: false, consultationComplete: true };
+  }
+
+  const prisma = getPrisma();
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { id: true },
+  });
+  if (!user) return { signedIn: false, consultationComplete: true };
+
+  const requiredQuestions = await prisma.consultationQuestion.findMany({
+    where: { active: true, required: true },
+    select: { id: true },
+  });
+
+  if (requiredQuestions.length === 0) {
+    return { signedIn: true, consultationComplete: true };
+  }
+
+  const responses = await prisma.consultationResponse.findMany({
+    where: {
+      userId: user.id,
+      questionId: { in: requiredQuestions.map((q) => q.id) },
+    },
+  });
+
+  const answeredIds = new Set(
+    responses.filter((r) => r.answer.trim() !== "").map((r) => r.questionId)
+  );
+
+  return {
+    signedIn: true,
+    consultationComplete: requiredQuestions.every((q) => answeredIds.has(q.id)),
+  };
+}
+
 function londonTimeToUTC(dateStr: string, timeStr: string): Date {
   // Create a date string that represents the London wall-clock time
   // Use Intl to find the UTC offset for London on this specific date

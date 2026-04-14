@@ -8,6 +8,7 @@ import {
   createCheckoutSession,
   createCashBooking,
   getMemberDiscountCodes,
+  checkConsultationStatus,
 } from "@/app/(public)/booking/actions";
 import type { DiscountValidationResult, MemberDiscountCode } from "@/app/(public)/booking/actions";
 import { getAvailableSlots, getAvailableDates } from "@/lib/availability";
@@ -46,6 +47,7 @@ export function BookingWizard({ services }: Props) {
     useState<DiscountValidationResult | null>(null);
   const [memberCodes, setMemberCodes] = useState<MemberDiscountCode[]>([]);
   const [memberCodesLoaded, setMemberCodesLoaded] = useState(false);
+  const [showConsultationPrompt, setShowConsultationPrompt] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -80,10 +82,15 @@ export function BookingWizard({ services }: Props) {
     setSelectedTime(time);
     setStep(4);
 
-    // Load member discount codes once when entering step 4
+    // Load member discount codes + consultation status once when entering step 4
     if (!memberCodesLoaded) {
       setMemberCodesLoaded(true);
       getMemberDiscountCodes().then(setMemberCodes);
+      checkConsultationStatus().then((status) => {
+        if (status.signedIn && !status.consultationComplete) {
+          setShowConsultationPrompt(true);
+        }
+      });
     }
   }
 
@@ -190,6 +197,29 @@ export function BookingWizard({ services }: Props) {
                 notes={contactInfo.notes}
                 onChange={handleContactChange}
               />
+
+              {/* Consultation prompt */}
+              {showConsultationPrompt && (
+                <div className="mt-6 p-4 rounded-xl bg-secondary/5 border border-secondary/20 flex items-start gap-3">
+                  <span className="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">
+                    assignment
+                  </span>
+                  <div>
+                    <p className="font-label font-medium text-on-surface text-sm">
+                      Complete your consultation form
+                    </p>
+                    <p className="text-xs text-on-surface-variant mt-1">
+                      Help Leah prepare for your session by filling out a few health questions.
+                    </p>
+                    <a
+                      href="/members/profile#consultation"
+                      className="text-xs text-primary font-medium mt-2 inline-block hover:underline"
+                    >
+                      Fill it out now &rarr;
+                    </a>
+                  </div>
+                </div>
+              )}
 
               {/* Discount Code */}
               <DiscountCodeInput

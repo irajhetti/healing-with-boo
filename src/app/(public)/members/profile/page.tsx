@@ -1,17 +1,35 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { getMemberProfile, updateMemberProfile, changePassword } from "../actions";
+import {
+  getMemberProfile,
+  updateMemberProfile,
+  changePassword,
+  getConsultationForm,
+  saveConsultationAnswers,
+} from "../actions";
+import type { ConsultationFormQuestion } from "../actions";
 
 export default function MembersProfilePage() {
   const [profile, setProfile] = useState<Awaited<ReturnType<typeof getMemberProfile>> | null>(null);
   const [isPending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
   const [passwordMsg, setPasswordMsg] = useState<{ type: "error" | "success"; text: string } | null>(null);
+  const [questions, setQuestions] = useState<ConsultationFormQuestion[]>([]);
+  const [consultationAnswers, setConsultationAnswers] = useState<Record<string, string>>({});
+  const [consultationSaved, setConsultationSaved] = useState(false);
+  const [consultationError, setConsultationError] = useState<string | null>(null);
 
   useEffect(() => {
     startTransition(async () => {
-      setProfile(await getMemberProfile());
+      const [p, q] = await Promise.all([getMemberProfile(), getConsultationForm()]);
+      setProfile(p);
+      setQuestions(q);
+      const answers: Record<string, string> = {};
+      for (const question of q) {
+        answers[question.id] = question.answer ?? "";
+      }
+      setConsultationAnswers(answers);
     });
   }, []);
 
@@ -129,6 +147,116 @@ export default function MembersProfilePage() {
           </div>
         </form>
       </section>
+
+      {/* Consultation Form */}
+      {questions.length > 0 && (
+        <section id="consultation" className="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 md:p-8 mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="material-symbols-outlined text-secondary text-[24px]">assignment</span>
+            <h2 className="font-label font-medium text-on-surface text-lg">Consultation Questions</h2>
+          </div>
+          <p className="text-sm text-on-surface-variant mb-6">
+            Help Leah prepare for your sessions by answering these questions.
+          </p>
+
+          <div className="space-y-5">
+            {questions.map((q) => (
+              <div key={q.id}>
+                <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                  {q.label}
+                  {q.required && <span className="text-red-500 ml-1">*</span>}
+                </label>
+
+                {q.type === "SHORT_TEXT" && (
+                  <input
+                    type="text"
+                    value={consultationAnswers[q.id] || ""}
+                    onChange={(e) => setConsultationAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))}
+                    className="w-full px-4 py-3 bg-surface-container-lowest border-b-2 border-outline-variant/20 rounded-t-lg focus:border-secondary focus:outline-none transition-colors text-on-surface"
+                  />
+                )}
+
+                {q.type === "LONG_TEXT" && (
+                  <textarea
+                    rows={3}
+                    value={consultationAnswers[q.id] || ""}
+                    onChange={(e) => setConsultationAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))}
+                    className="w-full px-4 py-3 bg-surface-container-lowest border-b-2 border-outline-variant/20 rounded-t-lg focus:border-secondary focus:outline-none transition-colors text-on-surface resize-none"
+                  />
+                )}
+
+                {q.type === "DROPDOWN" && q.options && (
+                  <select
+                    value={consultationAnswers[q.id] || ""}
+                    onChange={(e) => setConsultationAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))}
+                    className="w-full px-4 py-3 bg-surface-container-lowest border-b-2 border-outline-variant/20 rounded-t-lg focus:border-secondary focus:outline-none transition-colors text-on-surface"
+                  >
+                    <option value="">Select...</option>
+                    {q.options.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                )}
+
+                {q.type === "YES_NO" && (
+                  <div className="flex gap-2">
+                    {["Yes", "No"].map((label) => {
+                      const val = label === "Yes" ? "true" : "false";
+                      const isSelected = consultationAnswers[q.id] === val;
+                      return (
+                        <button
+                          key={label}
+                          type="button"
+                          onClick={() => setConsultationAnswers((prev) => ({ ...prev, [q.id]: val }))}
+                          className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                            isSelected
+                              ? "bg-primary text-on-primary"
+                              : "bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:border-outline-variant/50"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {consultationError && (
+            <p className="text-sm text-red-500 mt-4">{consultationError}</p>
+          )}
+
+          <div className="flex items-center gap-3 mt-6">
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => {
+                setConsultationError(null);
+                startTransition(async () => {
+                  const result = await saveConsultationAnswers(
+                    Object.entries(consultationAnswers).map(([questionId, answer]) => ({
+                      questionId,
+                      answer,
+                    }))
+                  );
+                  if (result.error) {
+                    setConsultationError(result.error);
+                  } else {
+                    setConsultationSaved(true);
+                    setTimeout(() => setConsultationSaved(false), 3000);
+                  }
+                });
+              }}
+              className="bg-primary text-on-primary font-label font-medium px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {isPending ? "Saving..." : "Save Answers"}
+            </button>
+            {consultationSaved && <span className="text-green-600 text-sm">Saved!</span>}
+          </div>
+        </section>
+      )}
 
       {/* Change Password */}
       <section className="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 md:p-8">

@@ -74,6 +74,101 @@ export async function getMemberCodes() {
     }));
 }
 
+export type ConsultationFormQuestion = {
+  id: string;
+  label: string;
+  type: "SHORT_TEXT" | "LONG_TEXT" | "DROPDOWN" | "YES_NO";
+  options: string[] | null;
+  required: boolean;
+  answer: string | null;
+};
+
+export async function getConsultationForm(): Promise<ConsultationFormQuestion[]> {
+  const user = await requireUser();
+  const prisma = getPrisma();
+
+  const [questions, responses] = await Promise.all([
+    prisma.consultationQuestion.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    }),
+    prisma.consultationResponse.findMany({
+      where: { userId: user.id },
+    }),
+  ]);
+
+  const answerMap = new Map(responses.map((r) => [r.questionId, r.answer]));
+
+  return questions.map((q) => ({
+    id: q.id,
+    label: q.label,
+    type: q.type,
+    options: q.options ? (JSON.parse(q.options) as string[]) : null,
+    required: q.required,
+    answer: answerMap.get(q.id) ?? null,
+  }));
+}
+
+export async function saveConsultationAnswers(
+  answers: Array<{ questionId: string; answer: string }>
+): Promise<{ error: string | null }> {
+  const user = await requireUser();
+  const prisma = getPrisma();
+
+  // Validate required fields
+  const questions = await prisma.consultationQuestion.findMany({
+    where: { active: true },
+  });
+  const questionMap = new Map(questions.map((q) => [q.id, q]));
+
+  for (const { questionId, answer } of answers) {
+    const q = questionMap.get(questionId);
+    if (q?.required && !answer.trim()) {
+      return { error: `"${q.label}" is required.` };
+    }
+  }
+
+  // Upsert each answer
+  for (const { questionId, answer } of answers) {
+    if (!questionMap.has(questionId)) continue;
+    await prisma.consultationResponse.upsert({
+      where: {
+        userId_questionId: { userId: user.id, questionId },
+      },
+      update: { answer },
+      create: { userId: user.id, questionId, answer },
+    });
+  }
+
+  revalidatePath("/members/profile");
+  return { error: null };
+}
+
+export async function hasCompletedConsultation(): Promise<boolean> {
+  const user = await requireUser();
+  const prisma = getPrisma();
+
+  const requiredQuestions = await prisma.consultationQuestion.findMany({
+    where: { active: true, required: true },
+    select: { id: true },
+  });
+
+  if (requiredQuestions.length === 0) return true;
+
+  const responses = await prisma.consultationResponse.findMany({
+    where: {
+      userId: user.id,
+      questionId: { in: requiredQuestions.map((q) => q.id) },
+    },
+  });
+
+  const answeredIds = new Set(
+    responses.filter((r) => r.answer.trim() !== "").map((r) => r.questionId)
+  );
+
+  return requiredQuestions.every((q) => answeredIds.has(q.id));
+}
+
 export async function getMemberProfile() {
   const user = await requireUser();
   return {
