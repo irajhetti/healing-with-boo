@@ -11,6 +11,7 @@ export const bookingFormSchema = z.object({
     .min(10, "Please enter a valid phone number")
     .regex(/^[\d\s+()-]+$/, "Please enter a valid phone number"),
   notes: z.string().optional(),
+  discountCode: z.string().max(30).optional(),
 });
 
 export type BookingFormData = z.infer<typeof bookingFormSchema>;

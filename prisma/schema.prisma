@@ -22,9 +22,11 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-  bookings Booking[]
+  accounts       Account[]
+  sessions       Session[]
+  bookings       Booking[]
+  discountCodes  DiscountCode[]
+  discountUsages DiscountUsage[]
 }
 
 model Account {
@@ -93,6 +95,8 @@ model Booking {
   startTime       DateTime
   endTime         DateTime
   price           Int // pence, snapshot at booking time
+  discountCodeId  String?
+  discountAmount  Int? // pence saved by discount
   stripeSessionId String?       @unique
   stripePaymentId String?
   notes           String?
@@ -101,8 +105,9 @@ model Booking {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  service Service @relation(fields: [serviceId], references: [id])
-  user    User?   @relation(fields: [userId], references: [id])
+  service       Service        @relation(fields: [serviceId], references: [id])
+  user          User?          @relation(fields: [userId], references: [id])
+  discountUsage DiscountUsage?
 
   @@index([startTime])
   @@index([userId])
@@ -147,4 +152,47 @@ model BlockedDate {
   closeOverride  String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+// ── Discount Codes ──
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+model DiscountCode {
+  id           String       @id @default(cuid())
+  code         String       @unique // stored uppercase
+  discountType DiscountType
+  amount       Int // percentage (20 = 20%) or pence (500 = £5)
+  maxUses      Int? // null = unlimited
+  usedCount    Int          @default(0)
+  expiresAt    DateTime?
+  active       Boolean      @default(true)
+  userId       String? // null = general, set = personal code for this member
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  user   User?           @relation(fields: [userId], references: [id])
+  usages DiscountUsage[]
+
+  @@index([userId])
+}
+
+model DiscountUsage {
+  id             String   @id @default(cuid())
+  discountCodeId String
+  bookingId      String   @unique // one discount per booking
+  userId         String? // null = guest
+  originalPrice  Int // pence
+  discountAmount Int // pence deducted
+  createdAt      DateTime @default(now())
+
+  discountCode DiscountCode @relation(fields: [discountCodeId], references: [id])
+  booking      Booking      @relation(fields: [bookingId], references: [id])
+  user         User?        @relation(fields: [userId], references: [id])
+
+  @@index([discountCodeId])
+  @@index([userId])
 }

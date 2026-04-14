@@ -4,13 +4,19 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { ServiceCategory } from "@prisma/client";
 import type { ServiceWithCategory } from "@/app/(public)/booking/actions";
-import { createCheckoutSession, createCashBooking } from "@/app/(public)/booking/actions";
+import {
+  createCheckoutSession,
+  createCashBooking,
+  getMemberDiscountCodes,
+} from "@/app/(public)/booking/actions";
+import type { DiscountValidationResult, MemberDiscountCode } from "@/app/(public)/booking/actions";
 import { getAvailableSlots, getAvailableDates } from "@/lib/availability";
 import { BookingSteps } from "./BookingSteps";
 import { ServicePicker } from "./ServicePicker";
 import { DatePicker } from "./DatePicker";
 import { TimePicker } from "./TimePicker";
 import { ContactForm } from "./ContactForm";
+import { DiscountCodeInput } from "./DiscountCodeInput";
 import { BookingSummary } from "./BookingSummary";
 
 type Props = {
@@ -35,6 +41,11 @@ export function BookingWizard({ services }: Props) {
     phone: "",
     notes: "",
   });
+  const [discountCode, setDiscountCode] = useState<string | null>(null);
+  const [discountResult, setDiscountResult] =
+    useState<DiscountValidationResult | null>(null);
+  const [memberCodes, setMemberCodes] = useState<MemberDiscountCode[]>([]);
+  const [memberCodesLoaded, setMemberCodesLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -68,6 +79,12 @@ export function BookingWizard({ services }: Props) {
   function handleTimeSelect(time: string) {
     setSelectedTime(time);
     setStep(4);
+
+    // Load member discount codes once when entering step 4
+    if (!memberCodesLoaded) {
+      setMemberCodesLoaded(true);
+      getMemberDiscountCodes().then(setMemberCodes);
+    }
   }
 
   function handleContactChange(field: string, value: string) {
@@ -92,6 +109,7 @@ export function BookingWizard({ services }: Props) {
         email: contactInfo.email,
         phone: contactInfo.phone,
         notes: contactInfo.notes || undefined,
+        discountCode: discountCode || undefined,
       };
 
       if (paymentMethod === "card") {
@@ -163,7 +181,7 @@ export function BookingWizard({ services }: Props) {
             />
           )}
 
-          {step === 4 && (
+          {step === 4 && selectedService && (
             <>
               <ContactForm
                 name={contactInfo.name}
@@ -171,6 +189,22 @@ export function BookingWizard({ services }: Props) {
                 phone={contactInfo.phone}
                 notes={contactInfo.notes}
                 onChange={handleContactChange}
+              />
+
+              {/* Discount Code */}
+              <DiscountCodeInput
+                serviceId={selectedService.id}
+                memberCodes={memberCodes}
+                onApply={(code, result) => {
+                  setDiscountCode(code);
+                  setDiscountResult(result);
+                }}
+                onClear={() => {
+                  setDiscountCode(null);
+                  setDiscountResult(null);
+                }}
+                appliedCode={discountCode}
+                discountResult={discountResult}
               />
 
               {/* Payment Method */}
@@ -291,6 +325,7 @@ export function BookingWizard({ services }: Props) {
               service={selectedService}
               date={selectedDate}
               time={selectedTime}
+              discountResult={discountResult}
             />
           </div>
         </div>

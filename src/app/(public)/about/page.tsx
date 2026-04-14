@@ -20,8 +20,14 @@ export default function AboutPage() {
           <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-6">
             Hey, I&apos;m Boo
           </h1>
+          <p className="font-body text-on-surface-variant text-lg leading-relaxed mb-4">
+            Hello &mdash; I don&apos;t have an essay about myself to put in this section. I&apos;m just being me, which truthfully doesn&apos;t really go into words, and I truly hope you&apos;re just being you too. Don&apos;t worry though &mdash; there&apos;s a lot of experience behind these hands of mine.
+          </p>
+          <p className="font-body text-on-surface-variant text-lg leading-relaxed mb-4">
+            In this space we don&apos;t do masking who we are. We be free, we be us, and we heal and grow. You can absolutely turn up in a mood, crying, excitable, negative, silent or chaotic &mdash; just be fully you.
+          </p>
           <p className="font-body text-on-surface-variant text-lg leading-relaxed">
-            That&apos;s Leah to my mum. I&apos;ve been doing this work for many years now and I genuinely love it &mdash; love my treatment room, love my clients, love what I do. I&apos;m happily tucked away in my cosy space in Boscombe, doing my best to help people feel better in their body and their soul. No fuss, no frills &mdash; just real, grounded healing.
+            Based in Boscombe, Boo&apos;s Healing Bubble is a warm, private, down-to-earth space where massage, energy healing, drums, rattles and herbs come together to help you feel like yourself again.
           </p>
         </div>
       </section>
@@ -50,10 +56,10 @@ export default function AboutPage() {
               Discovering the Healing Path
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              I&apos;m just me &mdash; hopefully you are just being you too. My journey into healing wasn&apos;t some grand plan. It came from my own experience of needing to feel better, in my body and in my soul. I learned that you can&apos;t separate the two &mdash; they&apos;re wrapped up together.
+              My journey into healing wasn&apos;t some grand plan. It came from my own experience of needing to feel better, in my body and in my soul. I learned that you can&apos;t separate the two &mdash; they&apos;re wrapped up together.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
-              That understanding changed everything for me, and now it&apos;s what I bring into every session. No pretence, no script &mdash; just real, honest, grounded work.
+              That understanding changed everything for me, and it&apos;s what got me the results. We often accept feeling a certain way because of &ldquo;life,&rdquo; but we absolutely can feel better &mdash; and this is my passion.
             </p>
           </div>
         </div>
@@ -133,7 +139,7 @@ export default function AboutPage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {[
             {
               icon: "spa",
@@ -146,18 +152,6 @@ export default function AboutPage() {
               title: "Shamanic Practitioner",
               description:
                 "Shamanic journeying, soul retrieval, energy clearing, drums, rattles, herbs, and breathwork.",
-            },
-            {
-              icon: "self_improvement",
-              title: "Sound & Energy Healer",
-              description:
-                "Sound healing, tarot, and holistic energy work. I use whatever tools feel right for you on the day.",
-            },
-            {
-              icon: "emergency",
-              title: "First Aid Trained",
-              description:
-                "Fully first aid certified, because keeping you safe matters just as much as helping you heal.",
             },
           ].map((credential) => (
             <div

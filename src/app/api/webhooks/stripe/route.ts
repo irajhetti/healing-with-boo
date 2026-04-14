@@ -73,7 +73,12 @@ export async function POST(req: NextRequest) {
           ref = generateReference();
         }
 
-        await tx.booking.create({
+        const discountCodeId = metadata.discountCodeId || null;
+        const discountAmount = metadata.discountAmount
+          ? parseInt(metadata.discountAmount)
+          : null;
+
+        const booking = await tx.booking.create({
           data: {
             reference: ref,
             status: "CONFIRMED",
@@ -85,11 +90,33 @@ export async function POST(req: NextRequest) {
             startTime,
             endTime,
             price: parseInt(metadata.price || "0"),
+            discountCodeId,
+            discountAmount,
             stripeSessionId: session.id,
             stripePaymentId: session.payment_intent as string | null,
             notes: metadata.notes || null,
           },
         });
+
+        // Record discount usage and increment counter
+        if (discountCodeId && discountAmount) {
+          const originalPrice = metadata.originalPrice
+            ? parseInt(metadata.originalPrice)
+            : parseInt(metadata.price || "0") + discountAmount;
+          await tx.discountUsage.create({
+            data: {
+              discountCodeId,
+              bookingId: booking.id,
+              userId: metadata.userId || null,
+              originalPrice,
+              discountAmount,
+            },
+          });
+          await tx.discountCode.update({
+            where: { id: discountCodeId },
+            data: { usedCount: { increment: 1 } },
+          });
+        }
 
         return ref;
       }, { isolationLevel: "Serializable" });
@@ -119,6 +146,17 @@ export async function POST(req: NextRequest) {
         where: { id: metadata.serviceId },
       });
 
+      const finalPrice = parseInt(metadata.price || "0");
+      const originalPrice = metadata.originalPrice
+        ? parseInt(metadata.originalPrice)
+        : finalPrice;
+      const discountApplied = originalPrice > finalPrice;
+
+      let priceDisplay = formatPrice(finalPrice);
+      if (discountApplied) {
+        priceDisplay = `${formatPrice(finalPrice)} (was ${formatPrice(originalPrice)} — discount applied)`;
+      }
+
       const emailData = {
         reference,
         guestName: metadata.guestName || "Guest",
@@ -126,7 +164,7 @@ export async function POST(req: NextRequest) {
         date: formatDate(startTime),
         time: formatTime(startTime),
         duration: formatDuration(service?.duration || 60),
-        price: formatPrice(parseInt(metadata.price || "0")),
+        price: priceDisplay,
       };
 
       const resend = getResendClient();

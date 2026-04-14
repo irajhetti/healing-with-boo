@@ -4,8 +4,9 @@ import { getPrisma } from "@/lib/db";
 import { getStripeClient } from "@/lib/stripe";
 import { getAvailableSlots } from "@/lib/availability";
 import { bookingFormSchema } from "@/lib/validations/booking";
+import { calculateDiscountedPrice } from "@/lib/discount";
 import { auth } from "@/lib/auth";
-import type { ServiceCategory } from "@prisma/client";
+import type { ServiceCategory, DiscountType } from "@prisma/client";
 
 export type ServiceWithCategory = {
   id: string;
@@ -15,6 +16,25 @@ export type ServiceWithCategory = {
   description: string | null;
   duration: number;
   price: number;
+};
+
+export type DiscountValidationResult = {
+  valid: boolean;
+  error?: string;
+  discountType?: DiscountType;
+  amount?: number;
+  finalPrice?: number;
+  savedAmount?: number;
+  codeId?: string;
+  code?: string;
+};
+
+export type MemberDiscountCode = {
+  id: string;
+  code: string;
+  discountType: DiscountType;
+  amount: number;
+  expiresAt: string | null;
 };
 
 export async function getServices(): Promise<
@@ -39,6 +59,103 @@ export async function getServices(): Promise<
   return grouped;
 }
 
+export async function validateDiscountCode(data: {
+  code: string;
+  serviceId: string;
+}): Promise<DiscountValidationResult> {
+  const prisma = getPrisma();
+  const code = data.code.toUpperCase().trim();
+
+  const discountCode = await prisma.discountCode.findUnique({
+    where: { code },
+  });
+
+  if (!discountCode || !discountCode.active) {
+    return { valid: false, error: "Invalid discount code." };
+  }
+
+  if (discountCode.expiresAt && discountCode.expiresAt < new Date()) {
+    return { valid: false, error: "This discount code has expired." };
+  }
+
+  if (discountCode.maxUses !== null && discountCode.usedCount >= discountCode.maxUses) {
+    return { valid: false, error: "This discount code has been fully used." };
+  }
+
+  // If personal code, verify the current user matches
+  if (discountCode.userId) {
+    const session = await auth();
+    if (!session?.user?.email) {
+      return { valid: false, error: "You must be signed in to use this code." };
+    }
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true },
+    });
+    if (!user || user.id !== discountCode.userId) {
+      return { valid: false, error: "This code is not assigned to your account." };
+    }
+  }
+
+  const service = await prisma.service.findUnique({
+    where: { id: data.serviceId },
+  });
+  if (!service) {
+    return { valid: false, error: "Service not found." };
+  }
+
+  const { finalPrice, savedAmount } = calculateDiscountedPrice(
+    service.price,
+    discountCode.discountType,
+    discountCode.amount
+  );
+
+  return {
+    valid: true,
+    discountType: discountCode.discountType,
+    amount: discountCode.amount,
+    finalPrice,
+    savedAmount,
+    codeId: discountCode.id,
+    code: discountCode.code,
+  };
+}
+
+export async function getMemberDiscountCodes(): Promise<MemberDiscountCode[]> {
+  const session = await auth();
+  if (!session?.user?.email) return [];
+
+  const prisma = getPrisma();
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { id: true },
+  });
+  if (!user) return [];
+
+  const codes = await prisma.discountCode.findMany({
+    where: {
+      userId: user.id,
+      active: true,
+      OR: [
+        { expiresAt: null },
+        { expiresAt: { gt: new Date() } },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // Filter exhausted codes in JS (Prisma can't compare two columns)
+  return codes
+    .filter((c) => c.maxUses === null || c.usedCount < c.maxUses)
+    .map((c) => ({
+      id: c.id,
+      code: c.code,
+      discountType: c.discountType,
+      amount: c.amount,
+      expiresAt: c.expiresAt?.toISOString() ?? null,
+    }));
+}
+
 export async function createCheckoutSession(formData: {
   serviceId: string;
   date: string;
@@ -47,6 +164,7 @@ export async function createCheckoutSession(formData: {
   email: string;
   phone: string;
   notes?: string;
+  discountCode?: string;
 }): Promise<{ url: string | null; error: string | null }> {
   // Validate input
   const parsed = bookingFormSchema.safeParse(formData);
@@ -54,7 +172,7 @@ export async function createCheckoutSession(formData: {
     return { url: null, error: parsed.error.issues[0].message };
   }
 
-  const { serviceId, date, time, name, email, phone, notes } = parsed.data;
+  const { serviceId, date, time, name, email, phone, notes, discountCode } = parsed.data;
 
   // Look up service
   const service = await getPrisma().service.findUnique({
@@ -74,7 +192,6 @@ export async function createCheckoutSession(formData: {
   }
 
   // Build start and end times in UTC
-  // Treat the selected time as London wall-clock time and convert to UTC
   const startTime = londonTimeToUTC(date, time);
   const endTime = new Date(startTime);
   endTime.setMinutes(endTime.getMinutes() + service.duration);
@@ -90,10 +207,29 @@ export async function createCheckoutSession(formData: {
     userId = user?.id ?? null;
   }
 
+  // Validate and apply discount code
+  let finalPrice = service.price;
+  let discountCodeId: string | null = null;
+  let discountAmount = 0;
+
+  if (discountCode) {
+    const result = await validateDiscountCode({ code: discountCode, serviceId });
+    if (!result.valid) {
+      return { url: null, error: result.error || "Invalid discount code." };
+    }
+    finalPrice = result.finalPrice!;
+    discountAmount = result.savedAmount!;
+    discountCodeId = result.codeId!;
+  }
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3034";
 
   // Create Stripe Checkout Session
   const stripe = getStripeClient();
+  const productDescription = discountCodeId
+    ? `${service.duration} minutes — Healing with Boo (${discountCode!.toUpperCase()} applied)`
+    : `${service.duration} minutes — Healing with Boo`;
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items: [
@@ -102,9 +238,9 @@ export async function createCheckoutSession(formData: {
           currency: "gbp",
           product_data: {
             name: service.name,
-            description: `${service.duration} minutes — Healing with Boo`,
+            description: productDescription,
           },
-          unit_amount: service.price,
+          unit_amount: finalPrice,
         },
         quantity: 1,
       },
@@ -118,8 +254,13 @@ export async function createCheckoutSession(formData: {
       guestEmail: email,
       guestPhone: phone,
       notes: notes || "",
-      price: service.price.toString(),
+      price: finalPrice.toString(),
+      originalPrice: service.price.toString(),
       ...(userId && { userId }),
+      ...(discountCodeId && {
+        discountCodeId,
+        discountAmount: discountAmount.toString(),
+      }),
     },
     success_url: `${baseUrl}/booking/confirmation?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/booking`,
@@ -137,13 +278,14 @@ export async function createCashBooking(formData: {
   email: string;
   phone: string;
   notes?: string;
+  discountCode?: string;
 }): Promise<{ reference: string | null; error: string | null }> {
   const parsed = bookingFormSchema.safeParse(formData);
   if (!parsed.success) {
     return { reference: null, error: parsed.error.issues[0].message };
   }
 
-  const { serviceId, date, time, name, email, phone, notes } = parsed.data;
+  const { serviceId, date, time, name, email, phone, notes, discountCode } = parsed.data;
 
   const service = await getPrisma().service.findUnique({
     where: { id: serviceId },
@@ -175,6 +317,21 @@ export async function createCashBooking(formData: {
     userId = user?.id ?? null;
   }
 
+  // Validate discount code before entering transaction
+  let discountCodeId: string | null = null;
+  let discountAmount = 0;
+  let finalPrice = service.price;
+
+  if (discountCode) {
+    const result = await validateDiscountCode({ code: discountCode, serviceId });
+    if (!result.valid) {
+      return { reference: null, error: result.error || "Invalid discount code." };
+    }
+    discountCodeId = result.codeId!;
+    discountAmount = result.savedAmount!;
+    finalPrice = result.finalPrice!;
+  }
+
   const { generateReference } = await import("@/lib/utils");
   const prisma = getPrisma();
 
@@ -199,7 +356,7 @@ export async function createCashBooking(formData: {
         ref = generateReference();
       }
 
-      await tx.booking.create({
+      const booking = await tx.booking.create({
         data: {
           reference: ref,
           status: "CONFIRMED",
@@ -210,10 +367,29 @@ export async function createCashBooking(formData: {
           guestPhone: phone,
           startTime,
           endTime,
-          price: service.price,
+          price: finalPrice,
+          discountCodeId,
+          discountAmount: discountAmount || null,
           notes: notes || null,
         },
       });
+
+      // Record discount usage and increment counter
+      if (discountCodeId) {
+        await tx.discountUsage.create({
+          data: {
+            discountCodeId,
+            bookingId: booking.id,
+            userId,
+            originalPrice: service.price,
+            discountAmount,
+          },
+        });
+        await tx.discountCode.update({
+          where: { id: discountCodeId },
+          data: { usedCount: { increment: 1 } },
+        });
+      }
 
       return ref;
     }, { isolationLevel: "Serializable" });
@@ -238,6 +414,11 @@ export async function createCashBooking(formData: {
     const { buildNotificationEmail } = await import("@/lib/emails/booking-notification");
     const { formatDate, formatTime, formatDuration, formatPrice } = await import("@/lib/utils");
 
+    let priceDisplay = `${formatPrice(finalPrice)} (pay on the day)`;
+    if (discountAmount > 0) {
+      priceDisplay = `${formatPrice(finalPrice)} (was ${formatPrice(service.price)} — ${discountCode!.toUpperCase()} applied) (pay on the day)`;
+    }
+
     const emailData = {
       reference,
       guestName: name,
@@ -245,7 +426,7 @@ export async function createCashBooking(formData: {
       date: formatDate(startTime),
       time: formatTime(startTime),
       duration: formatDuration(service.duration),
-      price: `${formatPrice(service.price)} (pay on the day)`,
+      price: priceDisplay,
     };
 
     const resend = getResendClient();

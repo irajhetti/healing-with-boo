@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getMemberBookings } from "../actions";
+import { getMemberBookings, getMemberCodes } from "../actions";
 import { formatDate, formatTime, formatDuration, formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -16,12 +16,58 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default async function MembersBookingsPage() {
-  const { upcoming, past } = await getMemberBookings();
+  const [{ upcoming, past }, codes] = await Promise.all([
+    getMemberBookings(),
+    getMemberCodes(),
+  ]);
 
   return (
     <div className="max-w-3xl">
       <h1 className="font-headline text-3xl text-on-surface mb-2">My Bookings</h1>
       <p className="text-on-surface-variant mb-10">View your upcoming and past sessions.</p>
+
+      {/* Discount Codes */}
+      {codes.length > 0 && (
+        <section className="mb-10">
+          <h2 className="font-label font-medium text-sm tracking-widest uppercase text-secondary mb-4">
+            Your Discount Codes
+          </h2>
+          <div className="space-y-3">
+            {codes.map((code) => (
+              <div
+                key={code.id}
+                className="flex flex-col sm:flex-row sm:items-center justify-between bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-5 gap-3"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-primary">sell</span>
+                  </div>
+                  <div>
+                    <p className="font-mono font-bold text-on-surface tracking-wider">
+                      {code.code}
+                    </p>
+                    <p className="text-sm text-on-surface-variant">
+                      {code.discountType === "PERCENTAGE"
+                        ? `${code.amount}% off`
+                        : `${formatPrice(code.amount)} off`}
+                      {code.maxUses !== null &&
+                        ` · ${code.maxUses - code.usedCount} use${code.maxUses - code.usedCount !== 1 ? "s" : ""} remaining`}
+                      {code.expiresAt &&
+                        ` · Expires ${new Date(code.expiresAt).toLocaleDateString("en-GB")}`}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/booking"
+                  className="text-sm font-label font-medium text-secondary hover:underline whitespace-nowrap"
+                >
+                  Book now
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Upcoming */}
       <section className="mb-10">

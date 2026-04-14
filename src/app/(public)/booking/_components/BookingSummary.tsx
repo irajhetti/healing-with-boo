@@ -1,10 +1,11 @@
-import type { ServiceWithCategory } from "@/app/(public)/booking/actions";
+import type { ServiceWithCategory, DiscountValidationResult } from "@/app/(public)/booking/actions";
 import { formatPrice, formatDuration } from "@/lib/utils";
 
 type Props = {
   service: ServiceWithCategory | null;
   date: string | null;
   time: string | null;
+  discountResult?: DiscountValidationResult | null;
 };
 
 function formatDisplayDate(dateStr: string): string {
@@ -24,8 +25,10 @@ function formatSlotTime(time: string): string {
   return `${displayH}:${m.toString().padStart(2, "0")} ${period}`;
 }
 
-export function BookingSummary({ service, date, time }: Props) {
+export function BookingSummary({ service, date, time, discountResult }: Props) {
   if (!service) return null;
+
+  const hasDiscount = discountResult?.valid && discountResult.savedAmount! > 0;
 
   return (
     <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/20">
@@ -69,11 +72,29 @@ export function BookingSummary({ service, date, time }: Props) {
           </div>
         )}
 
-        <div className="border-t border-outline-variant/30 pt-3">
+        <div className="border-t border-outline-variant/30 pt-3 space-y-2">
+          {hasDiscount && (
+            <>
+              <div className="flex justify-between">
+                <span className="text-on-surface-variant">Subtotal</span>
+                <span className="text-on-surface-variant line-through text-sm">
+                  {formatPrice(service.price)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-on-surface-variant">
+                  {discountResult!.code}
+                </span>
+                <span className="text-green-600 text-sm font-medium">
+                  −{formatPrice(discountResult!.savedAmount!)}
+                </span>
+              </div>
+            </>
+          )}
           <div className="flex justify-between">
             <span className="font-medium text-on-surface">Total</span>
             <span className="font-headline text-xl text-primary">
-              {formatPrice(service.price)}
+              {formatPrice(hasDiscount ? discountResult!.finalPrice! : service.price)}
             </span>
           </div>
         </div>

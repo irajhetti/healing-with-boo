@@ -45,6 +45,35 @@ export async function getMemberBookings() {
   return { upcoming, past };
 }
 
+export async function getMemberCodes() {
+  const user = await requireUser();
+
+  const codes = await getPrisma().discountCode.findMany({
+    where: {
+      userId: user.id,
+      active: true,
+      OR: [
+        { expiresAt: null },
+        { expiresAt: { gt: new Date() } },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // Filter exhausted codes (Prisma can't compare two columns)
+  return codes
+    .filter((c) => c.maxUses === null || c.usedCount < c.maxUses)
+    .map((c) => ({
+      id: c.id,
+      code: c.code,
+      discountType: c.discountType,
+      amount: c.amount,
+      expiresAt: c.expiresAt,
+      maxUses: c.maxUses,
+      usedCount: c.usedCount,
+    }));
+}
+
 export async function getMemberProfile() {
   const user = await requireUser();
   return {
