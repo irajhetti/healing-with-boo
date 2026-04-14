@@ -37,6 +37,27 @@ export type MemberDiscountCode = {
   expiresAt: string | null;
 };
 
+export async function getAuthUserProfile(): Promise<{
+  name: string;
+  email: string;
+  phone: string;
+} | null> {
+  const session = await auth();
+  if (!session?.user?.email) return null;
+
+  const user = await getPrisma().user.findUnique({
+    where: { email: session.user.email },
+    select: { name: true, email: true, phone: true },
+  });
+  if (!user) return null;
+
+  return {
+    name: user.name || "",
+    email: user.email,
+    phone: user.phone || "",
+  };
+}
+
 export async function getServices(): Promise<
   Record<ServiceCategory, ServiceWithCategory[]>
 > {

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import type { ServiceCategory } from "@prisma/client";
 import type { ServiceWithCategory } from "@/app/(public)/booking/actions";
 import {
@@ -9,20 +10,23 @@ import {
   createCashBooking,
   getMemberDiscountCodes,
   checkConsultationStatus,
+  getAuthUserProfile,
 } from "@/app/(public)/booking/actions";
+import { registerUser } from "@/app/(public)/(auth)/register/actions";
 import type { DiscountValidationResult, MemberDiscountCode } from "@/app/(public)/booking/actions";
 import { getAvailableSlots, getAvailableDates } from "@/lib/availability";
 import { BookingSteps } from "./BookingSteps";
 import { ServicePicker } from "./ServicePicker";
 import { DatePicker } from "./DatePicker";
 import { TimePicker } from "./TimePicker";
-import { ContactForm } from "./ContactForm";
 import { DiscountCodeInput } from "./DiscountCodeInput";
 import { BookingSummary } from "./BookingSummary";
 
 type Props = {
   services: Record<ServiceCategory, ServiceWithCategory[]>;
 };
+
+type AuthProfile = { name: string; email: string; phone: string };
 
 export function BookingWizard({ services }: Props) {
   const router = useRouter();
@@ -36,18 +40,23 @@ export function BookingWizard({ services }: Props) {
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [datesLoading, setDatesLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cash">("card");
-  const [contactInfo, setContactInfo] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    notes: "",
-  });
+  const [notes, setNotes] = useState("");
   const [discountCode, setDiscountCode] = useState<string | null>(null);
   const [discountResult, setDiscountResult] =
     useState<DiscountValidationResult | null>(null);
   const [memberCodes, setMemberCodes] = useState<MemberDiscountCode[]>([]);
-  const [memberCodesLoaded, setMemberCodesLoaded] = useState(false);
+  const [step4Loaded, setStep4Loaded] = useState(false);
   const [showConsultationPrompt, setShowConsultationPrompt] = useState(false);
+
+  // Auth state
+  const [authProfile, setAuthProfile] = useState<AuthProfile | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [authError, setAuthError] = useState<string | null>(null);
+  // Missing fields from profile
+  const [missingName, setMissingName] = useState("");
+  const [missingPhone, setMissingPhone] = useState("");
+
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -81,10 +90,18 @@ export function BookingWizard({ services }: Props) {
   function handleTimeSelect(time: string) {
     setSelectedTime(time);
     setStep(4);
+    loadStep4Data();
+  }
 
-    // Load member discount codes + consultation status once when entering step 4
-    if (!memberCodesLoaded) {
-      setMemberCodesLoaded(true);
+  async function loadStep4Data() {
+    if (step4Loaded) return;
+    setStep4Loaded(true);
+
+    const profile = await getAuthUserProfile();
+    setAuthProfile(profile);
+    setAuthChecked(true);
+
+    if (profile) {
       getMemberDiscountCodes().then(setMemberCodes);
       checkConsultationStatus().then((status) => {
         if (status.signedIn && !status.consultationComplete) {
@@ -94,8 +111,18 @@ export function BookingWizard({ services }: Props) {
     }
   }
 
-  function handleContactChange(field: string, value: string) {
-    setContactInfo((prev) => ({ ...prev, [field]: value }));
+  async function handleAuthSuccess() {
+    const profile = await getAuthUserProfile();
+    setAuthProfile(profile);
+    setAuthError(null);
+    if (profile) {
+      getMemberDiscountCodes().then(setMemberCodes);
+      checkConsultationStatus().then((status) => {
+        if (status.signedIn && !status.consultationComplete) {
+          setShowConsultationPrompt(true);
+        }
+      });
+    }
   }
 
   function handleBack() {
@@ -103,8 +130,20 @@ export function BookingWizard({ services }: Props) {
     if (step > 1) setStep(step - 1);
   }
 
+  // Build contact info from auth profile + any missing field overrides
+  function getContactInfo() {
+    if (!authProfile) return null;
+    return {
+      name: authProfile.name || missingName,
+      email: authProfile.email,
+      phone: authProfile.phone || missingPhone,
+    };
+  }
+
   async function handleSubmit() {
     if (!selectedService || !selectedDate || !selectedTime) return;
+    const contact = getContactInfo();
+    if (!contact) return;
 
     setError(null);
     startTransition(async () => {
@@ -112,10 +151,10 @@ export function BookingWizard({ services }: Props) {
         serviceId: selectedService.id,
         date: selectedDate,
         time: selectedTime,
-        name: contactInfo.name,
-        email: contactInfo.email,
-        phone: contactInfo.phone,
-        notes: contactInfo.notes || undefined,
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        notes: notes || undefined,
         discountCode: discountCode || undefined,
       };
 
@@ -141,14 +180,16 @@ export function BookingWizard({ services }: Props) {
     });
   }
 
+  const profileComplete =
+    authProfile !== null &&
+    (authProfile.name || missingName.length >= 2) &&
+    (authProfile.phone || missingPhone.length >= 10);
+
   const canProceed =
     (step === 1 && selectedService) ||
     (step === 2 && selectedDate) ||
     (step === 3 && selectedTime) ||
-    (step === 4 &&
-      contactInfo.name.length >= 2 &&
-      contactInfo.email.includes("@") &&
-      contactInfo.phone.length >= 10);
+    (step === 4 && profileComplete);
 
   return (
     <div>
@@ -190,103 +231,231 @@ export function BookingWizard({ services }: Props) {
 
           {step === 4 && selectedService && (
             <>
-              <ContactForm
-                name={contactInfo.name}
-                email={contactInfo.email}
-                phone={contactInfo.phone}
-                notes={contactInfo.notes}
-                onChange={handleContactChange}
-              />
+              {/* Auth section */}
+              {!authChecked ? (
+                <div className="flex items-center justify-center py-16">
+                  <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                </div>
+              ) : !authProfile ? (
+                /* Not signed in — inline auth form */
+                <InlineAuth
+                  mode={authMode}
+                  onModeChange={setAuthMode}
+                  error={authError}
+                  isPending={isPending}
+                  onLogin={(email, password) => {
+                    setAuthError(null);
+                    startTransition(async () => {
+                      const result = await signIn("credentials", {
+                        email,
+                        password,
+                        redirect: false,
+                      });
+                      if (result?.error) {
+                        setAuthError("Incorrect email or password.");
+                      } else {
+                        await handleAuthSuccess();
+                      }
+                    });
+                  }}
+                  onRegister={(data) => {
+                    setAuthError(null);
+                    startTransition(async () => {
+                      const regResult = await registerUser(data);
+                      if (regResult.error) {
+                        setAuthError(regResult.error);
+                        return;
+                      }
+                      const signInResult = await signIn("credentials", {
+                        email: data.email,
+                        password: data.password,
+                        redirect: false,
+                      });
+                      if (signInResult?.error) {
+                        setAuthError("Account created but sign-in failed. Please try logging in.");
+                        setAuthMode("login");
+                        return;
+                      }
+                      await handleAuthSuccess();
+                    });
+                  }}
+                />
+              ) : (
+                /* Signed in */
+                <>
+                  {/* Profile summary or missing fields */}
+                  {!authProfile.name || !authProfile.phone ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="material-symbols-outlined text-primary text-[24px]">
+                          check_circle
+                        </span>
+                        <p className="font-label font-medium text-on-surface">
+                          Signed in as {authProfile.email}
+                        </p>
+                      </div>
+                      <p className="text-sm text-on-surface-variant mb-4">
+                        Just need a couple more details:
+                      </p>
+                      {!authProfile.name && (
+                        <div>
+                          <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            value={missingName}
+                            onChange={(e) => setMissingName(e.target.value)}
+                            placeholder="Your full name"
+                            className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface text-sm focus:outline-none focus:border-primary/60"
+                          />
+                        </div>
+                      )}
+                      {!authProfile.phone && (
+                        <div>
+                          <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                            Phone Number
+                          </label>
+                          <input
+                            type="tel"
+                            value={missingPhone}
+                            onChange={(e) => setMissingPhone(e.target.value)}
+                            placeholder="Your phone number"
+                            className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface text-sm focus:outline-none focus:border-primary/60"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-4 p-4 rounded-xl bg-surface-container border border-outline-variant/20">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                        <span className="material-symbols-outlined text-primary text-[20px]">
+                          person
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-label font-medium text-on-surface text-sm">
+                          Booking as {authProfile.name}
+                        </p>
+                        <p className="text-xs text-on-surface-variant">
+                          {authProfile.email} · {authProfile.phone}
+                        </p>
+                      </div>
+                      <a
+                        href="/members/profile"
+                        className="text-xs text-primary font-medium hover:underline shrink-0"
+                      >
+                        Edit profile
+                      </a>
+                    </div>
+                  )}
 
-              {/* Consultation prompt */}
-              {showConsultationPrompt && (
-                <div className="mt-6 p-4 rounded-xl bg-secondary/5 border border-secondary/20 flex items-start gap-3">
-                  <span className="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">
-                    assignment
-                  </span>
-                  <div>
-                    <p className="font-label font-medium text-on-surface text-sm">
-                      Complete your consultation form
-                    </p>
-                    <p className="text-xs text-on-surface-variant mt-1">
-                      Help Leah prepare for your session by filling out a few health questions.
-                    </p>
-                    <a
-                      href="/members/profile#consultation"
-                      className="text-xs text-primary font-medium mt-2 inline-block hover:underline"
-                    >
-                      Fill it out now &rarr;
-                    </a>
+                  {/* Notes */}
+                  <div className="mt-6">
+                    <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                      Notes for Leah{" "}
+                      <span className="text-on-surface-variant font-normal">(optional)</span>
+                    </label>
+                    <textarea
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      rows={3}
+                      placeholder="Anything you'd like Leah to know about this session..."
+                      className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface text-sm focus:outline-none focus:border-primary/60 resize-none"
+                    />
                   </div>
-                </div>
+
+                  {/* Consultation prompt */}
+                  {showConsultationPrompt && (
+                    <div className="mt-6 p-4 rounded-xl bg-secondary/5 border border-secondary/20 flex items-start gap-3">
+                      <span className="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">
+                        assignment
+                      </span>
+                      <div>
+                        <p className="font-label font-medium text-on-surface text-sm">
+                          Complete your consultation form
+                        </p>
+                        <p className="text-xs text-on-surface-variant mt-1">
+                          Help Leah prepare for your session by filling out a few health questions.
+                        </p>
+                        <a
+                          href="/members/profile#consultation"
+                          className="text-xs text-primary font-medium mt-2 inline-block hover:underline"
+                        >
+                          Fill it out now &rarr;
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Discount Code */}
+                  <DiscountCodeInput
+                    serviceId={selectedService.id}
+                    memberCodes={memberCodes}
+                    onApply={(code, result) => {
+                      setDiscountCode(code);
+                      setDiscountResult(result);
+                    }}
+                    onClear={() => {
+                      setDiscountCode(null);
+                      setDiscountResult(null);
+                    }}
+                    appliedCode={discountCode}
+                    discountResult={discountResult}
+                  />
+
+                  {/* Payment Method */}
+                  <div className="mt-8">
+                    <h3 className="font-headline text-lg font-bold text-on-surface mb-4">
+                      How would you like to pay?
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("card")}
+                        className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
+                          paymentMethod === "card"
+                            ? "border-primary bg-primary/5"
+                            : "border-outline-variant/20 hover:border-outline-variant/40"
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-[24px] text-primary">
+                          credit_card
+                        </span>
+                        <div>
+                          <p className="font-label font-medium text-on-surface text-sm">
+                            Pay now by card
+                          </p>
+                          <p className="text-xs text-on-surface-variant">
+                            Secure payment via Stripe
+                          </p>
+                        </div>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("cash")}
+                        className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
+                          paymentMethod === "cash"
+                            ? "border-primary bg-primary/5"
+                            : "border-outline-variant/20 hover:border-outline-variant/40"
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-[24px] text-primary">
+                          payments
+                        </span>
+                        <div>
+                          <p className="font-label font-medium text-on-surface text-sm">
+                            Pay cash on the day
+                          </p>
+                          <p className="text-xs text-on-surface-variant">
+                            Pay when you arrive
+                          </p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
-
-              {/* Discount Code */}
-              <DiscountCodeInput
-                serviceId={selectedService.id}
-                memberCodes={memberCodes}
-                onApply={(code, result) => {
-                  setDiscountCode(code);
-                  setDiscountResult(result);
-                }}
-                onClear={() => {
-                  setDiscountCode(null);
-                  setDiscountResult(null);
-                }}
-                appliedCode={discountCode}
-                discountResult={discountResult}
-              />
-
-              {/* Payment Method */}
-              <div className="mt-8">
-                <h3 className="font-headline text-lg font-bold text-on-surface mb-4">
-                  How would you like to pay?
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod("card")}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
-                      paymentMethod === "card"
-                        ? "border-primary bg-primary/5"
-                        : "border-outline-variant/20 hover:border-outline-variant/40"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-[24px] text-primary">
-                      credit_card
-                    </span>
-                    <div>
-                      <p className="font-label font-medium text-on-surface text-sm">
-                        Pay now by card
-                      </p>
-                      <p className="text-xs text-on-surface-variant">
-                        Secure payment via Stripe
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod("cash")}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
-                      paymentMethod === "cash"
-                        ? "border-primary bg-primary/5"
-                        : "border-outline-variant/20 hover:border-outline-variant/40"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-[24px] text-primary">
-                      payments
-                    </span>
-                    <div>
-                      <p className="font-label font-medium text-on-surface text-sm">
-                        Pay cash on the day
-                      </p>
-                      <p className="text-xs text-on-surface-variant">
-                        Pay when you arrive
-                      </p>
-                    </div>
-                  </button>
-                </div>
-              </div>
             </>
           )}
 
@@ -323,7 +492,7 @@ export function BookingWizard({ services }: Props) {
               >
                 Continue
               </button>
-            ) : (
+            ) : authProfile ? (
               <button
                 onClick={handleSubmit}
                 disabled={!canProceed || isPending}
@@ -344,7 +513,7 @@ export function BookingWizard({ services }: Props) {
                   "Confirm Booking"
                 )}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -359,6 +528,152 @@ export function BookingWizard({ services }: Props) {
             />
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Inline Auth Component ── */
+
+function InlineAuth({
+  mode,
+  onModeChange,
+  error,
+  isPending,
+  onLogin,
+  onRegister,
+}: {
+  mode: "login" | "register";
+  onModeChange: (mode: "login" | "register") => void;
+  error: string | null;
+  isPending: boolean;
+  onLogin: (email: string, password: string) => void;
+  onRegister: (data: { name: string; email: string; phone: string; password: string }) => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const inputClass =
+    "w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface text-sm focus:outline-none focus:border-primary/60";
+
+  return (
+    <div>
+      <h3 className="font-headline text-lg font-bold text-on-surface mb-2">
+        Sign in to continue
+      </h3>
+      <p className="text-sm text-on-surface-variant mb-6">
+        You need an account to book a session. This lets you manage your bookings, preferences, and discount codes.
+      </p>
+
+      {/* Tabs */}
+      <div className="flex gap-1 mb-6 bg-surface-container rounded-lg p-1">
+        <button
+          type="button"
+          onClick={() => onModeChange("login")}
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+            mode === "login"
+              ? "bg-surface text-on-surface shadow-sm"
+              : "text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          Sign In
+        </button>
+        <button
+          type="button"
+          onClick={() => onModeChange("register")}
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+            mode === "register"
+              ? "bg-surface text-on-surface shadow-sm"
+              : "text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          Create Account
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {mode === "register" && (
+          <>
+            <div>
+              <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your full name"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="block font-label text-sm font-medium text-on-surface mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Your phone number"
+                className={inputClass}
+              />
+            </div>
+          </>
+        )}
+
+        <div>
+          <label className="block font-label text-sm font-medium text-on-surface mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="block font-label text-sm font-medium text-on-surface mb-2">
+            Password
+            {mode === "register" && (
+              <span className="text-on-surface-variant font-normal ml-1">(min 8 characters)</span>
+            )}
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={mode === "register" ? "Create a password" : "Your password"}
+            className={inputClass}
+          />
+        </div>
+
+        {error && (
+          <p className="text-sm text-error">{error}</p>
+        )}
+
+        <button
+          type="button"
+          disabled={isPending || !email || !password || (mode === "register" && (!name || !phone))}
+          onClick={() => {
+            if (mode === "login") {
+              onLogin(email, password);
+            } else {
+              onRegister({ name, email, phone, password });
+            }
+          }}
+          className="w-full py-3 rounded-lg bg-primary text-on-primary font-label font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending
+            ? "Please wait..."
+            : mode === "login"
+              ? "Sign In"
+              : "Create Account"}
+        </button>
       </div>
     </div>
   );
