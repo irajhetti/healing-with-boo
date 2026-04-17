@@ -15,19 +15,13 @@ export default function AboutPage() {
       <section className="relative py-20 md:py-28 bg-surface-container-low overflow-hidden">
         <div className="px-6 md:px-12 max-w-3xl mx-auto text-center">
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
-            About Boo
+            Meet Leah / Boo
           </span>
           <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-6">
-            Hey, I&apos;m Boo
+            Hello, welcome to my space.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg leading-relaxed mb-4">
-            Hello &mdash; I don&apos;t have an essay about myself to put in this section. I&apos;m just being me, which truthfully doesn&apos;t really go into words, and I truly hope you&apos;re just being you too. Don&apos;t worry though &mdash; there&apos;s a lot of experience behind these hands of mine.
-          </p>
-          <p className="font-body text-on-surface-variant text-lg leading-relaxed mb-4">
-            In this space we don&apos;t do masking who we are. We be free, we be us, and we heal and grow. You can absolutely turn up in a mood, crying, excitable, negative, silent or chaotic &mdash; just be fully you.
-          </p>
           <p className="font-body text-on-surface-variant text-lg leading-relaxed">
-            Based in Boscombe, Boo&apos;s Healing Bubble is a warm, private, down-to-earth space where massage, energy healing, drums, rattles and herbs come together to help you feel like yourself again.
+            I am based at 22 Churchill Road in Boscombe. Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, rattles, drums and herbs come together to help you feel like yourself again.
           </p>
         </div>
       </section>
@@ -69,12 +63,11 @@ export default function AboutPage() {
           <div className="relative">
             <div className="asymmetric-mask overflow-hidden rounded-xl">
               <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUzN4OYn93LhHTKr1lU7QUFpby-vOQIC_7QYUnYyPur2K4Pdp73QU8uomAYL1YaKUyQvnlrRu0IlgR6ODmzLE8h8FRavav6dwhej0r3DO19MVzbB8jWlniUb3Iv9QQ4mveS0N39kqnoHGdzyjaer4y1IRkAb0GFf45IjpLoyXTgbO5QZ6hrPGBM85HS-ZxfKLaf31CYm3tZDmxG_PkAnpSwKs0U1Ftbv8x_ZuYFConjh9tkTRH6X0jUz2xwtVWjrHbaHXdYRtFxrQ"
-                alt="Massage therapy training and bodywork"
+                src="/images/therapeutic-massage.png"
+                alt="Therapeutic massage treatment"
                 width={600}
                 height={500}
                 className="object-cover w-full"
-                unoptimized
               />
             </div>
           </div>
@@ -89,7 +82,7 @@ export default function AboutPage() {
               I trained in therapeutic and deep tissue massage, and my hands learned to listen &mdash; finding where your body is holding on and helping it let go. But bodywork was only half the picture.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
-              I also studied shamanic healing traditions &mdash; energy clearing, soul retrieval, journeying, sound healing with drums and rattles, breathwork, herbs, and tarot. It all weaves together. The body and spirit aren&apos;t separate, so the work shouldn&apos;t be either.
+              I also studied shamanic healing traditions &mdash; energy clearing, soul retrieval, journeying, sound healing with drums and rattles, breathwork and herbs. It all weaves together. The body and spirit aren&apos;t separate, so the work shouldn&apos;t be either.
             </p>
           </div>
         </div>
@@ -99,12 +92,11 @@ export default function AboutPage() {
           <div className="relative md:order-2">
             <div className="asymmetric-mask overflow-hidden rounded-xl">
               <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRXSyAU8Oni-kVOzl9L2HYJgaFeY6V0Gb3fQYvv3ZndRBrAhfpQdrd9iVKBH3qrHPvIJASp8zkyuD-thdfRbnWEzsV-XKtTZT7fvDOQzH0_5tvOgDAIVW2E2VmwH5VmKt-Ebb430rv1nBQVialypyM0WOIDMgqGDvs6uXkaaBXqkSPjJoQLPsjQlegUpQE8A6GeZ_CVUe9G22fGI8thVrYfBjApUZV2I6RR3_6uRWiwUh7fg53eOlkA6R6KP4MmvcDrOhUDyCF0J0"
-                alt="Sacred healing space in Boscombe"
+                src="/images/energy-healing.jpg"
+                alt="Energy healing session with warm glowing light"
                 width={600}
                 height={500}
                 className="object-cover w-full"
-                unoptimized
               />
             </div>
           </div>
