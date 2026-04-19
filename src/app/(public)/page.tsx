@@ -134,43 +134,27 @@ export default function Home() {
       <MysticalDivider />
 
       {/* ── About Teaser ── */}
-      <section className="py-20 md:py-28 px-6 md:px-12 max-w-7xl mx-auto">
+      <section className="py-20 md:py-28 px-6 md:px-12 max-w-3xl mx-auto text-center">
         <ScrollReveal animation="shimmer">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <div className="relative">
-            <div className="asymmetric-mask overflow-hidden rounded-xl">
-              <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBi6aKf_FpJld2xpDHGvhxbwOmSuGTCPTZgwWcTATIbLh0J6WCvyAjYIbc4ouflCYXQzj6seE-WimwsFfCU8rbQn7saeeFPqNLt0FqjL9oLqekEPJB9nnb65l_zBunItaEYsrOXvcN9rCejgJ-5QLpetm6TFwVqGtw8PNiXOdr-E1CMM30kflkLBs4DQ8TN8wRul5Wto4tJGLhxZt6rnltXmnFY9nnXGmHT1Z4HX44U5mTi0GD00NZ6DMdiRputmG3euAWRZP0gxk"
-                alt="Leah, holistic healer and massage therapist"
-                width={600}
-                height={700}
-                className="object-cover w-full"
-                unoptimized
-              />
-            </div>
-          </div>
-          <div>
-            <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
-              The Healer
-            </span>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface mb-6">
-              Meet Leah
-            </h2>
-            <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              Hello my lovely people. Leah appreciates every single one of her clients &mdash; and if you&apos;re new here, welcome. She&apos;s just her, and she hopes you&apos;re just being you too.
-            </p>
-            <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
-              Based at 22 Churchill Road in Boscombe, Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
-            </p>
-            <Link
-              href="/about"
-              className="inline-flex items-center text-primary font-bold text-sm hover:gap-3 gap-2 transition-all duration-300"
-            >
-              Read Leah&apos;s Story
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </Link>
-          </div>
-        </div>
+          <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
+            The Healer
+          </span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface mb-6">
+            Meet Leah
+          </h2>
+          <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
+            Hello my lovely people. Leah appreciates every single one of her clients &mdash; and if you&apos;re new here, welcome. She&apos;s just her, and she hopes you&apos;re just being you too.
+          </p>
+          <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
+            Based at 22 Churchill Road in Boscombe, Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
+          </p>
+          <Link
+            href="/about"
+            className="inline-flex items-center text-primary font-bold text-sm hover:gap-3 gap-2 transition-all duration-300"
+          >
+            Read Leah&apos;s Story
+            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </Link>
         </ScrollReveal>
       </section>
 
