@@ -102,11 +102,10 @@ export default function Home() {
             <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-72 md:h-80 overflow-hidden">
                 <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRXSyAU8Oni-kVOzl9L2HYJgaFeY6V0Gb3fQYvv3ZndRBrAhfpQdrd9iVKBH3qrHPvIJASp8zkyuD-thdfRbnWEzsV-XKtTZT7fvDOQzH0_5tvOgDAIVW2E2VmwH5VmKt-Ebb430rv1nBQVialypyM0WOIDMgqGDvs6uXkaaBXqkSPjJoQLPsjQlegUpQE8A6GeZ_CVUe9G22fGI8thVrYfBjApUZV2I6RR3_6uRWiwUh7fg53eOlkA6R6KP4MmvcDrOhUDyCF0J0"
-                  alt="Shamanic healing ritual"
+                  src="/images/sound-healing-session.jpg"
+                  alt="Leah leading a sound bowl healing session in the forest"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  unoptimized
                 />
               </div>
               <div className="p-6 md:p-8">
@@ -136,6 +135,15 @@ export default function Home() {
       {/* ── About Teaser ── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-3xl mx-auto text-center">
         <ScrollReveal animation="shimmer">
+          <div className="mx-auto mb-10 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-surface-container-low shadow-md">
+            <Image
+              src="/images/moss-heart.jpg"
+              alt="A heart shape made of moss in the forest"
+              width={400}
+              height={400}
+              className="object-cover w-full h-full"
+            />
+          </div>
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             The Healer
           </span>

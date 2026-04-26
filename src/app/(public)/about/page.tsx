@@ -33,12 +33,11 @@ export default function AboutPage() {
           <div className="relative md:order-2">
             <div className="asymmetric-mask overflow-hidden rounded-xl">
               <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcx3T1X84KIaHuoXTeBOqfL9hl-TlGdJfdA4Zwe3HTe5HXfRZX0Au73_XWL8o0PQDABNwjPsux3KlbgW6p06mVUH_Mjzl847L1eIFgh_XzW2o1tp53D-VzMnTlBSgHo1mG2SyGv7i_0zJPvd5qCfo8nPzPZ_4lPJ5fr7ZiemFUuWqNHyQs6ZihHgHy82JSKATIJ--K8FdElyjzdJfZ-wY6DUusvYZh2E6E_QpPqVezLsJAPuMudxb1a5tyqagq7qLuzcL425CkZJg"
-                alt="Forest path representing the healing journey"
+                src="/images/forest-tree-hug.jpg"
+                alt="Embracing an ancient tree in the forest"
                 width={600}
-                height={500}
-                className="object-cover w-full"
-                unoptimized
+                height={1000}
+                className="object-cover w-full max-h-[600px]"
               />
             </div>
           </div>
