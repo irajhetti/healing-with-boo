@@ -94,6 +94,7 @@ export async function POST(req: NextRequest) {
           data: {
             reference: ref,
             status: "CONFIRMED",
+            source: "WEB",
             serviceId: metadata.serviceId,
             userId: metadata.userId || null,
             guestName: metadata.guestName || null,

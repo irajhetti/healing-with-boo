@@ -6,6 +6,7 @@ import { getAvailableSlots } from "@/lib/availability";
 import { bookingFormSchema } from "@/lib/validations/booking";
 import { calculateDiscountedPrice } from "@/lib/discount";
 import { auth } from "@/lib/auth";
+import { londonTimeToUTC } from "@/lib/time";
 import type { ServiceCategory, DiscountType } from "@prisma/client";
 
 export type ServiceWithCategory = {
@@ -391,6 +392,7 @@ export async function createCashBooking(formData: {
         data: {
           reference: ref,
           status: "CONFIRMED",
+          source: "CASH",
           serviceId,
           userId,
           guestName: name,
@@ -537,37 +539,3 @@ export async function checkConsultationStatus(): Promise<{
   };
 }
 
-function londonTimeToUTC(dateStr: string, timeStr: string): Date {
-  // Convert "2026-04-26" + "14:30" treated as London wall-clock to a real UTC Date.
-  // Uses Intl with formatToParts to get the London offset deterministically — no
-  // reliance on locale-string parsing.
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const [hour, minute] = timeStr.split(":").map(Number);
-
-  // Start with the wall-clock instant interpreted as UTC; then correct by London's offset.
-  const naiveUtcMs = Date.UTC(year, month - 1, day, hour, minute, 0);
-
-  const dtf = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/London",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  const parts = Object.fromEntries(
-    dtf.formatToParts(new Date(naiveUtcMs)).map((p) => [p.type, p.value]),
-  );
-  const londonAsUtcMs = Date.UTC(
-    Number(parts.year),
-    Number(parts.month) - 1,
-    Number(parts.day),
-    Number(parts.hour) === 24 ? 0 : Number(parts.hour),
-    Number(parts.minute),
-    Number(parts.second),
-  );
-  const offsetMs = londonAsUtcMs - naiveUtcMs;
-  return new Date(naiveUtcMs - offsetMs);
-}

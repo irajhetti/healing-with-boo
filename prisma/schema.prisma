@@ -100,6 +100,7 @@ model Booking {
   id              String        @id @default(cuid())
   reference       String        @unique
   status          BookingStatus @default(CONFIRMED)
+  source          BookingSource @default(WEB)
   serviceId       String
   userId          String?
   guestName       String?
@@ -144,6 +145,12 @@ enum BookingStatus {
   CANCELLED
   COMPLETED
   NO_SHOW
+}
+
+enum BookingSource {
+  WEB    // Stripe-paid online booking
+  CASH   // "Pay on the day" public booking
+  ADMIN  // Manually created by Leah
 }
 
 // ── Admin: Availability ──

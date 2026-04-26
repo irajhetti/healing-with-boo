@@ -1,9 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { getBookings, updateBookingStatus } from "../actions/bookings";
 import { formatPrice, formatDate, formatTime } from "@/lib/utils";
 import type { BookingStatus } from "@prisma/client";
+
+const SOURCE_LABEL: Record<string, string> = {
+  WEB: "Online",
+  CASH: "Cash",
+  ADMIN: "Manual",
+};
+
+const SOURCE_COLORS: Record<string, string> = {
+  WEB: "bg-blue-50 text-blue-700",
+  CASH: "bg-amber-50 text-amber-700",
+  ADMIN: "bg-purple-50 text-purple-700",
+};
 
 type Booking = Awaited<ReturnType<typeof getBookings>>[number];
 
@@ -49,9 +62,18 @@ export default function BookingsPage() {
 
   return (
     <>
-      <h1 className="font-headline text-2xl font-bold text-on-surface mb-6">
-        Bookings
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-headline text-2xl font-bold text-on-surface">
+          Bookings
+        </h1>
+        <Link
+          href="/iws-admin/bookings/new"
+          className="inline-flex items-center gap-1.5 bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          <span className="material-symbols-outlined text-[18px]">add</span>
+          New booking
+        </Link>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -87,7 +109,7 @@ export default function BookingsPage() {
             className="bg-surface-container rounded-xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"
           >
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <span className="font-medium text-on-surface text-sm">
                   {booking.guestName || "Guest"}
                 </span>
@@ -97,6 +119,13 @@ export default function BookingsPage() {
                   }`}
                 >
                   {booking.status}
+                </span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    SOURCE_COLORS[booking.source] || ""
+                  }`}
+                >
+                  {SOURCE_LABEL[booking.source] || booking.source}
                 </span>
               </div>
               <p className="text-sm text-on-surface-variant">
