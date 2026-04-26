@@ -109,12 +109,11 @@ export default function MassagePage() {
       {/* ── Hero ── */}
       <section className="relative h-[50vh] min-h-[400px] flex items-end overflow-hidden">
         <Image
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUzN4OYn93LhHTKr1lU7QUFpby-vOQIC_7QYUnYyPur2K4Pdp73QU8uomAYL1YaKUyQvnlrRu0IlgR6ODmzLE8h8FRavav6dwhej0r3DO19MVzbB8jWlniUb3Iv9QQ4mveS0N39kqnoHGdzyjaer4y1IRkAb0GFf45IjpLoyXTgbO5QZ6hrPGBM85HS-ZxfKLaf31CYm3tZDmxG_PkAnpSwKs0U1Ftbv8x_ZuYFConjh9tkTRH6X0jUz2xwtVWjrHbaHXdYRtFxrQ"
-          alt="Massage therapy"
+          src="/images/therapeutic-massage.png"
+          alt="Therapeutic massage treatment"
           fill
           className="object-cover"
           priority
-          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-12 pb-12 max-w-7xl mx-auto w-full">

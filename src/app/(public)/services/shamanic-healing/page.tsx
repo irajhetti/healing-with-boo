@@ -143,12 +143,11 @@ export default function ShamanicHealingPage() {
       {/* ── Hero ── */}
       <section className="relative h-[50vh] min-h-[400px] flex items-end overflow-hidden">
         <Image
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRXSyAU8Oni-kVOzl9L2HYJgaFeY6V0Gb3fQYvv3ZndRBrAhfpQdrd9iVKBH3qrHPvIJASp8zkyuD-thdfRbnWEzsV-XKtTZT7fvDOQzH0_5tvOgDAIVW2E2VmwH5VmKt-Ebb430rv1nBQVialypyM0WOIDMgqGDvs6uXkaaBXqkSPjJoQLPsjQlegUpQE8A6GeZ_CVUe9G22fGI8thVrYfBjApUZV2I6RR3_6uRWiwUh7fg53eOlkA6R6KP4MmvcDrOhUDyCF0J0"
-          alt="Shamanic healing ritual"
+          src="/images/sound-healing-session.jpg"
+          alt="Leah leading a sound bowl healing session in the forest"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
-          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-12 pb-12 max-w-7xl mx-auto w-full">

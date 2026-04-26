@@ -35,11 +35,10 @@ export default function ServicesPage() {
             <div className="bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-64 md:h-72 overflow-hidden">
                 <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUzN4OYn93LhHTKr1lU7QUFpby-vOQIC_7QYUnYyPur2K4Pdp73QU8uomAYL1YaKUyQvnlrRu0IlgR6ODmzLE8h8FRavav6dwhej0r3DO19MVzbB8jWlniUb3Iv9QQ4mveS0N39kqnoHGdzyjaer4y1IRkAb0GFf45IjpLoyXTgbO5QZ6hrPGBM85HS-ZxfKLaf31CYm3tZDmxG_PkAnpSwKs0U1Ftbv8x_ZuYFConjh9tkTRH6X0jUz2xwtVWjrHbaHXdYRtFxrQ"
-                  alt="Massage therapy session"
+                  src="/images/therapeutic-massage.png"
+                  alt="Therapeutic massage treatment"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  unoptimized
                 />
               </div>
               <div className="p-6 md:p-8">
@@ -65,11 +64,10 @@ export default function ServicesPage() {
             <div className="bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-64 md:h-72 overflow-hidden">
                 <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRXSyAU8Oni-kVOzl9L2HYJgaFeY6V0Gb3fQYvv3ZndRBrAhfpQdrd9iVKBH3qrHPvIJASp8zkyuD-thdfRbnWEzsV-XKtTZT7fvDOQzH0_5tvOgDAIVW2E2VmwH5VmKt-Ebb430rv1nBQVialypyM0WOIDMgqGDvs6uXkaaBXqkSPjJoQLPsjQlegUpQE8A6GeZ_CVUe9G22fGI8thVrYfBjApUZV2I6RR3_6uRWiwUh7fg53eOlkA6R6KP4MmvcDrOhUDyCF0J0"
-                  alt="Healing session"
+                  src="/images/sound-healing-session.jpg"
+                  alt="Leah leading a sound bowl healing session in the forest"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  unoptimized
                 />
               </div>
               <div className="p-6 md:p-8">
