@@ -93,11 +93,10 @@ export default function ServicesPage() {
             <div className="bg-surface-container-low rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-64 md:h-72 overflow-hidden">
                 <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcx3T1X84KIaHuoXTeBOqfL9hl-TlGdJfdA4Zwe3HTe5HXfRZX0Au73_XWL8o0PQDABNwjPsux3KlbgW6p06mVUH_Mjzl847L1eIFgh_XzW2o1tp53D-VzMnTlBSgHo1mG2SyGv7i_0zJPvd5qCfo8nPzPZ_4lPJ5fr7ZiemFUuWqNHyQs6ZihHgHy82JSKATIJ--K8FdElyjzdJfZ-wY6DUusvYZh2E6E_QpPqVezLsJAPuMudxb1a5tyqagq7qLuzcL425CkZJg"
-                  alt="Signature healing experience"
+                  src="/images/forest-canopy.jpg"
+                  alt="Tall pine canopy reaching skyward"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  unoptimized
                 />
               </div>
               <div className="p-6 md:p-8">
