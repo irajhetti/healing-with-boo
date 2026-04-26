@@ -94,7 +94,7 @@ export default function ServicesPage() {
               <div className="relative h-64 md:h-72 overflow-hidden">
                 <Image
                   src="/images/forest-canopy.jpg"
-                  alt="Tall pine canopy reaching skyward"
+                  alt="Misty forest path winding through the trees"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />

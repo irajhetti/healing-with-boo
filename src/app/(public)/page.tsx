@@ -12,7 +12,7 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <Image
           src="/images/forest-canopy.jpg"
-          alt="Tall pine canopy reaching skyward"
+          alt="Misty forest path winding through the trees"
           fill
           className="object-cover"
           priority
