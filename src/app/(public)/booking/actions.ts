@@ -372,6 +372,16 @@ export async function createCashBooking(formData: {
         throw new Error("SLOT_TAKEN");
       }
 
+      // Re-check discount maxUses inside the transaction
+      if (discountCodeId) {
+        const code = await tx.discountCode.findUnique({
+          where: { id: discountCodeId },
+        });
+        if (code?.maxUses != null && code.usedCount >= code.maxUses) {
+          throw new Error("DISCOUNT_EXHAUSTED");
+        }
+      }
+
       let ref = generateReference();
       while (await tx.booking.findUnique({ where: { reference: ref } })) {
         ref = generateReference();
@@ -415,6 +425,12 @@ export async function createCashBooking(formData: {
       return ref;
     }, { isolationLevel: "Serializable" });
   } catch (err) {
+    if (err instanceof Error && err.message === "DISCOUNT_EXHAUSTED") {
+      return {
+        reference: null,
+        error: "This discount code has reached its usage limit. Please remove it and try again.",
+      };
+    }
     // SLOT_TAKEN = our explicit check; P2034 = PostgreSQL serialization failure
     const isSlotConflict =
       (err instanceof Error && err.message === "SLOT_TAKEN") ||
@@ -522,12 +538,36 @@ export async function checkConsultationStatus(): Promise<{
 }
 
 function londonTimeToUTC(dateStr: string, timeStr: string): Date {
-  // Create a date string that represents the London wall-clock time
-  // Use Intl to find the UTC offset for London on this specific date
-  const naive = new Date(`${dateStr}T${timeStr}:00Z`);
-  const utcStr = naive.toLocaleString("en-US", { timeZone: "UTC" });
-  const londonStr = naive.toLocaleString("en-US", { timeZone: "Europe/London" });
-  const offsetMs = new Date(londonStr).getTime() - new Date(utcStr).getTime();
-  // Subtract London's offset from the naive UTC time to get the real UTC
-  return new Date(naive.getTime() - offsetMs);
+  // Convert "2026-04-26" + "14:30" treated as London wall-clock to a real UTC Date.
+  // Uses Intl with formatToParts to get the London offset deterministically — no
+  // reliance on locale-string parsing.
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const [hour, minute] = timeStr.split(":").map(Number);
+
+  // Start with the wall-clock instant interpreted as UTC; then correct by London's offset.
+  const naiveUtcMs = Date.UTC(year, month - 1, day, hour, minute, 0);
+
+  const dtf = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const parts = Object.fromEntries(
+    dtf.formatToParts(new Date(naiveUtcMs)).map((p) => [p.type, p.value]),
+  );
+  const londonAsUtcMs = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour) === 24 ? 0 : Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second),
+  );
+  const offsetMs = londonAsUtcMs - naiveUtcMs;
+  return new Date(naiveUtcMs - offsetMs);
 }

@@ -48,10 +48,15 @@ async function main() {
 
   // Seed admin user
   const adminEmail = "zonedoutbeauty@gmail.com";
-  const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || "ChangeMe123!";
 
   const existing = await prisma.user.findUnique({ where: { email: adminEmail } });
   if (!existing) {
+    const adminPassword = process.env.ADMIN_INITIAL_PASSWORD;
+    if (!adminPassword || adminPassword.length < 12) {
+      throw new Error(
+        "ADMIN_INITIAL_PASSWORD env var is required (min 12 chars) to seed the admin user. Set it before running seed.",
+      );
+    }
     await prisma.user.create({
       data: {
         email: adminEmail,

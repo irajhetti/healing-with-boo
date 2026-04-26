@@ -14,6 +14,7 @@ export default function MembersProfilePage() {
   const [profile, setProfile] = useState<Awaited<ReturnType<typeof getMemberProfile>> | null>(null);
   const [isPending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
   const [passwordMsg, setPasswordMsg] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [questions, setQuestions] = useState<ConsultationFormQuestion[]>([]);
   const [consultationAnswers, setConsultationAnswers] = useState<Record<string, string>>({});
@@ -34,13 +35,18 @@ export default function MembersProfilePage() {
   }, []);
 
   function handleProfileSave(form: FormData) {
+    setProfileError(null);
     startTransition(async () => {
-      await updateMemberProfile({
+      const result = await updateMemberProfile({
         name: form.get("name") as string,
         phone: form.get("phone") as string,
         pressurePref: form.get("pressurePref") as string,
         healthNotes: form.get("healthNotes") as string,
       });
+      if (result.error) {
+        setProfileError(result.error);
+        return;
+      }
       setProfile(await getMemberProfile());
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
@@ -121,7 +127,7 @@ export default function MembersProfilePage() {
               <option>Light</option>
               <option>Medium</option>
               <option>Firm</option>
-              <option>Deep</option>
+              <option>Extra Firm</option>
             </select>
           </div>
           <div>
@@ -134,6 +140,10 @@ export default function MembersProfilePage() {
               className="w-full px-4 py-3 bg-surface-container-lowest border-b-2 border-outline-variant/20 rounded-t-lg focus:border-secondary focus:outline-none transition-colors text-on-surface resize-none"
             />
           </div>
+
+          {profileError && (
+            <p className="text-sm text-red-500">{profileError}</p>
+          )}
 
           <div className="flex items-center gap-3">
             <button

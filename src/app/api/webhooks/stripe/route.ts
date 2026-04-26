@@ -40,21 +40,22 @@ export async function POST(req: NextRequest) {
     const startTime = new Date(metadata.startTime);
     const endTime = new Date(metadata.endTime);
 
-    // Idempotency: check if this webhook was already processed
-    const existingBooking = await getPrisma().booking.findUnique({
-      where: { stripeSessionId: session.id },
-    });
-    if (existingBooking) {
-      console.log(`Webhook replay — booking ${existingBooking.reference} already exists`);
-      return NextResponse.json({ received: true });
-    }
-
     const prisma = getPrisma();
     let reference: string;
+    let alreadyProcessed = false;
 
-    // Use serializable transaction to prevent double-booking
+    // Use serializable transaction to prevent double-booking + maxUses races
     try {
       reference = await prisma.$transaction(async (tx) => {
+        // Idempotency check inside the transaction (in case Stripe retries concurrently)
+        const existing = await tx.booking.findUnique({
+          where: { stripeSessionId: session.id },
+        });
+        if (existing) {
+          alreadyProcessed = true;
+          return existing.reference;
+        }
+
         // Re-check availability inside the transaction
         const conflicting = await tx.booking.findFirst({
           where: {
@@ -68,15 +69,26 @@ export async function POST(req: NextRequest) {
           throw new Error("SLOT_CONFLICT");
         }
 
+        const discountCodeId = metadata.discountCodeId || null;
+        const discountAmount =
+          metadata.discountAmount != null && metadata.discountAmount !== ""
+            ? parseInt(metadata.discountAmount)
+            : null;
+
+        // Re-check discount maxUses inside the transaction to prevent over-redemption races
+        if (discountCodeId) {
+          const code = await tx.discountCode.findUnique({
+            where: { id: discountCodeId },
+          });
+          if (code?.maxUses != null && code.usedCount >= code.maxUses) {
+            throw new Error("DISCOUNT_EXHAUSTED");
+          }
+        }
+
         let ref = generateReference();
         while (await tx.booking.findUnique({ where: { reference: ref } })) {
           ref = generateReference();
         }
-
-        const discountCodeId = metadata.discountCodeId || null;
-        const discountAmount = metadata.discountAmount
-          ? parseInt(metadata.discountAmount)
-          : null;
 
         const booking = await tx.booking.create({
           data: {
@@ -98,18 +110,18 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        // Record discount usage and increment counter
-        if (discountCodeId && discountAmount) {
+        // Record discount usage + increment counter (covers £0 fixed discounts too)
+        if (discountCodeId) {
           const originalPrice = metadata.originalPrice
             ? parseInt(metadata.originalPrice)
-            : parseInt(metadata.price || "0") + discountAmount;
+            : parseInt(metadata.price || "0") + (discountAmount ?? 0);
           await tx.discountUsage.create({
             data: {
               discountCodeId,
               bookingId: booking.id,
               userId: metadata.userId || null,
               originalPrice,
-              discountAmount,
+              discountAmount: discountAmount ?? 0,
             },
           });
           await tx.discountCode.update({
@@ -121,21 +133,33 @@ export async function POST(req: NextRequest) {
         return ref;
       }, { isolationLevel: "Serializable" });
     } catch (err) {
-      // SLOT_CONFLICT = our explicit check; P2034 = PostgreSQL serialization failure
+      // P2002 = unique constraint on stripeSessionId — concurrent webhook delivery; treat as no-op replay
+      if (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2002") {
+        console.log(`Concurrent webhook delivery for session ${session.id} — already processed`);
+        return NextResponse.json({ received: true });
+      }
+
       const isSlotConflict =
         (err instanceof Error && err.message === "SLOT_CONFLICT") ||
+        (err instanceof Error && err.message === "DISCOUNT_EXHAUSTED") ||
         (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2034");
       if (isSlotConflict) {
-        // Refund the payment since the slot is taken
+        // Refund — slot taken or discount exhausted between checkout creation and payment
         if (session.payment_intent) {
           await getStripeClient().refunds.create({
             payment_intent: session.payment_intent as string,
           });
         }
-        console.error(`Slot conflict for session ${session.id} — refunded`);
+        const reason = err instanceof Error ? err.message : "SLOT_CONFLICT";
+        console.error(`${reason} for session ${session.id} — refunded`);
         return NextResponse.json({ received: true });
       }
       throw err;
+    }
+
+    if (alreadyProcessed) {
+      console.log(`Webhook replay — booking ${reference} already exists`);
+      return NextResponse.json({ received: true });
     }
 
     console.log(`Booking created: ${reference} for ${metadata.guestName}`);
