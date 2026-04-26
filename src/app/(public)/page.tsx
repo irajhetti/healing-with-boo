@@ -149,7 +149,7 @@ export default function Home() {
             Meet Leah
           </h2>
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-            Hello my lovely people. Leah appreciates every single one of her clients &mdash; and if you&apos;re new here, welcome. She&apos;s just her, and she hopes you&apos;re just being you too.
+            Hello, I am Boo &mdash; some prefer to call me Leah. If you&apos;re new here, welcome. To my regulars, thank you for your loyalty, you absolute wonderful bunch.
           </p>
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
             Based at 22 Churchill Road in Boscombe, Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
