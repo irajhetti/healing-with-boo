@@ -175,7 +175,15 @@ function expandDates(
   if (frequency === "MONTHLY") {
     const [y, m, d] = startDate.split("-").map(Number);
     for (let i = 0; i < occurrences; i++) {
-      const date = new Date(Date.UTC(y, m - 1 + i, d));
+      // Compute target year/month explicitly so day-of-month doesn't overflow
+      // (e.g. Jan 31 + 1 month must be Feb 28, not March 3).
+      const targetMonthIndex = m - 1 + i; // 0-indexed
+      const year = y + Math.floor(targetMonthIndex / 12);
+      const month0 = ((targetMonthIndex % 12) + 12) % 12;
+      // Last day of target month: day 0 of (month+1) gives last day of (month).
+      const lastDayOfMonth = new Date(Date.UTC(year, month0 + 1, 0)).getUTCDate();
+      const day = Math.min(d, lastDayOfMonth);
+      const date = new Date(Date.UTC(year, month0, day));
       dates.push(date.toISOString().slice(0, 10));
     }
   } else {
