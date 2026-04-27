@@ -2,12 +2,8 @@
 
 import { getPrisma } from "@/lib/db";
 import type { DaySchedule } from "@/lib/config/business-hours";
-import {
-  BUFFER_MINUTES,
-  SLOT_INCREMENT_MINUTES,
-  BOOKING_HORIZON_DAYS,
-  TIMEZONE,
-} from "@/lib/config/business-hours";
+import { TIMEZONE } from "@/lib/config/business-hours";
+import { getSchedulingSettings } from "@/lib/scheduling-settings";
 
 function parseTimeToMinutes(time: string): number {
   const [h, m] = time.split(":").map(Number);
@@ -90,6 +86,8 @@ export async function getAvailableSlots(
   });
   if (!service) return [];
 
+  const settings = await getSchedulingSettings();
+
   // Get business hours from DB
   const businessHours = await getBusinessHoursFromDB();
   const dayOfWeek = getLondonDayOfWeek(dateStr);
@@ -153,7 +151,7 @@ export async function getAvailableSlots(
   for (
     let slotStart = openMinutes;
     slotStart + service.duration <= closeMinutes;
-    slotStart += SLOT_INCREMENT_MINUTES
+    slotStart += settings.slotIncrement
   ) {
     const slotEnd = slotStart + service.duration;
 
@@ -161,8 +159,8 @@ export async function getAvailableSlots(
 
     const hasConflict = bookedRanges.some(
       (booked) =>
-        slotStart < booked.end + BUFFER_MINUTES &&
-        slotEnd + BUFFER_MINUTES > booked.start
+        slotStart < booked.end + settings.bufferMinutes &&
+        slotEnd + settings.bufferMinutes > booked.start
     );
 
     if (!hasConflict) {
@@ -184,16 +182,17 @@ export async function getAvailableDates(
   });
   if (!service) return [];
 
+  const settings = await getSchedulingSettings();
   const businessHours = await getBusinessHoursFromDB();
 
   const today = new Date();
   const horizon = new Date(today);
-  horizon.setDate(horizon.getDate() + BOOKING_HORIZON_DAYS);
+  horizon.setDate(horizon.getDate() + settings.bookingHorizonDays);
   const blockedMap = await getBlockedDatesMap(today, horizon);
 
   const dates: string[] = [];
 
-  for (let i = 0; i < BOOKING_HORIZON_DAYS; i++) {
+  for (let i = 0; i < settings.bookingHorizonDays; i++) {
     const date = new Date(today);
     date.setDate(date.getDate() + i);
     const dateStr = date.toISOString().split("T")[0];

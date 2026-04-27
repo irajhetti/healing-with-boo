@@ -7,16 +7,22 @@ import {
   getBlockedDates,
   addBlockedDate,
   removeBlockedDate,
+  getSchedulingSettings,
+  updateSchedulingSettings,
 } from "../actions/availability";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 type HoursRow = { dayOfWeek: number; open: string | null; close: string | null };
 type BlockedRow = { id: string; date: Date; reason: string | null; openOverride: string | null; closeOverride: string | null };
+type RulesRow = { bufferMinutes: number; slotIncrement: number; bookingHorizonDays: number };
 
 export default function AvailabilityPage() {
   const [hours, setHours] = useState<HoursRow[]>([]);
   const [blocked, setBlocked] = useState<BlockedRow[]>([]);
+  const [rules, setRules] = useState<RulesRow | null>(null);
+  const [rulesSaved, setRulesSaved] = useState(false);
+  const [rulesError, setRulesError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
 
@@ -26,11 +32,36 @@ export default function AvailabilityPage() {
 
   useEffect(() => {
     startTransition(async () => {
-      const [h, b] = await Promise.all([getBusinessHours(), getBlockedDates()]);
-      setHours(h.map((r) => ({ dayOfWeek: r.dayOfWeek, open: r.open, close: r.close })));
+      const [h, b, r] = await Promise.all([
+        getBusinessHours(),
+        getBlockedDates(),
+        getSchedulingSettings(),
+      ]);
+      setHours(h.map((row) => ({ dayOfWeek: row.dayOfWeek, open: row.open, close: row.close })));
       setBlocked(b);
+      setRules(r);
     });
   }, []);
+
+  function updateRule<K extends keyof RulesRow>(key: K, value: number) {
+    setRules((prev) => (prev ? { ...prev, [key]: value } : prev));
+    setRulesSaved(false);
+    setRulesError(null);
+  }
+
+  function saveRules() {
+    if (!rules) return;
+    setRulesError(null);
+    startTransition(async () => {
+      const result = await updateSchedulingSettings(rules);
+      if (result.error) {
+        setRulesError(result.error);
+        return;
+      }
+      setRulesSaved(true);
+      setTimeout(() => setRulesSaved(false), 3000);
+    });
+  }
 
   function updateDay(dayOfWeek: number, field: "open" | "close", value: string) {
     setHours((prev) =>
@@ -213,6 +244,88 @@ export default function AvailabilityPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Scheduling Rules */}
+      <section className="bg-surface-container rounded-xl p-6 mt-8">
+        <h2 className="font-headline text-lg font-bold text-on-surface mb-2">
+          Scheduling Rules
+        </h2>
+        <p className="text-on-surface-variant text-sm mb-6">
+          Controls how slots are offered to clients on the public booking page.
+        </p>
+
+        {rules && (
+          <div className="space-y-5 max-w-md">
+            <div>
+              <label className="block text-sm font-medium text-on-surface mb-1.5">
+                Buffer between sessions (minutes)
+              </label>
+              <input
+                type="number"
+                min={0}
+                max={60}
+                value={rules.bufferMinutes}
+                onChange={(e) => updateRule("bufferMinutes", parseInt(e.target.value) || 0)}
+                className="w-32 px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm text-on-surface"
+              />
+              <p className="text-xs text-on-surface-variant mt-1">
+                Time after each booking before the next can start. Default 15.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-on-surface mb-1.5">
+                Slot interval (minutes)
+              </label>
+              <input
+                type="number"
+                min={5}
+                max={60}
+                value={rules.slotIncrement}
+                onChange={(e) => updateRule("slotIncrement", parseInt(e.target.value) || 5)}
+                className="w-32 px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm text-on-surface"
+              />
+              <p className="text-xs text-on-surface-variant mt-1">
+                How tightly slots are spaced. 15 means clients pick :00, :15, :30, :45.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-on-surface mb-1.5">
+                How far ahead clients can book (days)
+              </label>
+              <input
+                type="number"
+                min={7}
+                max={365}
+                value={rules.bookingHorizonDays}
+                onChange={(e) => updateRule("bookingHorizonDays", parseInt(e.target.value) || 7)}
+                className="w-32 px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm text-on-surface"
+              />
+              <p className="text-xs text-on-surface-variant mt-1">
+                60 = roughly two months. Set higher for further-out booking.
+              </p>
+            </div>
+
+            {rulesError && (
+              <p className="text-sm text-red-500">{rulesError}</p>
+            )}
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={saveRules}
+                disabled={isPending}
+                className="px-5 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:brightness-110 transition-all disabled:opacity-50"
+              >
+                {isPending ? "Saving..." : "Save Rules"}
+              </button>
+              {rulesSaved && (
+                <span className="text-green-600 text-sm">Saved!</span>
+              )}
+            </div>
+          </div>
+        )}
       </section>
     </>
   );

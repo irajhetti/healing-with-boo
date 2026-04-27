@@ -164,6 +164,14 @@ model BusinessHours {
   updatedAt DateTime @updatedAt
 }
 
+model SchedulingSettings {
+  id                 String   @id @default("default")
+  bufferMinutes      Int      @default(15)
+  slotIncrement      Int      @default(15)
+  bookingHorizonDays Int      @default(60)
+  updatedAt          DateTime @updatedAt
+}
+
 model BlockedDate {
   id             String   @id @default(cuid())
   date           DateTime @unique // stored as midnight UTC
