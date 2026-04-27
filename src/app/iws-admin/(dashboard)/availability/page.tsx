@@ -108,13 +108,13 @@ export default function AvailabilityPage() {
 
   return (
     <>
-      <h1 className="font-headline text-2xl font-bold text-on-surface mb-8">
+      <h1 className="font-headline text-2xl font-medium text-on-surface mb-8">
         Availability
       </h1>
 
       {/* Weekly Hours */}
       <section className="bg-surface-container rounded-xl p-6 mb-8">
-        <h2 className="font-headline text-lg font-bold text-on-surface mb-4">
+        <h2 className="font-headline text-lg font-medium text-on-surface mb-4">
           Weekly Hours
         </h2>
 
@@ -176,7 +176,7 @@ export default function AvailabilityPage() {
 
       {/* Blocked Dates */}
       <section className="bg-surface-container rounded-xl p-6">
-        <h2 className="font-headline text-lg font-bold text-on-surface mb-4">
+        <h2 className="font-headline text-lg font-medium text-on-surface mb-4">
           Blocked Dates
         </h2>
         <p className="text-on-surface-variant text-sm mb-4">
@@ -248,7 +248,7 @@ export default function AvailabilityPage() {
 
       {/* Scheduling Rules */}
       <section className="bg-surface-container rounded-xl p-6 mt-8">
-        <h2 className="font-headline text-lg font-bold text-on-surface mb-2">
+        <h2 className="font-headline text-lg font-medium text-on-surface mb-2">
           Scheduling Rules
         </h2>
         <p className="text-on-surface-variant text-sm mb-6">

@@ -23,7 +23,7 @@ export default function Home() {
           <span className="inline-block font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-6">
             Holistic Healing &amp; Massage in Boscombe
           </span>
-          <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+          <h1 className="font-headline text-3xl md:text-4xl lg:text-5xl font-medium text-white leading-tight mb-6">
             Personal, Intentional &amp; Deep Healing
           </h1>
           <p className="font-body text-on-surface-variant text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
@@ -56,7 +56,7 @@ export default function Home() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               Sacred Modalities
             </span>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+            <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
               Our Healing Services
             </h2>
           </div>
@@ -79,7 +79,7 @@ export default function Home() {
                 <span className="font-label text-[11px] font-bold tracking-[0.15em] uppercase text-secondary mb-2 block">
                   Body Work
                 </span>
-                <h3 className="font-headline text-2xl font-bold text-on-surface mb-3">
+                <h3 className="font-headline text-2xl font-medium text-on-surface mb-3">
                   Massage Therapy
                 </h3>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
@@ -110,7 +110,7 @@ export default function Home() {
                 <span className="font-label text-[11px] font-bold tracking-[0.15em] uppercase text-secondary mb-2 block">
                   Energy Work
                 </span>
-                <h3 className="font-headline text-2xl font-bold text-on-surface mb-3">
+                <h3 className="font-headline text-2xl font-medium text-on-surface mb-3">
                   Shamanic Healing
                 </h3>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
@@ -145,7 +145,7 @@ export default function Home() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             The Healer
           </span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface mb-6">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface mb-6">
             Meet Leah
           </h2>
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
@@ -172,7 +172,7 @@ export default function Home() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               Kind Words
             </span>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+            <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
               What Clients Say
             </h2>
           </div>
@@ -221,7 +221,7 @@ export default function Home() {
       <section className="bg-primary-container py-16 md:py-20">
         <ScrollReveal animation="glow">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-primary-container mb-4">
             Your Healing Journey Starts Here
           </h2>
           <p className="font-body text-on-primary-container/70 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">

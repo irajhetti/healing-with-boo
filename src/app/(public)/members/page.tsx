@@ -16,7 +16,7 @@ export default async function MembersDashboardPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-headline text-3xl text-on-surface mb-2">
+      <h1 className="font-headline text-2xl text-on-surface mb-2">
         Welcome back, {firstName}!
       </h1>
       <p className="text-on-surface-variant mb-10">

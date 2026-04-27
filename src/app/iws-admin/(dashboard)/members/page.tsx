@@ -45,7 +45,7 @@ export default function MembersPage() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="font-headline text-2xl font-bold text-on-surface mb-1">
+        <h1 className="font-headline text-2xl font-medium text-on-surface mb-1">
           Members
         </h1>
         <p className="text-sm text-on-surface-variant">

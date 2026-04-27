@@ -80,7 +80,7 @@ export default function MembersProfilePage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-headline text-3xl text-on-surface mb-2">Your Profile</h1>
+      <h1 className="font-headline text-2xl text-on-surface mb-2">Your Profile</h1>
       <p className="text-on-surface-variant mb-10">Manage your account details and healing preferences.</p>
 
       {/* Profile Form */}

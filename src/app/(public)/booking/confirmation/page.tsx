@@ -39,7 +39,7 @@ export default async function BookingConfirmationPage({ searchParams }: Props) {
           <span className="material-symbols-outlined text-on-surface-variant text-6xl mb-6 block">
             search_off
           </span>
-          <h1 className="font-headline text-3xl text-on-surface mb-3">
+          <h1 className="font-headline text-2xl text-on-surface mb-3">
             Booking Not Found
           </h1>
           <p className="text-on-surface-variant mb-8">
@@ -67,7 +67,7 @@ export default async function BookingConfirmationPage({ searchParams }: Props) {
           check_circle
         </span>
 
-        <h1 className="font-headline text-4xl text-on-surface mb-3">
+        <h1 className="font-headline text-3xl text-on-surface mb-3">
           Booking Confirmed!
         </h1>
         <p className="text-on-surface-variant mb-2">

@@ -23,7 +23,7 @@ export default async function MembersBookingsPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-headline text-3xl text-on-surface mb-2">My Bookings</h1>
+      <h1 className="font-headline text-2xl text-on-surface mb-2">My Bookings</h1>
       <p className="text-on-surface-variant mb-10">View your upcoming and past sessions.</p>
 
       {/* Discount Codes */}

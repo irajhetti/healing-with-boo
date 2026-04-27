@@ -6,7 +6,7 @@ export default async function AdminDashboard() {
 
   return (
     <>
-      <h1 className="font-headline text-2xl font-bold text-on-surface mb-8">
+      <h1 className="font-headline text-2xl font-medium text-on-surface mb-8">
         Dashboard
       </h1>
 
@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
 
       {stats.popularServices.length > 0 && (
         <div className="bg-surface-container rounded-xl p-6">
-          <h2 className="font-headline text-lg font-bold text-on-surface mb-4">
+          <h2 className="font-headline text-lg font-medium text-on-surface mb-4">
             Popular Services
           </h2>
           <div className="space-y-3">

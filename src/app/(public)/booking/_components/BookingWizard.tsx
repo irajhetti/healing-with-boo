@@ -406,7 +406,7 @@ export function BookingWizard({ services }: Props) {
 
                   {/* Payment Method */}
                   <div className="mt-8">
-                    <h3 className="font-headline text-lg font-bold text-on-surface mb-4">
+                    <h3 className="font-headline text-lg font-medium text-on-surface mb-4">
                       How would you like to pay?
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -560,7 +560,7 @@ function InlineAuth({
 
   return (
     <div>
-      <h3 className="font-headline text-lg font-bold text-on-surface mb-2">
+      <h3 className="font-headline text-lg font-medium text-on-surface mb-2">
         Sign in to continue
       </h3>
       <p className="text-sm text-on-surface-variant mb-6">

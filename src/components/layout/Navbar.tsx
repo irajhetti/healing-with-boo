@@ -21,7 +21,7 @@ export function Navbar() {
         <div className="flex justify-between items-center w-full px-6 md:px-8 py-4 max-w-full mx-auto">
           <Link
             href="/"
-            className="font-headline text-2xl font-bold text-primary tracking-tight"
+            className="font-headline text-2xl font-medium text-primary tracking-tight"
           >
             Healing with Boo
           </Link>

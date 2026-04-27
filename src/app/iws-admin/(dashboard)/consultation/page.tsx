@@ -98,7 +98,7 @@ export default function ConsultationPage() {
     <>
       <div className="flex items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-headline text-2xl font-bold text-on-surface">
+          <h1 className="font-headline text-2xl font-medium text-on-surface">
             Consultation Form
           </h1>
           <p className="text-sm text-on-surface-variant mt-1">
@@ -241,7 +241,7 @@ function QuestionForm({
   return (
     <form action={onSubmit} className={defaults ? "space-y-3" : "bg-surface-container rounded-xl p-6 mb-8 space-y-3"}>
       {!defaults && (
-        <h2 className="font-headline text-lg font-bold text-on-surface mb-2">
+        <h2 className="font-headline text-lg font-medium text-on-surface mb-2">
           New Question
         </h2>
       )}

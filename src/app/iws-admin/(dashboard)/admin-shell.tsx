@@ -30,7 +30,7 @@ export function AdminShell({
     <div className="min-h-screen bg-surface md:flex">
       {/* Mobile top bar */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-outline-variant/20 bg-surface-container">
-        <h1 className="font-headline text-base font-bold text-on-surface">
+        <h1 className="font-headline text-base font-medium text-on-surface">
           Healing with Boo
         </h1>
         <button
@@ -61,7 +61,7 @@ export function AdminShell({
         `}
       >
         <div className="p-6 border-b border-outline-variant/20">
-          <h1 className="font-headline text-lg font-bold text-on-surface">
+          <h1 className="font-headline text-lg font-medium text-on-surface">
             Healing with Boo
           </h1>
           <p className="text-on-surface-variant text-xs mt-1">Admin Panel</p>

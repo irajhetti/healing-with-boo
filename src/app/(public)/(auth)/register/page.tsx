@@ -66,7 +66,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-8 md:p-10 shadow-sm">
           <p className="font-headline text-xl text-primary text-center mb-8">Healing with Boo</p>
-          <h1 className="font-headline text-3xl text-on-surface text-center mb-2">Join the Circle</h1>
+          <h1 className="font-headline text-2xl text-on-surface text-center mb-2">Join the Circle</h1>
           <p className="text-on-surface-variant text-center mb-8">Create your member account</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">

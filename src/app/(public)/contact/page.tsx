@@ -39,7 +39,7 @@ export default function ContactPage() {
       {/* Header */}
       <section className="py-16 px-4 text-center">
         <p className="font-label text-sm tracking-widest uppercase text-secondary mb-3">Connect</p>
-        <h1 className="font-headline text-4xl md:text-5xl text-on-surface mb-4">Get in Touch</h1>
+        <h1 className="font-headline text-3xl md:text-3xl text-on-surface mb-4">Get in Touch</h1>
         <p className="text-on-surface-variant max-w-xl mx-auto">
           Whether you have a question about our services, want to discuss your healing needs, or are ready to book — we would love to hear from you.
         </p>
@@ -209,7 +209,7 @@ export default function ContactPage() {
 
         {/* FAQ Section */}
         <section>
-          <h2 className="font-headline text-3xl text-on-surface mb-8 text-center">Frequently Asked Questions</h2>
+          <h2 className="font-headline text-2xl text-on-surface mb-8 text-center">Frequently Asked Questions</h2>
           <div className="max-w-2xl mx-auto space-y-4">
             {faqs.map((faq) => (
               <details key={faq.question} className="group bg-surface-container-lowest border border-outline-variant/20 rounded-xl overflow-hidden">

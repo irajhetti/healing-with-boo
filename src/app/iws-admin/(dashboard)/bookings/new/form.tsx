@@ -208,7 +208,7 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
   if (result?.type === "recurring-result") {
     return (
       <div>
-        <h1 className="font-headline text-2xl font-bold text-on-surface mb-2">Recurring booking summary</h1>
+        <h1 className="font-headline text-2xl font-medium text-on-surface mb-2">Recurring booking summary</h1>
         <p className="text-sm text-on-surface-variant mb-6">
           Created {result.created.length} of {result.created.length + result.skipped.length}.
         </p>
@@ -269,7 +269,7 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-headline text-2xl font-bold text-on-surface">New booking</h1>
+        <h1 className="font-headline text-2xl font-medium text-on-surface">New booking</h1>
         <Link
           href="/iws-admin/bookings"
           className="text-sm text-on-surface-variant hover:text-on-surface"
@@ -544,7 +544,7 @@ function SuccessPanel({
 }) {
   return (
     <div>
-      <h1 className="font-headline text-2xl font-bold text-on-surface mb-6">{title}</h1>
+      <h1 className="font-headline text-2xl font-medium text-on-surface mb-6">{title}</h1>
 
       <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-4">
         <p className="font-medium text-green-800">Booking saved.</p>

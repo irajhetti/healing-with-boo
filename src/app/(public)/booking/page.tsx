@@ -20,7 +20,7 @@ export default async function BookingPage() {
         <p className="font-label text-sm tracking-widest uppercase text-secondary mb-3">
           Appointments
         </p>
-        <h1 className="font-headline text-4xl md:text-5xl text-on-surface mb-4">
+        <h1 className="font-headline text-3xl md:text-3xl text-on-surface mb-4">
           Book Your Session with Boo
         </h1>
         <p className="text-on-surface-variant max-w-xl mx-auto">

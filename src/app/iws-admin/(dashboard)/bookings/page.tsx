@@ -135,7 +135,7 @@ export default function BookingsPage() {
   return (
     <>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-headline text-2xl font-bold text-on-surface">Bookings</h1>
+        <h1 className="font-headline text-2xl font-medium text-on-surface">Bookings</h1>
         <Link
           href="/iws-admin/bookings/new"
           className="inline-flex items-center gap-1.5 bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
@@ -203,7 +203,7 @@ export default function BookingsPage() {
           return (
             <div key={dateKey}>
               <div className="sticky top-0 bg-surface z-10 -mx-1 px-1 py-2 mb-2 border-b border-outline-variant/20 flex items-baseline gap-3">
-                <span className="font-headline text-lg font-bold text-on-surface">
+                <span className="font-headline text-lg font-medium text-on-surface">
                   {label.primary}
                 </span>
                 <span className="text-sm text-on-surface-variant">{label.secondary}</span>

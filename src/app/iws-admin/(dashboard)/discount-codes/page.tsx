@@ -132,7 +132,7 @@ export default function DiscountCodesPage() {
   return (
     <>
       <div className="flex items-center justify-between gap-4 mb-8">
-        <h1 className="font-headline text-2xl font-bold text-on-surface">
+        <h1 className="font-headline text-2xl font-medium text-on-surface">
           Discount Codes
         </h1>
         <button
@@ -295,7 +295,7 @@ function AddCodeForm({
 
   return (
     <form action={onSubmit} className="bg-surface-container rounded-xl p-6 mb-8 space-y-3">
-      <h2 className="font-headline text-lg font-bold text-on-surface mb-2">
+      <h2 className="font-headline text-lg font-medium text-on-surface mb-2">
         New Discount Code
       </h2>
 

@@ -35,7 +35,7 @@ export default function TestimonialsPage() {
       {/* Header */}
       <section className="py-16 px-4 text-center">
         <p className="font-label text-sm tracking-widest uppercase text-secondary mb-3">What Our Clients Say</p>
-        <h1 className="font-headline text-4xl md:text-5xl text-on-surface mb-4">Healing Journeys</h1>
+        <h1 className="font-headline text-3xl md:text-3xl text-on-surface mb-4">Healing Journeys</h1>
         <div className="flex items-center justify-center gap-2 mt-4">
           <span className="font-headline text-2xl text-on-surface">4.9</span>
           <div className="flex gap-0.5">
@@ -108,7 +108,7 @@ export default function TestimonialsPage() {
         {/* CTA */}
         <MysticalDivider />
         <section className="text-center max-w-xl mx-auto">
-          <h2 className="font-headline text-3xl text-on-surface mb-3">Experience It Yourself</h2>
+          <h2 className="font-headline text-2xl text-on-surface mb-3">Experience It Yourself</h2>
           <p className="text-on-surface-variant mb-8">
             Join the growing community of people who have found healing, relief, and transformation with Healing with Boo.
           </p>

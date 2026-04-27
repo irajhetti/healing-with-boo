@@ -17,7 +17,7 @@ export default function AboutPage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             Meet Leah / Boo
           </span>
-          <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-6">
+          <h1 className="font-headline text-3xl md:text-3xl lg:text-4xl font-medium text-on-surface mb-6">
             Hello, welcome to my space.
           </h1>
           <p className="font-body text-on-surface-variant text-lg leading-relaxed">
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               The Beginning
             </span>
-            <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-6">
+            <h2 className="font-headline text-2xl md:text-2xl font-medium text-on-surface mb-6">
               Discovering the Healing Path
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function AboutPage() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               The Training
             </span>
-            <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-6">
+            <h2 className="font-headline text-2xl md:text-2xl font-medium text-on-surface mb-6">
               Bodywork &amp; Shamanic Traditions
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
@@ -103,7 +103,7 @@ export default function AboutPage() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               The Practice
             </span>
-            <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-6">
+            <h2 className="font-headline text-2xl md:text-2xl font-medium text-on-surface mb-6">
               Boo&apos;s Healing Bubble
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
@@ -125,7 +125,7 @@ export default function AboutPage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             Qualifications
           </span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
             Training &amp; Credentials
           </h2>
         </div>
@@ -154,7 +154,7 @@ export default function AboutPage() {
                   {credential.icon}
                 </span>
               </div>
-              <h3 className="font-headline text-lg font-bold text-on-surface mb-3">
+              <h3 className="font-headline text-lg font-medium text-on-surface mb-3">
                 {credential.title}
               </h3>
               <p className="font-body text-on-surface-variant text-sm leading-relaxed">
@@ -171,7 +171,7 @@ export default function AboutPage() {
           <span className="material-symbols-outlined text-secondary text-[40px] mb-6 block">
             format_quote
           </span>
-          <blockquote className="font-headline text-2xl md:text-3xl font-bold text-on-surface leading-snug mb-8 italic">
+          <blockquote className="font-headline text-2xl md:text-2xl font-medium text-on-surface leading-snug mb-8 italic">
             &ldquo;I&apos;m just me. Hopefully you are just being you too. Come as you are &mdash; that&apos;s all you ever need to be.&rdquo;
           </blockquote>
           <p className="font-label text-sm font-bold text-secondary tracking-wide uppercase">
@@ -183,7 +183,7 @@ export default function AboutPage() {
       {/* ── CTA ── */}
       <section className="bg-primary-container py-16 md:py-20">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-primary-container mb-4">
             Begin Your Healing Journey
           </h2>
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">

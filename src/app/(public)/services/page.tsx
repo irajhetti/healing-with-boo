@@ -18,7 +18,7 @@ export default function ServicesPage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             Sacred Modalities
           </span>
-          <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-6">
+          <h1 className="font-headline text-3xl md:text-3xl lg:text-4xl font-medium text-on-surface mb-6">
             Our Healing Services
           </h1>
           <p className="font-body text-on-surface-variant text-lg leading-relaxed max-w-2xl mx-auto">
@@ -45,7 +45,7 @@ export default function ServicesPage() {
                 <span className="font-label text-[11px] font-bold tracking-[0.15em] uppercase text-secondary mb-2 block">
                   Body Work
                 </span>
-                <h2 className="font-headline text-2xl font-bold text-on-surface mb-3">
+                <h2 className="font-headline text-2xl font-medium text-on-surface mb-3">
                   Massage
                 </h2>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function ServicesPage() {
                 <span className="font-label text-[11px] font-bold tracking-[0.15em] uppercase text-secondary mb-2 block">
                   Energy Work
                 </span>
-                <h2 className="font-headline text-2xl font-bold text-on-surface mb-3">
+                <h2 className="font-headline text-2xl font-medium text-on-surface mb-3">
                   Healing
                 </h2>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
@@ -103,7 +103,7 @@ export default function ServicesPage() {
                 <span className="font-label text-[11px] font-bold tracking-[0.15em] uppercase text-secondary mb-2 block">
                   Combined
                 </span>
-                <h2 className="font-headline text-2xl font-bold text-on-surface mb-3">
+                <h2 className="font-headline text-2xl font-medium text-on-surface mb-3">
                   Signature Experiences
                 </h2>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
@@ -128,7 +128,7 @@ export default function ServicesPage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             Compare
           </span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
             Which Path Is Right for You?
           </h2>
         </div>
@@ -140,13 +140,13 @@ export default function ServicesPage() {
                 <th className="font-label text-xs font-bold tracking-[0.15em] uppercase text-outline pb-4 pr-6 border-b border-outline-variant/30">
                   &nbsp;
                 </th>
-                <th className="font-headline text-lg font-bold text-on-surface pb-4 px-6 border-b border-outline-variant/30">
+                <th className="font-headline text-lg font-medium text-on-surface pb-4 px-6 border-b border-outline-variant/30">
                   Massage
                 </th>
-                <th className="font-headline text-lg font-bold text-on-surface pb-4 px-6 border-b border-outline-variant/30">
+                <th className="font-headline text-lg font-medium text-on-surface pb-4 px-6 border-b border-outline-variant/30">
                   Healing
                 </th>
-                <th className="font-headline text-lg font-bold text-on-surface pb-4 px-6 border-b border-outline-variant/30">
+                <th className="font-headline text-lg font-medium text-on-surface pb-4 px-6 border-b border-outline-variant/30">
                   Signature
                 </th>
               </tr>
@@ -208,7 +208,7 @@ export default function ServicesPage() {
           <span className="material-symbols-outlined text-secondary text-[40px] mb-4 block">
             help_outline
           </span>
-          <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-4">
+          <h2 className="font-headline text-2xl md:text-2xl font-medium text-on-surface mb-4">
             Not Sure Where to Start?
           </h2>
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
@@ -226,7 +226,7 @@ export default function ServicesPage() {
       {/* ── CTA Banner ── */}
       <section className="bg-primary-container py-16 md:py-20">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-primary-container mb-4">
             Ready to Begin?
           </h2>
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">

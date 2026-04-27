@@ -72,7 +72,7 @@ export default function ServicesPage() {
   return (
     <>
       <div className="flex items-center justify-between gap-4 mb-8">
-        <h1 className="font-headline text-2xl font-bold text-on-surface">
+        <h1 className="font-headline text-2xl font-medium text-on-surface">
           Services
         </h1>
         <button
@@ -88,7 +88,7 @@ export default function ServicesPage() {
           action={handleCreate}
           className="bg-surface-container rounded-xl p-6 mb-8 space-y-3"
         >
-          <h2 className="font-headline text-lg font-bold text-on-surface mb-2">
+          <h2 className="font-headline text-lg font-medium text-on-surface mb-2">
             New Service
           </h2>
           <input
@@ -146,7 +146,7 @@ export default function ServicesPage() {
 
       {Object.entries(grouped).map(([category, items]) => (
         <section key={category} className="mb-8">
-          <h2 className="font-headline text-lg font-bold text-on-surface mb-3">
+          <h2 className="font-headline text-lg font-medium text-on-surface mb-3">
             {CATEGORY_LABELS[category] || category}
           </h2>
 

@@ -120,7 +120,7 @@ export default function MassagePage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-on-primary-container mb-3 block">
             Body Work
           </span>
-          <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+          <h1 className="font-headline text-3xl md:text-3xl lg:text-4xl font-medium text-white">
             Massage Therapy
           </h1>
         </div>
@@ -150,7 +150,7 @@ export default function MassagePage() {
                 </span>
               </div>
               <div>
-                <h2 className="font-headline text-xl md:text-2xl font-bold text-on-surface">
+                <h2 className="font-headline text-xl md:text-2xl font-medium text-on-surface">
                   {treatment.name}
                 </h2>
               </div>
@@ -189,7 +189,7 @@ export default function MassagePage() {
           <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
             Your Visit
           </span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
             What to Expect
           </h2>
         </div>
@@ -208,7 +208,7 @@ export default function MassagePage() {
                   {step.icon}
                 </span>
               </div>
-              <h3 className="font-headline text-lg font-bold text-on-surface mb-3">
+              <h3 className="font-headline text-lg font-medium text-on-surface mb-3">
                 {step.title}
               </h3>
               <p className="font-body text-on-surface-variant text-sm leading-relaxed">
@@ -226,7 +226,7 @@ export default function MassagePage() {
             <span className="font-label text-[11px] font-bold tracking-[0.2em] uppercase text-secondary mb-3 block">
               Common Questions
             </span>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-surface">
+            <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-surface">
               Frequently Asked Questions
             </h2>
           </div>
@@ -237,7 +237,7 @@ export default function MassagePage() {
                 key={faq.question}
                 className="group bg-surface rounded-xl shadow-sm overflow-hidden"
               >
-                <summary className="flex items-center justify-between cursor-pointer p-6 font-headline text-base font-bold text-on-surface hover:text-primary transition-colors list-none">
+                <summary className="flex items-center justify-between cursor-pointer p-6 font-headline text-base font-medium text-on-surface hover:text-primary transition-colors list-none">
                   {faq.question}
                   <span className="material-symbols-outlined text-[20px] text-outline group-open:rotate-180 transition-transform duration-300 shrink-0 ml-4">
                     expand_more
@@ -257,7 +257,7 @@ export default function MassagePage() {
       {/* ── CTA ── */}
       <section className="bg-primary-container py-16 md:py-20">
         <div className="px-6 md:px-12 max-w-4xl mx-auto text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-4">
+          <h2 className="font-headline text-2xl md:text-3xl font-medium text-on-primary-container mb-4">
             Ready to Release &amp; Restore?
           </h2>
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
