@@ -71,15 +71,15 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
   const [result, setResult] = useState<ResultMsg | null>(null);
 
   const selectedService = services.find((s) => s.id === state.serviceId);
+  const canLoadSlots = Boolean(state.serviceId && state.date);
+  const visibleSlots = canLoadSlots ? slots : [];
+  const visibleSearchResults = searchQuery.trim().length >= 2 ? searchResults : [];
 
   // Load available slots when service+date both set
   useEffect(() => {
-    if (!state.serviceId || !state.date) {
-      setSlots([]);
-      return;
-    }
+    if (!state.serviceId || !state.date) return;
+
     let cancelled = false;
-    setSlotsLoading(true);
     getAvailableSlots(state.serviceId, state.date)
       .then((s) => {
         if (!cancelled) setSlots(s);
@@ -94,10 +94,8 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
 
   // Debounced client search
   useEffect(() => {
-    if (searchQuery.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
+    if (searchQuery.trim().length < 2) return;
+
     const handle = setTimeout(() => {
       searchClients(searchQuery).then(setSearchResults).catch(() => setSearchResults([]));
     }, 250);
@@ -105,6 +103,13 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
   }, [searchQuery]);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    if (key === "serviceId" || key === "date") {
+      const nextServiceId = key === "serviceId" ? String(value) : state.serviceId;
+      const nextDate = key === "date" ? String(value) : state.date;
+      setSlots([]);
+      setSlotsLoading(Boolean(nextServiceId && nextDate));
+    }
+
     setState((s) => ({ ...s, [key]: value }));
   }
 
@@ -316,19 +321,19 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
               <select
                 value={state.time}
                 onChange={(e) => update("time", e.target.value)}
-                disabled={slots.length === 0 && !slotsLoading}
+                disabled={visibleSlots.length === 0 && !slotsLoading}
                 className="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/30 rounded-lg text-on-surface disabled:opacity-50"
               >
                 <option value="">
                   {slotsLoading
                     ? "Loading..."
-                    : !state.serviceId || !state.date
+                    : !canLoadSlots
                       ? "Pick service + date first"
-                      : slots.length === 0
+                      : visibleSlots.length === 0
                         ? "No slots available"
                         : "Select a time..."}
                 </option>
-                {slots.map((s) => (
+                {visibleSlots.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
@@ -363,9 +368,9 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/30 rounded-lg text-on-surface"
               />
-              {searchResults.length > 0 && (
+              {visibleSearchResults.length > 0 && (
                 <ul className="mt-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg overflow-hidden">
-                  {searchResults.map((c) => (
+                  {visibleSearchResults.map((c) => (
                     <li key={c.id}>
                       <button
                         onClick={() => selectExistingClient(c)}
@@ -499,7 +504,7 @@ export default function NewBookingForm({ services }: { services: Service[] }) {
                 />
               </div>
               <p className="col-span-2 text-xs text-on-surface-variant">
-                Will create up to {state.occurrences} bookings starting from {state.date || "the chosen date"}. Conflicts are skipped — you'll see a summary after.
+                Will create up to {state.occurrences} bookings starting from {state.date || "the chosen date"}. Conflicts are skipped — you&apos;ll see a summary after.
               </p>
             </div>
           )}

@@ -6,7 +6,7 @@ import { MysticalDivider } from "@/components/ui/MysticalDivider";
 export const metadata: Metadata = {
   title: "Our Healing Services",
   description:
-    "Massage, healing and signature experiences at Healing with Boo in Boscombe, Bournemouth. From £12 scalp rituals to 3-hour intentional pause sessions. Book online via Setmore.",
+    "Massage, healing and signature experiences at Healing with Boo in Boscombe, Bournemouth. From £12 scalp rituals to 3-hour intentional pause sessions. Book online with Leah.",
 };
 
 export default function ServicesPage() {
@@ -214,12 +214,12 @@ export default function ServicesPage() {
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
             That&apos;s completely okay. If you&apos;re not sure what you need, just book a 30 Minute Calming Massage (&pound;25) as a starting point, or message Leah directly on +447425018335 and she&apos;ll help you figure it out. No pressure &mdash; just a warm conversation.
           </p>
-          <a
+          <Link
             href="/booking"
             className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
-            Book on Setmore
-          </a>
+            Book Now
+          </Link>
         </div>
       </section>
 

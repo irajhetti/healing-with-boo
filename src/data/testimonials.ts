@@ -12,7 +12,7 @@ export const testimonials: Testimonial[] = [
     name: "Leonie",
     treatment: "Deep Tissue Massage & Cupping",
     rating: 5,
-    text: "How do I even begin to describe what Boo does for me! The first time I went for a massage she was so considerate of my migraine condition and illnesses, making sure to pace the treatment so I wouldn't flare. As soon as we knew my body was ok, we upped our treatment sessions and I instantly felt amazing. What I love about Boo is that she knows the body so well, she can feel everything and knows where the pain's root is and where it's connected to.\n\nIt's not just going for a massage, it's a holistic whole body approach because Boo knows where you need the most help and supports your body gently and properly.\n\nI've also had the cupping therapy done as well which a lot of people said they didn't like but I loved it. The day I had it I had really bad pain in my shoulders but when the cups were on, that pain lifted because I felt the pressure from the cups. Boo continued to massage in the places the cups weren't, no minutes were wasted.\n\nShe really does go above and beyond to work with you and make sure the problems you have are focused on, treated and looked after. She listens to your needs, respects your choices and is the kindest and friendliest person, you'll instantly feel at ease with her. I've had a lot of massages and treatments but I'll never go to anyone else \u2014 I'm so thankful I found her, I truly feel she's made the biggest difference in my body. I honestly can't recommend her enough!",
+    text: "How do I even begin to describe what Boo does for me! The first time I went for a massage she was so considerate of my migraine condition and illnesses, making sure to pace the treatment so I wouldn't flare. As soon as we knew my body was ok, we upped our treatment sessions and I instantly felt amazing. What I love about Boo is that she knows the body so well, she can feel everything and knows where the pain's root is and where it's connected to.\n\nIt's not just going for a massage, it's a holistic whole body approach because Boo knows where you need the most help and supports your body gently and properly.\n\nI've also had the cupping therapy done as well which a lot of people said they didn't like but I loved it. The day I had it I had really bad pain in my shoulders but when the cups were on, that pain lifted because I felt the pressure from the cups. Boo continued to massage in the places the cups weren't, no minutes were wasted.\n\nShe really does go above and beyond to work with you and make sure the problems you have are focused on, treated and looked after. She listens to your needs, respects your choices and is the kindest and friendliest person, you'll instantly feel at ease with her. I've had a lot of massages and treatments but I'll never go to anyone else I'm so thankful I found her, I truly feel she's made the biggest difference in my body. I honestly can't recommend her enough!",
     featured: true,
   },
   {
@@ -26,7 +26,7 @@ export const testimonials: Testimonial[] = [
     name: "Paulina",
     treatment: "Massage & Healing",
     rating: 5,
-    text: "I just wanted to say thank you again for yesterday. I'm still thinking about how amazing that session was.\n\nDuring it I felt such a deep sense of calm and relaxation. At one point I remember feeling a bit of tension in my body and then suddenly it was like my whole body just melted into the bed. When I got home I felt like an oasis of calm. It was honestly hard for anything to throw me off balance. I felt a bit tired but in a really nice way, and I even noticed I was speaking more slowly and quietly because everything in me felt so peaceful.\n\nBut the most incredible thing is that you did something I thought was impossible. For the first time in so many years I fell asleep like a child with complete silence in my head. The state I came home in yesterday was just amazing \u2014 I wish I could wake up feeling like that every morning.\n\nThank you so much, truly. What you do is something really special. You're honestly amazing.",
+    text: "I just wanted to say thank you again for yesterday. I'm still thinking about how amazing that session was.\n\nDuring it I felt such a deep sense of calm and relaxation. At one point I remember feeling a bit of tension in my body and then suddenly it was like my whole body just melted into the bed. When I got home I felt like an oasis of calm. It was honestly hard for anything to throw me off balance. I felt a bit tired but in a really nice way, and I even noticed I was speaking more slowly and quietly because everything in me felt so peaceful.\n\nBut the most incredible thing is that you did something I thought was impossible. For the first time in so many years I fell asleep like a child with complete silence in my head. The state I came home in yesterday was just amazing I wish I could wake up feeling like that every morning.\n\nThank you so much, truly. What you do is something really special. You're honestly amazing.",
     featured: true,
   },
 
@@ -35,7 +35,7 @@ export const testimonials: Testimonial[] = [
     name: "Michelle",
     treatment: "Massage & Healing",
     rating: 5,
-    text: "Didn't realise just how much I needed Boo in my life!! The massage and healing were incredible \u2014 I feel so realigned and balanced it's unreal. Will definitely be booking again!",
+    text: "Didn't realise just how much I needed Boo in my life!! The massage and healing were incredible I feel so realigned and balanced it's unreal. Will definitely be booking again!",
   },
   {
     name: "Eva",
@@ -71,7 +71,7 @@ export const testimonials: Testimonial[] = [
     name: "Andreea",
     treatment: "Energy Rebalance",
     rating: 5,
-    text: "Are you feeling depressed, anxious, or carrying a lot of trauma? Boo is the person you want to see! I've had a few of her healing sessions, and they've really made a difference for me.\n\nOne time, I was feeling very down, and I decided to try her energy rebalance. From the moment I first contacted her, I could feel her amazing, blessed energy.\n\nIf you're sceptical, I get it \u2014 but I noticed a change just a few days later. I went from feeling drained to feeling more energetic and active in my daily life. I definitely recommend giving her a try if you're looking for some healing and good vibes. It's worth it!",
+    text: "Are you feeling depressed, anxious, or carrying a lot of trauma? Boo is the person you want to see! I've had a few of her healing sessions, and they've really made a difference for me.\n\nOne time, I was feeling very down, and I decided to try her energy rebalance. From the moment I first contacted her, I could feel her amazing, blessed energy. If you're sceptical, I get it but I noticed a change just a few days later. I went from feeling drained to feeling more energetic and active in my daily life. I definitely recommend giving her a try if you're looking for some healing and good vibes. It's worth it!",
   },
   {
     name: "Abbie",
@@ -95,7 +95,7 @@ export const testimonials: Testimonial[] = [
     name: "Donna",
     treatment: "Massage & Healing",
     rating: 5,
-    text: "I was recommended Boo by a good friend and initially booked in for a massage. The treatment was fantastic and Boo definitely got all the spots that were troubling me \u2014 along with several areas that I didn't realise were even a problem. During that session Boo sensed that I had suffered a loss and offered to do healing on my next booking. I have never done anything like that before but I felt strangely drawn to Boo so agreed and she has blown my mind! I was quite sceptical about this kind of thing but I have been converted! I have felt so much happier and lighter since the appointment and the comfort it has brought me is priceless. I just wish I'd found her years ago!",
+    text: "I was recommended Boo by a good friend and initially booked in for a massage. The treatment was fantastic and Boo definitely got all the spots that were troubling me along with several areas that I didn't realise were even a problem. During that session Boo sensed that I had suffered a loss and offered to do healing on my next booking. I have never done anything like that before but I felt strangely drawn to Boo so agreed and she has blown my mind! I was quite sceptical about this kind of thing but I have been converted! I have felt so much happier and lighter since the appointment and the comfort it has brought me is priceless. I just wish I'd found her years ago!",
   },
   {
     name: "Peter",
@@ -131,7 +131,7 @@ export const testimonials: Testimonial[] = [
     name: "Helen",
     treatment: "Deep Tissue Massage",
     rating: 5,
-    text: "I have been seeing Boo for a couple of years now and I would not let anyone else near my back. She is amazing at what she does. She brings me so much pain for someone so small but it is exactly what I need. She is such a lovely person too inside and out. She is a caring soul. Choosing Boo will be the best thing you have done for a while \u2014 I guarantee it!!!",
+    text: "I have been seeing Boo for a couple of years now and I would not let anyone else near my back. She is amazing at what she does. She brings me so much pain for someone so small but it is exactly what I need. She is such a lovely person too inside and out. She is a caring soul. Choosing Boo will be the best thing you have done for a while I guarantee it!!!",
   },
   {
     name: "Fi",

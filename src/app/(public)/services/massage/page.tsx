@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { MysticalDivider } from "@/components/ui/MysticalDivider";
-// Link import removed - all booking links now use <a> tags to Setmore
 
 export const metadata: Metadata = {
   title: "Massage Therapy",
@@ -37,7 +37,7 @@ const treatments = [
   {
     name: "Women\u2019s Pelvic Health Massage",
     description:
-      "Great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. During the treatment you\u2019ll be led on each side, face down, and a little bit facing up. If you\u2019re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. Don\u2019t worry \u2014 it\u2019s not half as invasive as a Brazilian wax.",
+      "Great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. During the treatment you\u2019ll be led on each side, face down, and a little bit facing up. If you\u2019re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. Don''t worry it's not half as invasive as a Brazilian wax.",
     prices: [
       { duration: "40 min", price: "\u00a337" },
     ],
@@ -169,13 +169,13 @@ export default function MassagePage() {
                 </span>
               ))}
             </div>
-            <a
+            <Link
               href="/booking"
               className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all duration-300"
             >
               Book This Treatment
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </a>
+            </Link>
           </div>
         ))}
       </section>
@@ -263,14 +263,12 @@ export default function MassagePage() {
           <p className="font-body text-on-primary-container/80 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Your body is ready to let go. Book your massage session with Leah today.
           </p>
-          <a
-            href="https://bookwithboo.setmore.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/booking"
             className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
-          </a>
+          </Link>
         </div>
       </section>
     </>

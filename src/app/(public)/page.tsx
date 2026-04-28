@@ -227,14 +227,12 @@ export default function Home() {
           <p className="font-body text-on-primary-container/70 text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Whether you seek physical relief or spiritual reconnection, there is a place for you here. Book your session today.
           </p>
-          <a
-            href="https://bookwithboo.setmore.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/booking"
             className="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg font-bold text-sm tracking-wide hover:brightness-110 transition-all duration-300 active:scale-95 inline-block"
           >
             Book Now
-          </a>
+          </Link>
         </div>
         </ScrollReveal>
       </section>
