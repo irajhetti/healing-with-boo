@@ -49,7 +49,7 @@ export default function ServicesPage() {
                   Massage
                 </h2>
                 <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-4">
-                  Deep tissue or calming \u2014 tailored to what your body needs. From 30-minute sessions to 90-minute full body treatments, plus scalp pressure rituals and pelvic health massage.
+                  Deep tissue or calming — tailored to what your body needs. From 30-minute sessions to 90-minute full body treatments, plus scalp pressure rituals and pelvic health massage.
                 </p>
                 <span className="inline-flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">
                   From &pound;25

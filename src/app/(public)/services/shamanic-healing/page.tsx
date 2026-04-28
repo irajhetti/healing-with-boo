@@ -6,7 +6,7 @@ import { MysticalDivider } from "@/components/ui/MysticalDivider";
 export const metadata: Metadata = {
   title: "Shamanic Healing",
   description:
-    "Healing sessions in Boscombe, Bournemouth. Chakra balancing, sacred womb activation, shamanic healing, and signature massage-healing experiences from \u00a355 with Leah at Healing with Boo.",
+    "Healing sessions in Boscombe, Bournemouth. Chakra balancing, sacred womb activation, shamanic healing, and signature massage-healing experiences from £55 with Leah at Healing with Boo.",
 };
 
 const treatments = [
@@ -14,24 +14,24 @@ const treatments = [
     name: "Chakra Balancing",
     description:
       "Energy healing. Bringing in more of what your soul craves and removing anything getting in the way.",
-    duration: "45\u201360 min",
-    price: "\u00a355",
+    duration: "45–60 min",
+    price: "£55",
     icon: "balance",
   },
   {
     name: "Sacred Womb Activation",
     description:
-      "Massage around the hip area releasing any stuck tension followed by womb healing \u2014 one of the best ways to honour and connect with your feminine energy. It can help you tune in with yourself while creating awareness and consciousness. A healing process to release emotional blockages.",
+      "Massage around the hip area releasing any stuck tension followed by womb healing — one of the best ways to honour and connect with your feminine energy. It can help you tune in with yourself while creating awareness and consciousness. A healing process to release emotional blockages.",
     duration: "75 min",
-    price: "\u00a375",
+    price: "£75",
     icon: "brightness_7",
   },
   {
     name: "Shamanic Healing",
     description:
-      "As a shamanic practitioner, Leah is a spiritual mediator navigating between the physical world and the spirit world. The spirit guides help take the healing deeper by retrieving lost soul parts, releasing spiritual blockages, and connecting you with your intuitive self. We\u2019ll do a thorough consultation, create a personalised plan, and work together. There\u2019s a variety of treatments \u2014 some you can lay back and feel gentle and calm, but some go into the deeper levels. The shadow stuff that needs a shift can be uncomfortable initially but always for your highest good. This is not a \u201Cooh wave a magic wand\u201D instant fix \u2014 there can often be layers.",
+      "As a shamanic practitioner, Leah is a spiritual mediator navigating between the physical world and the spirit world. The spirit guides help take the healing deeper by retrieving lost soul parts, releasing spiritual blockages, and connecting you with your intuitive self. We’ll do a thorough consultation, create a personalised plan, and work together. There’s a variety of treatments — some you can lay back and feel gentle and calm, but some go into the deeper levels. The shadow stuff that needs a shift can be uncomfortable initially but always for your highest good. This is not a “ooh wave a magic wand” instant fix — there can often be layers.",
     duration: "90 min",
-    price: "\u00a395",
+    price: "£95",
     icon: "auto_awesome",
   },
 ];
@@ -42,7 +42,7 @@ const signatureExperiences = [
     description:
       "Medium pressure working on the face, neck and scalp followed by some energy healing to take the relaxation even deeper, ending with a hand massage.",
     duration: "60 min",
-    price: "\u00a370",
+    price: "£70",
     icon: "spa",
   },
   {
@@ -50,23 +50,23 @@ const signatureExperiences = [
     description:
       "Full body massage releasing tension followed by energy healing to regain balance spiritually and physically. Working with spirit, drums, rattles and herbs, bringing in more of what your soul craves and removing anything getting in the way.",
     duration: "90 min / 2 hrs",
-    price: "\u00a390 / \u00a3120",
+    price: "£90 / £120",
     icon: "all_inclusive",
   },
   {
     name: "Deep Release",
     description:
-      "Using the absolutely wonderful magic of spiritual healing, drums, rattles and a bit of breathwork, we\u2019ll work on a deep-rooted feeling that you can\u2019t shift. Followed by either a deep tissue massage stripping down any areas holding too much pain or that feel stuck, or a more relaxing massage to calm everything down. Buckle up for this one \u2014 ideally Leah would love you to lay down and she waves a magic wand, but these sessions require interaction, being open and working together.",
+      "Using the absolutely wonderful magic of spiritual healing, drums, rattles and a bit of breathwork, we’ll work on a deep-rooted feeling that you can’t shift. Followed by either a deep tissue massage stripping down any areas holding too much pain or that feel stuck, or a more relaxing massage to calm everything down. Buckle up for this one — ideally Leah would love you to lay down and she waves a magic wand, but these sessions require interaction, being open and working together.",
     duration: "90 min",
-    price: "\u00a3115",
+    price: "£115",
     icon: "air",
   },
   {
     name: "The Intentional Pause",
     description:
-      "3 hours of some well-deserved looking after \u2014 massage and healing included. This session is peaceful (unless working through some no-pain-no-gain areas of massage), slowly and intentionally releasing the stress, tension and baggage of this crazy life we\u2019re all living in. Dedicating 3 hours to your mental, spiritual and physical wellbeing. We both set the intention of what needs to be released and achieved, then you lay down, zone out and let Leah do the work. As always, working with her beautiful spirit team, drum, rattle, herbs and energy work as well as hands on.",
+      "3 hours of some well-deserved looking after — massage and healing included. This session is peaceful (unless working through some no-pain-no-gain areas of massage), slowly and intentionally releasing the stress, tension and baggage of this crazy life we’re all living in. Dedicating 3 hours to your mental, spiritual and physical wellbeing. We both set the intention of what needs to be released and achieved, then you lay down, zone out and let Leah do the work. As always, working with her beautiful spirit team, drum, rattle, herbs and energy work as well as hands on.",
     duration: "3 hrs",
-    price: "\u00a3165",
+    price: "£165",
     icon: "self_improvement",
   },
 ];
@@ -75,13 +75,13 @@ const timelineSteps = [
   {
     title: "Chat & Settle In",
     description:
-      "Leah will have a warm, relaxed chat about what\u2019s going on for you and what you\u2019d like from the session. No judgement, no pressure \u2014 just listening.",
+      "Leah will have a warm, relaxed chat about what’s going on for you and what you’d like from the session. No judgement, no pressure — just listening.",
     icon: "forum",
   },
   {
     title: "Setting the Space",
     description:
-      "The room is prepared with intention \u2014 herbs, sound, and energy. Leah creates a safe, held container for whatever needs to come through during your session.",
+      "The room is prepared with intention — herbs, sound, and energy. Leah creates a safe, held container for whatever needs to come through during your session.",
     icon: "brightness_7",
   },
   {
@@ -93,19 +93,19 @@ const timelineSteps = [
   {
     title: "Coming Back",
     description:
-      "Gentle integration time to come back to yourself. Leah will share anything that came up and you can take your time \u2014 no rushing out the door.",
+      "Gentle integration time to come back to yourself. Leah will share anything that came up and you can take your time — no rushing out the door.",
     icon: "nest_eco_leaf",
   },
 ];
 
 const signs = [
-  "You feel stuck, drained, or like something is off but you can\u2019t quite explain it",
-  "You\u2019re carrying emotional weight that won\u2019t shift",
-  "You\u2019re going through a big life change and need support",
+  "You feel stuck, drained, or like something is off but you can’t quite explain it",
+  "You’re carrying emotional weight that won’t shift",
+  "You’re going through a big life change and need support",
   "You want to reconnect with your feminine energy or heal womb-related issues",
   "Your child is struggling with confidence, anxiety, or unsettled emotions",
-  "You\u2019ve tried other things and they haven\u2019t quite got to the root of it",
-  "You\u2019re curious about energy healing and want to try it in a safe, relaxed space",
+  "You’ve tried other things and they haven’t quite got to the root of it",
+  "You’re curious about energy healing and want to try it in a safe, relaxed space",
   "You just need to properly stop and reset",
 ];
 
@@ -113,27 +113,27 @@ const faqs = [
   {
     question: "Do I need to believe in any of this for it to work?",
     answer:
-      "Not at all. You don\u2019t need any specific beliefs. Just come as you are with an open mind. Many clients are simply curious and still have deeply meaningful experiences.",
+      "Not at all. You don’t need any specific beliefs. Just come as you are with an open mind. Many clients are simply curious and still have deeply meaningful experiences.",
   },
   {
-    question: "What\u2019s the difference between Chakra Balancing and Shamanic Healing?",
+    question: "What’s the difference between Chakra Balancing and Shamanic Healing?",
     answer:
-      "Chakra Balancing (\u00a355) is energy healing \u2014 bringing in more of what your soul craves and removing anything getting in the way. Shamanic Healing (\u00a395) goes deeper with a full consultation, personalised plan, and working together with spirit guides to retrieve lost soul parts and release spiritual blockages. There can often be layers.",
+      "Chakra Balancing (£55) is energy healing — bringing in more of what your soul craves and removing anything getting in the way. Shamanic Healing (£95) goes deeper with a full consultation, personalised plan, and working together with spirit guides to retrieve lost soul parts and release spiritual blockages. There can often be layers.",
   },
   {
     question: "What is the Deep Release?",
     answer:
-      "90 minutes (\u00a3115) using spiritual healing, drums, rattles and breathwork to work on a deep-rooted feeling you can\u2019t shift, followed by either deep tissue or calming massage. These sessions require interaction, being open and working together.",
+      "90 minutes (£115) using spiritual healing, drums, rattles and breathwork to work on a deep-rooted feeling you can’t shift, followed by either deep tissue or calming massage. These sessions require interaction, being open and working together.",
   },
   {
     question: "What is the Total Chill Out?",
     answer:
-      "Medium pressure working on the face, neck and scalp followed by energy healing to take the relaxation even deeper, ending with a hand massage. \u00a370.",
+      "Medium pressure working on the face, neck and scalp followed by energy healing to take the relaxation even deeper, ending with a hand massage. £70.",
   },
   {
-    question: "What\u2019s the cancellation policy?",
+    question: "What’s the cancellation policy?",
     answer:
-      "Leah is always happy to reschedule with enough notice \u2014 life is nuts sometimes and she fully understands. But she does need to charge if it\u2019s less than 24 hours notice.",
+      "Leah is always happy to reschedule with enough notice — life is nuts sometimes and she fully understands. But she does need to charge if it’s less than 24 hours notice.",
   },
 ];
 

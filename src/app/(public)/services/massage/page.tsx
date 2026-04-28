@@ -6,7 +6,7 @@ import { MysticalDivider } from "@/components/ui/MysticalDivider";
 export const metadata: Metadata = {
   title: "Massage Therapy",
   description:
-    "Massage therapy in Boscombe, Bournemouth. Deep tissue and calming massage from 30 to 90 minutes, scalp pressure rituals, and pelvic health massage. From \u00a325 with Leah at Healing with Boo.",
+    "Massage therapy in Boscombe, Bournemouth. Deep tissue and calming massage from 30 to 90 minutes, scalp pressure rituals, and pelvic health massage. From £25 with Leah at Healing with Boo.",
 };
 
 const treatments = [
@@ -15,10 +15,10 @@ const treatments = [
     description:
       "Brutal but releasing and strangely addictive. Tailored to what your body needs.",
     prices: [
-      { duration: "30 min", price: "\u00a330" },
-      { duration: "45 min", price: "\u00a340" },
-      { duration: "60 min", price: "\u00a350" },
-      { duration: "90 min", price: "\u00a370" },
+      { duration: "30 min", price: "£30" },
+      { duration: "45 min", price: "£40" },
+      { duration: "60 min", price: "£50" },
+      { duration: "90 min", price: "£70" },
     ],
     icon: "fitness_center",
   },
@@ -27,19 +27,19 @@ const treatments = [
     description:
       "Ideal for hectic nervous systems. Tailored to what your body needs.",
     prices: [
-      { duration: "30 min", price: "\u00a325" },
-      { duration: "45 min", price: "\u00a335" },
-      { duration: "60 min", price: "\u00a345" },
-      { duration: "90 min", price: "\u00a365" },
+      { duration: "30 min", price: "£25" },
+      { duration: "45 min", price: "£35" },
+      { duration: "60 min", price: "£45" },
+      { duration: "90 min", price: "£65" },
     ],
     icon: "spa",
   },
   {
-    name: "Women\u2019s Pelvic Health Massage",
+    name: "Women’s Pelvic Health Massage",
     description:
-      "Great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. During the treatment you\u2019ll be led on each side, face down, and a little bit facing up. If you\u2019re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. Don''t worry it's not half as invasive as a Brazilian wax.",
+      "Great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. During the treatment you’ll be led on each side, face down, and a little bit facing up. If you’re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. Don’t worry — it’s not half as invasive as a Brazilian wax.",
     prices: [
-      { duration: "40 min", price: "\u00a337" },
+      { duration: "40 min", price: "£37" },
     ],
     icon: "favorite",
   },
@@ -48,7 +48,7 @@ const treatments = [
     description:
       "Relaxing face massage mixed with trigger points (can be tender) to ease up tension. Great for lymphatic flow. Oil hair mask is massaged into scalp and hair for you to leave on as long as you wish.",
     prices: [
-      { duration: "30 min", price: "\u00a325" },
+      { duration: "30 min", price: "£25" },
     ],
     icon: "face_retouching_natural",
   },
@@ -59,32 +59,32 @@ const steps = [
     title: "Before Your Session",
     icon: "event_note",
     description:
-      "Arrive 5\u201310 minutes early to settle in. You\u2019ll have a brief consultation where Leah will ask about your areas of concern, any injuries, and what you\u2019d like to focus on. Wear comfortable clothing \u2014 you\u2019ll undress to your comfort level.",
+      "Arrive 5–10 minutes early to settle in. You’ll have a brief consultation where Leah will ask about your areas of concern, any injuries, and what you’d like to focus on. Wear comfortable clothing — you’ll undress to your comfort level.",
   },
   {
     title: "During Your Session",
     icon: "self_improvement",
     description:
-      "The room is warm, quiet, and held with intention. Leah works intuitively, checking in with you on pressure and adjusting as needed. You\u2019re encouraged to breathe deeply and let your body relax fully. Communication is always welcome.",
+      "The room is warm, quiet, and held with intention. Leah works intuitively, checking in with you on pressure and adjusting as needed. You’re encouraged to breathe deeply and let your body relax fully. Communication is always welcome.",
   },
   {
     title: "After Your Session",
     icon: "water_drop",
     description:
-      "Take your time getting up \u2014 there\u2019s no rush. Drink plenty of water in the hours that follow. Some clients feel immediate relief, while others notice shifts over the next day or two. Gentle movement and rest are recommended.",
+      "Take your time getting up — there’s no rush. Drink plenty of water in the hours that follow. Some clients feel immediate relief, while others notice shifts over the next day or two. Gentle movement and rest are recommended.",
   },
 ];
 
 const faqs = [
   {
-    question: "What\u2019s the difference between deep tissue and calming?",
+    question: "What’s the difference between deep tissue and calming?",
     answer:
-      "Deep tissue is more intense \u2014 brutal but releasing and strangely addictive. Calming massage is lighter pressure, ideal for hectic nervous systems. Both are tailored to what your body needs on the day.",
+      "Deep tissue is more intense — brutal but releasing and strangely addictive. Calming massage is lighter pressure, ideal for hectic nervous systems. Both are tailored to what your body needs on the day.",
   },
   {
-    question: "What is the Women\u2019s Pelvic Health Massage?",
+    question: "What is the Women’s Pelvic Health Massage?",
     answer:
-      "A 40-minute specialist massage great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. You\u2019ll be led on each side, face down, and a little facing up. If you\u2019re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. It\u2019s really not half as invasive as a Brazilian wax \u2014 don\u2019t worry.",
+      "A 40-minute specialist massage great for tight hips, post-pregnancy recovery, endometriosis, PCOS, scar tissue, and PMS. You’ll be led on each side, face down, and a little facing up. If you’re shy you can wear loose shorts over your undies and Leah will cover you as much as possible. It’s really not half as invasive as a Brazilian wax — don’t worry.",
   },
   {
     question: "What is the Scalp Pressure Ritual?",
@@ -92,14 +92,14 @@ const faqs = [
       "A 30-minute relaxing face massage mixed with trigger points (can be tender) to ease up tension. Great for lymphatic flow. An oil hair mask is massaged into your scalp and hair for you to leave on as long as you wish.",
   },
   {
-    question: "What\u2019s your cancellation policy?",
+    question: "What’s your cancellation policy?",
     answer:
-      "Leah is always happy to reschedule with enough notice \u2014 life is nuts sometimes and she fully understands. But she does need to charge if it\u2019s less than 24 hours notice.",
+      "Leah is always happy to reschedule with enough notice — life is nuts sometimes and she fully understands. But she does need to charge if it’s less than 24 hours notice.",
   },
   {
     question: "How do I book?",
     answer:
-      "Just pick the treatment and time that works for you. If you\u2019re not sure what to book, message Leah on +447425018335.",
+      "Just pick the treatment and time that works for you. If you’re not sure what to book, message Leah on +447425018335.",
   },
 ];
 
