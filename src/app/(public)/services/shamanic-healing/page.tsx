@@ -46,7 +46,7 @@ const signatureExperiences = [
     icon: "spa",
   },
   {
-    name: "Body &amp; Soul Reset",
+    name: "Body & Soul Reset",
     description:
       "Full body massage releasing tension followed by energy healing to regain balance spiritually and physically. Working with spirit, drums, rattles and herbs, bringing in more of what your soul craves and removing anything getting in the way.",
     duration: "90 min / 2 hrs",
