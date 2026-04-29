@@ -448,7 +448,7 @@ export async function createCashBooking(formData: {
 
   // Send emails
   try {
-    const { getResendClient, FROM_EMAIL, ADMIN_EMAIL } = await import("@/lib/email");
+    const { sendEmail, ADMIN_EMAIL } = await import("@/lib/email");
     const { buildConfirmationEmail } = await import("@/lib/emails/booking-confirmation");
     const { buildNotificationEmail } = await import("@/lib/emails/booking-notification");
     const { formatDate, formatTime, formatDuration, formatPrice } = await import("@/lib/utils");
@@ -468,11 +468,8 @@ export async function createCashBooking(formData: {
       price: priceDisplay,
     };
 
-    const resend = getResendClient();
-
     const confirmation = buildConfirmationEmail(emailData);
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    await sendEmail({
       to: email,
       subject: confirmation.subject,
       html: confirmation.html,
@@ -484,8 +481,7 @@ export async function createCashBooking(formData: {
       guestPhone: phone,
       notes: notes || null,
     });
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    await sendEmail({
       to: ADMIN_EMAIL,
       subject: `💷 CASH — ${notification.subject}`,
       html: notification.html,

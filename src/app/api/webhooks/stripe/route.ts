@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe";
 import { getPrisma } from "@/lib/db";
 import { generateReference, formatDate, formatTime, formatDuration, formatPrice } from "@/lib/utils";
-import { getResendClient, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/email";
+import { sendEmail, ADMIN_EMAIL } from "@/lib/email";
 import { buildConfirmationEmail } from "@/lib/emails/booking-confirmation";
 import { buildNotificationEmail } from "@/lib/emails/booking-notification";
 import Stripe from "stripe";
@@ -192,12 +192,9 @@ export async function POST(req: NextRequest) {
         price: priceDisplay,
       };
 
-      const resend = getResendClient();
-
       if (metadata.guestEmail) {
         const confirmation = buildConfirmationEmail(emailData);
-        await resend.emails.send({
-          from: FROM_EMAIL,
+        await sendEmail({
           to: metadata.guestEmail,
           subject: confirmation.subject,
           html: confirmation.html,
@@ -210,8 +207,7 @@ export async function POST(req: NextRequest) {
         guestPhone: metadata.guestPhone || "",
         notes: metadata.notes || null,
       });
-      await resend.emails.send({
-        from: FROM_EMAIL,
+      await sendEmail({
         to: ADMIN_EMAIL,
         subject: notification.subject,
         html: notification.html,

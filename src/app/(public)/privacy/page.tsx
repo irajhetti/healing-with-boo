@@ -102,7 +102,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc list-outside pl-5 space-y-2 mt-4">
               <li><strong>Stripe</strong> — to process card payments. Stripe is PCI-compliant and stores its own copy of payment data under their privacy policy.</li>
-              <li><strong>Resend</strong> — to send you booking confirmation and reminder emails. Your email address is processed for delivery only.</li>
+              <li><strong>Our domain&apos;s email server</strong> (donotreply@healingwithboo.co.uk) — to send you booking confirmations, reminders, and password reset emails. No third-party email-marketing tools are used; your email address is processed only for direct delivery.</li>
             </ul>
             <p className="mt-4">
               We never sell, rent, or trade your personal information. We will

@@ -1,6 +1,6 @@
 "use server";
 
-import { getResendClient, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/email";
+import { sendEmail, ADMIN_EMAIL } from "@/lib/email";
 import { buildContactEmail } from "@/lib/emails/contact-form";
 import { contactFormSchema } from "@/lib/validations/contact";
 
@@ -19,11 +19,9 @@ export async function submitContactForm(formData: FormData) {
   const { name, email, subject, message } = parsed.data;
 
   try {
-    const resend = getResendClient();
     const emailContent = buildContactEmail({ name, email, subject, message });
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    await sendEmail({
       to: ADMIN_EMAIL,
       replyTo: email,
       subject: emailContent.subject,

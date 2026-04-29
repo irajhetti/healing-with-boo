@@ -341,12 +341,10 @@ async function sendAdminBookingEmail(args: {
   finalPrice: number;
   setupLink: string | null;
 }) {
-  const { getResendClient, FROM_EMAIL } = await import("@/lib/email");
+  const { sendEmail } = await import("@/lib/email");
   const { buildAdminBookingEmail } = await import("@/lib/emails/admin-booking");
   const { formatDate, formatTime, formatDuration, formatPrice } = await import("@/lib/utils");
 
-  // Caller already checked client.email exists
-  const resend = getResendClient();
   const email = buildAdminBookingEmail({
     reference: args.reference,
     guestName: args.client.name,
@@ -358,7 +356,7 @@ async function sendAdminBookingEmail(args: {
     setupLink: args.setupLink,
   });
 
-  // Get email from caller — we accept it via guestEmail in the booking row, look it up
+  // Look up the guest email stored on the booking
   const prisma = getPrisma();
   const booking = await prisma.booking.findUnique({
     where: { reference: args.reference },
@@ -366,8 +364,7 @@ async function sendAdminBookingEmail(args: {
   });
   if (!booking?.guestEmail) return;
 
-  await resend.emails.send({
-    from: FROM_EMAIL,
+  await sendEmail({
     to: booking.guestEmail,
     subject: email.subject,
     html: email.html,

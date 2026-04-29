@@ -4,7 +4,7 @@ import { randomBytes, createHash } from "node:crypto";
 import { hashSync } from "bcryptjs";
 import { z } from "zod";
 import { getPrisma } from "@/lib/db";
-import { getResendClient, FROM_EMAIL } from "@/lib/email";
+import { sendEmail } from "@/lib/email";
 import { buildPasswordResetEmail } from "@/lib/emails/password-reset";
 
 const TOKEN_TTL_MINUTES = 60;
@@ -63,8 +63,7 @@ export async function requestPasswordReset(
       resetUrl,
       expiresMinutes: TOKEN_TTL_MINUTES,
     });
-    await getResendClient().emails.send({
-      from: FROM_EMAIL,
+    await sendEmail({
       to: user.email,
       subject: email.subject,
       html: email.html,
