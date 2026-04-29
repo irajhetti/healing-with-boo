@@ -178,7 +178,22 @@ export async function getMemberDiscountCodes(): Promise<MemberDiscountCode[]> {
     }));
 }
 
-export async function createCheckoutSession(formData: {
+export type PaymentIntentResult =
+  | {
+      clientSecret: string;
+      paymentIntentId: string;
+      finalPrice: number;
+      originalPrice: number;
+      discountAmount: number;
+      error: null;
+    }
+  | { clientSecret: null; error: string };
+
+/**
+ * Creates a Stripe PaymentIntent for an inline (Payment Element) checkout.
+ * No DB row is created until the webhook receives `payment_intent.succeeded`.
+ */
+export async function createPaymentIntent(formData: {
   serviceId: string;
   date: string;
   time: string;
@@ -187,38 +202,31 @@ export async function createCheckoutSession(formData: {
   phone: string;
   notes?: string;
   discountCode?: string;
-}): Promise<{ url: string | null; error: string | null }> {
-  // Validate input
+}): Promise<PaymentIntentResult> {
   const parsed = bookingFormSchema.safeParse(formData);
   if (!parsed.success) {
-    return { url: null, error: parsed.error.issues[0].message };
+    return { clientSecret: null, error: parsed.error.issues[0].message };
   }
+  const { serviceId, date, time, name, email, phone, notes, discountCode } =
+    parsed.data;
 
-  const { serviceId, date, time, name, email, phone, notes, discountCode } = parsed.data;
-
-  // Look up service
   const service = await getPrisma().service.findUnique({
     where: { id: serviceId },
   });
-  if (!service) {
-    return { url: null, error: "Service not found" };
-  }
+  if (!service) return { clientSecret: null, error: "Service not found" };
 
-  // Re-check availability
   const availableSlots = await getAvailableSlots(serviceId, date);
   if (!availableSlots.includes(time)) {
     return {
-      url: null,
+      clientSecret: null,
       error: "This time slot is no longer available. Please choose another.",
     };
   }
 
-  // Build start and end times in UTC
   const startTime = londonTimeToUTC(date, time);
   const endTime = new Date(startTime);
   endTime.setMinutes(endTime.getMinutes() + service.duration);
 
-  // Check if user is signed in to link booking
   const authSession = await auth();
   let userId: string | null = null;
   if (authSession?.user?.email) {
@@ -229,7 +237,6 @@ export async function createCheckoutSession(formData: {
     userId = user?.id ?? null;
   }
 
-  // Validate and apply discount code
   let finalPrice = service.price;
   let discountCodeId: string | null = null;
   let discountAmount = 0;
@@ -237,37 +244,22 @@ export async function createCheckoutSession(formData: {
   if (discountCode) {
     const result = await validateDiscountCode({ code: discountCode, serviceId });
     if (!result.valid) {
-      return { url: null, error: result.error || "Invalid discount code." };
+      return { clientSecret: null, error: result.error || "Invalid discount code." };
     }
     finalPrice = result.finalPrice!;
     discountAmount = result.savedAmount!;
     discountCodeId = result.codeId!;
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3034";
-
-  // Create Stripe Checkout Session
   const stripe = getStripeClient();
-  const productDescription = discountCodeId
-    ? `${service.duration} minutes — Healing with Boo (${discountCode!.toUpperCase()} applied)`
-    : `${service.duration} minutes — Healing with Boo`;
-
-  const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    line_items: [
-      {
-        price_data: {
-          currency: "gbp",
-          product_data: {
-            name: service.name,
-            description: productDescription,
-          },
-          unit_amount: finalPrice,
-        },
-        quantity: 1,
-      },
-    ],
-    customer_email: email,
+  const intent = await stripe.paymentIntents.create({
+    amount: finalPrice,
+    currency: "gbp",
+    automatic_payment_methods: { enabled: true },
+    receipt_email: email,
+    description: discountCodeId
+      ? `${service.name} (${service.duration}min) — ${discountCode!.toUpperCase()} applied`
+      : `${service.name} (${service.duration}min)`,
     metadata: {
       serviceId,
       startTime: startTime.toISOString(),
@@ -284,12 +276,20 @@ export async function createCheckoutSession(formData: {
         discountAmount: discountAmount.toString(),
       }),
     },
-    success_url: `${baseUrl}/booking/confirmation?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${baseUrl}/booking`,
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 min expiry
   });
 
-  return { url: session.url, error: null };
+  if (!intent.client_secret) {
+    return { clientSecret: null, error: "Failed to initialise payment." };
+  }
+
+  return {
+    clientSecret: intent.client_secret,
+    paymentIntentId: intent.id,
+    finalPrice,
+    originalPrice: service.price,
+    discountAmount,
+    error: null,
+  };
 }
 
 export async function createCashBooking(formData: {

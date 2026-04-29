@@ -12,17 +12,22 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ session_id?: string; ref?: string }>;
+  searchParams: Promise<{
+    payment_intent?: string;
+    payment_intent_client_secret?: string;
+    redirect_status?: string;
+    ref?: string;
+  }>;
 };
 
 export default async function BookingConfirmationPage({ searchParams }: Props) {
-  const { session_id, ref } = await searchParams;
+  const { payment_intent, ref } = await searchParams;
 
   let booking = null;
 
-  if (session_id) {
-    booking = await getPrisma().booking.findUnique({
-      where: { stripeSessionId: session_id },
+  if (payment_intent) {
+    booking = await getPrisma().booking.findFirst({
+      where: { stripePaymentId: payment_intent },
       include: { service: true },
     });
   } else if (ref) {
@@ -118,7 +123,7 @@ export default async function BookingConfirmationPage({ searchParams }: Props) {
                   {formatPrice(booking.price)}
                 </span>
               </div>
-              {!booking.stripeSessionId && (
+              {!booking.stripePaymentId && (
                 <p className="text-xs text-on-surface-variant mt-1 text-right">
                   Pay cash on the day
                 </p>

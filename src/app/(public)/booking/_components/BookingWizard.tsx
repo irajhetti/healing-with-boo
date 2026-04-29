@@ -6,12 +6,13 @@ import { signIn } from "next-auth/react";
 import type { ServiceCategory } from "@prisma/client";
 import type { ServiceWithCategory } from "@/app/(public)/booking/actions";
 import {
-  createCheckoutSession,
+  createPaymentIntent,
   createCashBooking,
   getMemberDiscountCodes,
   checkConsultationStatus,
   getAuthUserProfile,
 } from "@/app/(public)/booking/actions";
+import { PaymentForm } from "./PaymentForm";
 import { registerUser } from "@/app/(public)/(auth)/register/actions";
 import type { DiscountValidationResult, MemberDiscountCode } from "@/app/(public)/booking/actions";
 import { getAvailableSlots, getAvailableDates } from "@/lib/availability";
@@ -59,6 +60,10 @@ export function BookingWizard({ services }: Props) {
 
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // Inline payment state — set after createPaymentIntent succeeds
+  const [paymentClientSecret, setPaymentClientSecret] = useState<string | null>(null);
+  const [paymentAmountLabel, setPaymentAmountLabel] = useState<string>("");
 
   function handleServiceSelect(service: ServiceWithCategory) {
     setSelectedService(service);
@@ -159,14 +164,13 @@ export function BookingWizard({ services }: Props) {
       };
 
       if (paymentMethod === "card") {
-        const result = await createCheckoutSession(formData);
-        if (result.error) {
+        const result = await createPaymentIntent(formData);
+        if (result.error !== null) {
           setError(result.error);
           return;
         }
-        if (result.url) {
-          window.location.href = result.url;
-        }
+        setPaymentClientSecret(result.clientSecret);
+        setPaymentAmountLabel(`£${(result.finalPrice / 100).toFixed(2)}`);
       } else {
         const result = await createCashBooking(formData);
         if (result.error) {
@@ -178,6 +182,11 @@ export function BookingWizard({ services }: Props) {
         }
       }
     });
+  }
+
+  function handleCancelPayment() {
+    setPaymentClientSecret(null);
+    setPaymentAmountLabel("");
   }
 
   const profileComplete =
@@ -229,7 +238,25 @@ export function BookingWizard({ services }: Props) {
             />
           )}
 
-          {step === 4 && selectedService && (
+          {step === 4 && selectedService && paymentClientSecret && (
+            <div>
+              <div className="mb-6">
+                <h3 className="font-headline text-xl font-medium text-on-surface mb-2">
+                  Complete your payment
+                </h3>
+                <p className="text-sm text-on-surface-variant">
+                  You&apos;ll only be charged once you click Pay. Your booking is confirmed at the same moment.
+                </p>
+              </div>
+              <PaymentForm
+                clientSecret={paymentClientSecret}
+                amountLabel={paymentAmountLabel}
+                onCancel={handleCancelPayment}
+              />
+            </div>
+          )}
+
+          {step === 4 && selectedService && !paymentClientSecret && (
             <>
               {/* Auth section */}
               {!authChecked ? (
@@ -466,7 +493,8 @@ export function BookingWizard({ services }: Props) {
             </div>
           )}
 
-          {/* Navigation */}
+          {/* Navigation — hidden when the inline payment form is mounted */}
+          {!paymentClientSecret && (
           <div className="flex justify-between mt-8">
             <button
               onClick={handleBack}
@@ -515,6 +543,7 @@ export function BookingWizard({ services }: Props) {
               </button>
             ) : null}
           </div>
+          )}
         </div>
 
         {/* Sidebar */}

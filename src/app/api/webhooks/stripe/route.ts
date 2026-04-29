@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const metadata = session.metadata;
+  if (event.type === "payment_intent.succeeded") {
+    const intent = event.data.object as Stripe.PaymentIntent;
+    const metadata = intent.metadata;
 
     if (!metadata?.serviceId || !metadata?.startTime || !metadata?.endTime) {
-      console.error("Missing metadata in checkout session:", session.id);
+      console.error("Missing metadata in payment intent:", intent.id);
       return NextResponse.json({ error: "Missing metadata" }, { status: 400 });
     }
 
@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
     try {
       reference = await prisma.$transaction(async (tx) => {
         // Idempotency check inside the transaction (in case Stripe retries concurrently)
-        const existing = await tx.booking.findUnique({
-          where: { stripeSessionId: session.id },
+        const existing = await tx.booking.findFirst({
+          where: { stripePaymentId: intent.id },
         });
         if (existing) {
           alreadyProcessed = true;
@@ -105,8 +105,7 @@ export async function POST(req: NextRequest) {
             price: parseInt(metadata.price || "0"),
             discountCodeId,
             discountAmount,
-            stripeSessionId: session.id,
-            stripePaymentId: session.payment_intent as string | null,
+            stripePaymentId: intent.id,
             notes: metadata.notes || null,
           },
         });
@@ -134,25 +133,15 @@ export async function POST(req: NextRequest) {
         return ref;
       }, { isolationLevel: "Serializable" });
     } catch (err) {
-      // P2002 = unique constraint on stripeSessionId — concurrent webhook delivery; treat as no-op replay
-      if (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2002") {
-        console.log(`Concurrent webhook delivery for session ${session.id} — already processed`);
-        return NextResponse.json({ received: true });
-      }
-
       const isSlotConflict =
         (err instanceof Error && err.message === "SLOT_CONFLICT") ||
         (err instanceof Error && err.message === "DISCOUNT_EXHAUSTED") ||
         (err != null && typeof err === "object" && "code" in err && (err as { code: string }).code === "P2034");
       if (isSlotConflict) {
-        // Refund — slot taken or discount exhausted between checkout creation and payment
-        if (session.payment_intent) {
-          await getStripeClient().refunds.create({
-            payment_intent: session.payment_intent as string,
-          });
-        }
+        // Refund — slot taken or discount exhausted between PaymentIntent creation and capture
+        await getStripeClient().refunds.create({ payment_intent: intent.id });
         const reason = err instanceof Error ? err.message : "SLOT_CONFLICT";
-        console.error(`${reason} for session ${session.id} — refunded`);
+        console.error(`${reason} for payment intent ${intent.id} — refunded`);
         return NextResponse.json({ received: true });
       }
       throw err;
@@ -216,6 +205,11 @@ export async function POST(req: NextRequest) {
       // Log but don't fail — booking is already created
       console.error("Failed to send booking emails:", emailErr);
     }
+  }
+
+  if (event.type === "payment_intent.payment_failed") {
+    const intent = event.data.object as Stripe.PaymentIntent;
+    console.log(`Payment failed: ${intent.id} — ${intent.last_payment_error?.message ?? "no detail"}`);
   }
 
   return NextResponse.json({ received: true });
