@@ -1,4 +1,5 @@
 import { esc } from "./escape";
+import { emailShell, detailsPanel, ctaButton } from "./shell";
 
 export function buildAdminBookingEmail(data: {
   reference: string;
@@ -23,44 +24,61 @@ export function buildAdminBookingEmail(data: {
 
   const setupBlock = d.setupLink
     ? `
-      <div style="margin:28px 0;padding:18px 20px;background:#f5f0eb;border-radius:8px;">
-        <p style="margin:0 0 12px 0;font-size:14px;color:#333;">Want to manage your bookings online? Set up a password using the link below.</p>
-        <p style="margin:0;">
-          <a href="${d.setupLink}" style="display:inline-block;background:#2d3b2d;color:#f5f0eb;padding:10px 20px;border-radius:20px;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:14px;">Set up your account</a>
-        </p>
-        <p style="margin:10px 0 0 0;font-size:12px;color:#666;">This link is valid for 7 days.</p>
-      </div>`
+    <p style="margin:24px 0 8px 0;font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8a7d6a;text-transform:uppercase;">
+      Optional &middot; Online access
+    </p>
+    <p style="margin:0 0 16px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#3a3a3a;line-height:1.7;">
+      Want to manage your bookings online? You can set up a quick password and view your visit history any time.
+    </p>
+    ${ctaButton(d.setupLink, "Set up your account")}
+    <p style="margin:0 0 20px 0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#8a7d6a;line-height:1.5;">
+      This link is valid for 7 days. If you&apos;d rather not, just ignore it &mdash; your booking is confirmed either way.
+    </p>`
     : "";
+
+  const body = `
+    <h1 style="margin:0 0 18px 0;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:normal;color:#2d3b2d;line-height:1.3;">
+      Hello ${d.guestName},
+    </h1>
+    <p style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#3a3a3a;line-height:1.7;">
+      I&apos;ve booked you in. Here are the details so you have them on hand.
+    </p>
+
+    ${detailsPanel([
+      ["Reference", `<span style="font-family:Menlo,Consolas,monospace;font-size:13px;letter-spacing:1px;">${d.reference}</span>`],
+      ["Treatment", d.serviceName],
+      ["Date", d.date],
+      ["Time", d.time],
+      ["Duration", d.duration],
+      ["Price", `<strong>${d.price}</strong>`],
+    ])}
+
+    <p style="margin:20px 0 6px 0;font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8a7d6a;text-transform:uppercase;">
+      The space
+    </p>
+    <p style="margin:0 0 20px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#3a3a3a;line-height:1.7;">
+      Boo&apos;s Healing Bubble is at <strong>22 Churchill Road, Boscombe BH1 4ES</strong>. Try to come 10 minutes before your session so we can settle in.
+    </p>
+
+    <p style="margin:0 0 6px 0;font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8a7d6a;text-transform:uppercase;">
+      Need to change anything?
+    </p>
+    <p style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#3a3a3a;line-height:1.7;">
+      Reply to this email or message me on <a href="tel:+447425018335" style="color:#2d3b2d;">07425 018335</a>. I just need 24 hours&apos; notice for changes.
+    </p>
+
+    ${setupBlock}
+
+    <p style="margin:20px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#2d3b2d;font-style:italic;">
+      See you soon,<br>Leah&nbsp;x
+    </p>`.trim();
 
   return {
     subject: `Booking confirmed — ${data.serviceName}`,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif;">
-  <div style="max-width:520px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;">
-    <div style="background:#2d3b2d;padding:28px 32px;">
-      <h1 style="color:#f5f0eb;margin:0;font-size:24px;font-weight:normal;">Your booking is confirmed</h1>
-    </div>
-    <div style="padding:32px;color:#333;line-height:1.6;">
-      <p>Hi ${d.guestName},</p>
-      <p>Leah has booked you in. Here are the details:</p>
-      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
-        <tr><td style="padding:8px 0;color:#666;width:120px;">Reference</td><td style="padding:8px 0;font-family:monospace;">${d.reference}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Session</td><td style="padding:8px 0;">${d.serviceName}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Date</td><td style="padding:8px 0;">${d.date}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Time</td><td style="padding:8px 0;">${d.time}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Duration</td><td style="padding:8px 0;">${d.duration}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Price</td><td style="padding:8px 0;">${d.price}</td></tr>
-      </table>
-      <p style="font-size:14px;color:#666;">Boo's Healing Bubble &mdash; 22 Churchill Road, Boscombe.</p>
-      ${setupBlock}
-      <p style="font-size:13px;color:#666;">Need to change anything? Reply to this email or message Leah directly.</p>
-    </div>
-  </div>
-</body>
-</html>
-    `.trim(),
+    html: emailShell({
+      preheader: "Booking confirmed",
+      inboxPreview: `Leah has booked you in for ${data.serviceName} on ${data.date} at ${data.time}.`,
+      body,
+    }),
   };
 }

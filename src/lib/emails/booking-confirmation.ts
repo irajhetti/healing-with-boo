@@ -1,4 +1,5 @@
 import { esc } from "./escape";
+import { emailShell, detailsPanel } from "./shell";
 
 export function buildConfirmationEmail(data: {
   reference: string;
@@ -19,78 +20,47 @@ export function buildConfirmationEmail(data: {
     price: esc(data.price),
   };
 
+  const body = `
+    <h1 style="margin:0 0 18px 0;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:normal;color:#2d3b2d;line-height:1.3;">
+      Hello ${d.guestName},
+    </h1>
+    <p style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#3a3a3a;line-height:1.7;">
+      Your session is confirmed. I'm looking forward to seeing you.
+    </p>
+
+    ${detailsPanel([
+      ["Reference", `<span style="font-family:Menlo,Consolas,monospace;font-size:13px;letter-spacing:1px;">${d.reference}</span>`],
+      ["Treatment", d.serviceName],
+      ["Date", d.date],
+      ["Time", d.time],
+      ["Duration", d.duration],
+      ["Paid", `<strong>${d.price}</strong>`],
+    ])}
+
+    <p style="margin:20px 0 6px 0;font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8a7d6a;text-transform:uppercase;">
+      Before you arrive
+    </p>
+    <p style="margin:0 0 20px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#3a3a3a;line-height:1.7;">
+      Try to come 10 minutes before your session so we can settle in. We&apos;re at <strong>22 Churchill Road, Boscombe BH1 4ES</strong>.
+    </p>
+
+    <p style="margin:0 0 6px 0;font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8a7d6a;text-transform:uppercase;">
+      Need to reschedule?
+    </p>
+    <p style="margin:0 0 24px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#3a3a3a;line-height:1.7;">
+      That's okay &mdash; just give me at least 24 hours&apos; notice. WhatsApp or call <a href="tel:+447425018335" style="color:#2d3b2d;">07425 018335</a>.
+    </p>
+
+    <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#2d3b2d;font-style:italic;">
+      See you soon,<br>Leah&nbsp;x
+    </p>`.trim();
+
   return {
     subject: `Booking confirmed — ${data.serviceName}`,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif;">
-  <div style="max-width:520px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;">
-    <div style="background:#2d3b2d;padding:28px 32px;">
-      <h1 style="margin:0;color:#e8dfd4;font-size:22px;font-weight:normal;">Healing with Boo</h1>
-    </div>
-    <div style="padding:32px;">
-      <p style="color:#3a3a3a;font-size:16px;line-height:1.6;margin:0 0 20px;">
-        Hey ${d.guestName},
-      </p>
-      <p style="color:#3a3a3a;font-size:16px;line-height:1.6;margin:0 0 24px;">
-        Your session is booked and confirmed. Looking forward to seeing you.
-      </p>
-
-      <div style="background:#f5f0eb;border-radius:8px;padding:20px 24px;margin:0 0 24px;">
-        <table style="width:100%;border-collapse:collapse;">
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Reference</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;font-weight:bold;text-align:right;">${d.reference}</td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Treatment</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;text-align:right;">${d.serviceName}</td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Date</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;text-align:right;">${d.date}</td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Time</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;text-align:right;">${d.time}</td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Duration</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;text-align:right;">${d.duration}</td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;color:#888;font-size:13px;">Paid</td>
-            <td style="padding:6px 0;color:#3a3a3a;font-size:14px;font-weight:bold;text-align:right;">${d.price}</td>
-          </tr>
-        </table>
-      </div>
-
-      <div style="border-left:3px solid #2d3b2d;padding-left:16px;margin:0 0 24px;">
-        <p style="color:#3a3a3a;font-size:14px;line-height:1.6;margin:0 0 4px;">
-          <strong>Location</strong>
-        </p>
-        <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">
-          22 Churchill Road, Boscombe BH1 4ES
-        </p>
-      </div>
-
-      <p style="color:#666;font-size:13px;line-height:1.6;margin:0 0 8px;">
-        Please arrive about 10 minutes before your session.
-      </p>
-      <p style="color:#666;font-size:13px;line-height:1.6;margin:0 0 24px;">
-        Need to reschedule? That's fine — just give at least 24 hours notice. Message Leah on
-        <a href="https://wa.me/447425018335" style="color:#2d3b2d;">WhatsApp</a>
-        or call <a href="tel:+447425018335" style="color:#2d3b2d;">07425 018335</a>.
-      </p>
-
-      <p style="color:#3a3a3a;font-size:14px;line-height:1.6;margin:0;">
-        See you soon,<br>Leah x
-      </p>
-    </div>
-  </div>
-</body>
-</html>`,
+    html: emailShell({
+      preheader: "Booking confirmed",
+      inboxPreview: `Your ${data.serviceName} session on ${data.date} at ${data.time} is confirmed.`,
+      body,
+    }),
   };
 }

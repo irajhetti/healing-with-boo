@@ -1,4 +1,5 @@
 import { esc } from "./escape";
+import { emailShell, detailsPanel } from "./shell";
 
 export function buildNotificationEmail(data: {
   reference: string;
@@ -25,71 +26,40 @@ export function buildNotificationEmail(data: {
     notes: data.notes ? esc(data.notes) : null,
   };
 
+  const rows: Array<[string, string]> = [
+    ["Reference", `<span style="font-family:Menlo,Consolas,monospace;font-size:13px;letter-spacing:1px;">${d.reference}</span>`],
+    ["Client", `<strong>${d.guestName}</strong>`],
+    ["Email", d.guestEmail ? `<a href="mailto:${d.guestEmail}" style="color:#2d3b2d;text-decoration:none;">${d.guestEmail}</a>` : "&mdash;"],
+    ["Phone", d.guestPhone ? `<a href="tel:${d.guestPhone}" style="color:#2d3b2d;text-decoration:none;">${d.guestPhone}</a>` : "&mdash;"],
+    ["Treatment", d.serviceName],
+    ["Date", d.date],
+    ["Time", d.time],
+    ["Duration", d.duration],
+    ["Paid", `<strong>${d.price}</strong>`],
+  ];
+  if (d.notes) rows.push(["Notes", `<em>${d.notes}</em>`]);
+
+  const body = `
+    <h1 style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#2d3b2d;line-height:1.3;">
+      You have a new booking
+    </h1>
+    <p style="margin:0 0 4px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#3a3a3a;line-height:1.6;">
+      <strong>${d.guestName}</strong> just booked <strong>${d.serviceName}</strong> for ${d.date} at ${d.time}.
+    </p>
+
+    ${detailsPanel(rows)}
+
+    <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#8a7d6a;line-height:1.6;">
+      View this booking in the
+      <a href="https://healingwithboo.co.uk/iws-admin/bookings" style="color:#2d3b2d;text-decoration:underline;">admin panel</a>.
+    </p>`.trim();
+
   return {
     subject: `New booking — ${esc(data.guestName)} (${esc(data.serviceName)})`,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif;">
-  <div style="max-width:520px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;">
-    <div style="background:#2d3b2d;padding:20px 32px;">
-      <h1 style="margin:0;color:#e8dfd4;font-size:18px;font-weight:normal;">New Booking</h1>
-    </div>
-    <div style="padding:24px 32px;">
-      <table style="width:100%;border-collapse:collapse;">
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;width:100px;">Reference</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;font-weight:bold;">${d.reference}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Client</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.guestName}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Email</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">
-            <a href="mailto:${d.guestEmail}" style="color:#2d3b2d;">${d.guestEmail}</a>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Phone</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">
-            <a href="tel:${d.guestPhone}" style="color:#2d3b2d;">${d.guestPhone}</a>
-          </td>
-        </tr>
-        <tr><td colspan="2" style="padding:8px 0;border-bottom:1px solid #eee;"></td></tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Treatment</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.serviceName}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Date</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.date}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Time</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.time}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Duration</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.duration}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Paid</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;font-weight:bold;">${d.price}</td>
-        </tr>
-        ${d.notes ? `
-        <tr><td colspan="2" style="padding:8px 0;border-bottom:1px solid #eee;"></td></tr>
-        <tr>
-          <td style="padding:8px 0;color:#888;font-size:13px;">Notes</td>
-          <td style="padding:8px 0;color:#3a3a3a;font-size:14px;">${d.notes}</td>
-        </tr>
-        ` : ""}
-      </table>
-    </div>
-  </div>
-</body>
-</html>`,
+    html: emailShell({
+      preheader: "New booking",
+      inboxPreview: `${data.guestName} booked ${data.serviceName} for ${data.date} at ${data.time}.`,
+      body,
+    }),
   };
 }
