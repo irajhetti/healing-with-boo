@@ -15,11 +15,18 @@ function getTransporter(): Transporter {
     throw new Error("SMTP_HOST, SMTP_USER, and SMTP_PASS must be set");
   }
 
+  // SMTP_TLS_INSECURE=true relaxes cert validation. Use only as a temporary
+  // workaround when the SMTP host is presenting an expired/mismatched cert
+  // (e.g. some shared hosts forget to renew Let's Encrypt for the submission
+  // port). Remove once the host fixes their cert.
+  const tlsRelax = process.env.SMTP_TLS_INSECURE === "true";
+
   _transporter = nodemailer.createTransport({
     host,
     port,
     secure,
     auth: { user, pass },
+    ...(tlsRelax ? { tls: { rejectUnauthorized: false } } : {}),
   });
   return _transporter;
 }
