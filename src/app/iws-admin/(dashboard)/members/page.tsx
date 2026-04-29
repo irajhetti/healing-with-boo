@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { getMembers, getMemberConsultation } from "../actions/members";
+import {
+  getMembers,
+  getMemberConsultation,
+  sendPasswordResetForUser,
+} from "../actions/members";
 
 type Member = Awaited<ReturnType<typeof getMembers>>[number];
 type Consultation = Awaited<ReturnType<typeof getMemberConsultation>>;
@@ -11,7 +15,28 @@ export default function MembersPage() {
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [consultations, setConsultations] = useState<Record<string, Consultation>>({});
+  const [resetState, setResetState] = useState<Record<string, "sending" | "sent" | string>>({});
   const [isPending, startTransition] = useTransition();
+
+  function handleSendReset(memberId: string, email: string) {
+    if (!confirm(`Send a password reset email to ${email}?`)) return;
+    setResetState((s) => ({ ...s, [memberId]: "sending" }));
+    startTransition(async () => {
+      const result = await sendPasswordResetForUser(memberId);
+      if (result.error) {
+        setResetState((s) => ({ ...s, [memberId]: result.error! }));
+      } else {
+        setResetState((s) => ({ ...s, [memberId]: "sent" }));
+        setTimeout(() => {
+          setResetState((s) => {
+            const copy = { ...s };
+            delete copy[memberId];
+            return copy;
+          });
+        }, 4000);
+      }
+    });
+  }
 
   useEffect(() => {
     startTransition(async () => {
@@ -86,12 +111,50 @@ export default function MembersPage() {
                   {new Date(member.createdAt).toLocaleDateString("en-GB")}
                 </p>
               </div>
-              <button
-                onClick={() => handleExpand(member.id)}
-                className="px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors"
-              >
-                {expandedId === member.id ? "Hide" : "View"}
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                {(() => {
+                  const state = resetState[member.id];
+                  if (state === "sending") {
+                    return (
+                      <span className="text-xs text-on-surface-variant px-3 py-1.5">
+                        Sending...
+                      </span>
+                    );
+                  }
+                  if (state === "sent") {
+                    return (
+                      <span className="text-xs text-green-600 font-medium px-3 py-1.5">
+                        ✓ Reset sent
+                      </span>
+                    );
+                  }
+                  if (state) {
+                    return (
+                      <span
+                        className="text-xs text-red-500 px-2 py-1.5"
+                        title={state}
+                      >
+                        Failed
+                      </span>
+                    );
+                  }
+                  return (
+                    <button
+                      onClick={() => handleSendReset(member.id, member.email)}
+                      className="px-3 py-1.5 text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors"
+                      title="Send password reset email"
+                    >
+                      Send reset
+                    </button>
+                  );
+                })()}
+                <button
+                  onClick={() => handleExpand(member.id)}
+                  className="px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                >
+                  {expandedId === member.id ? "Hide" : "View"}
+                </button>
+              </div>
             </div>
 
             {expandedId === member.id && (
