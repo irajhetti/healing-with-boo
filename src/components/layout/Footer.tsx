@@ -80,11 +80,7 @@ export function Footer() {
               <span className="material-symbols-outlined text-[16px] mr-2 mt-0.5">
                 location_on
               </span>
-              <span>
-                22 Churchill Road
-                <br />
-                Boscombe BH1 4ES
-              </span>
+              <span>Boscombe BH1 4ES</span>
             </li>
           </ul>
         </div>

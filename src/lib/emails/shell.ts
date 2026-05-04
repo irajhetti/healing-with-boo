@@ -61,7 +61,7 @@ export function emailShell({ preheader, inboxPreview, body }: ShellOptions): str
                 Boo&rsquo;s Healing Bubble
               </p>
               <p style="margin:0 0 4px 0;font-family:Georgia,'Times New Roman',serif;font-size:13px;color:#5a5a5a;line-height:1.6;">
-                22 Churchill Road, Boscombe BH1 4ES
+                Boscombe BH1 4ES
               </p>
               <p style="margin:0 0 16px 0;font-family:Georgia,'Times New Roman',serif;font-size:13px;color:#5a5a5a;line-height:1.6;">
                 <a href="tel:+447425018335" style="color:#5a5a5a;text-decoration:none;">07425 018335</a>

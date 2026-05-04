@@ -21,7 +21,7 @@ export default function AboutPage() {
             Hello, welcome to my space.
           </h1>
           <p className="font-body text-on-surface-variant text-lg leading-relaxed">
-            I am based at 22 Churchill Road in Boscombe. Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, rattles, drums and herbs come together to help you feel like yourself again.
+            I am based in Boscombe (BH1 4ES). Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, rattles, drums and herbs come together to help you feel like yourself again.
           </p>
         </div>
       </section>
@@ -107,7 +107,7 @@ export default function AboutPage() {
               Boo&apos;s Healing Bubble
             </h2>
             <p className="font-body text-on-surface-variant text-base leading-relaxed mb-4">
-              My treatment room at 22 Churchill Road, Boscombe BH1 4ES is my little bubble &mdash; a warm, safe space where you can properly switch off. Every session is different because every person is different. I work with what you need on the day, not from a script.
+              My treatment room in Boscombe (BH1 4ES) is my little bubble &mdash; a warm, safe space where you can properly switch off. I&apos;ll send you the full address once your booking is confirmed. Every session is different because every person is different. I work with what you need on the day, not from a script.
             </p>
             <p className="font-body text-on-surface-variant text-base leading-relaxed">
               Whether you come for massage, energy work, shamanic healing, sound healing, or you&apos;re not even sure what you need &mdash; that&apos;s absolutely fine. Come as you are. Healing with Boo is about being real and feeling safe enough to let go.

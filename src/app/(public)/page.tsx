@@ -27,7 +27,7 @@ export default function Home() {
             Personal, Intentional &amp; Deep Healing
           </h1>
           <p className="font-body text-on-surface-variant text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
-            A sacred space for body and soul restoration at 22 Churchill Road, Boscombe.
+            A sacred space for body and soul restoration in Boscombe.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -152,7 +152,7 @@ export default function Home() {
             Hello, I am Boo &mdash; some prefer to call me Leah. If you&apos;re new here, welcome. To my regulars, thank you for your loyalty, you absolute wonderful bunch.
           </p>
           <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
-            Based at 22 Churchill Road in Boscombe, Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
+            Based in Boscombe (BH1 4ES), Boo&apos;s Healing Bubble is a warm, down-to-earth space where massage, energy healing, sound healing, and herbs come together to help you feel like yourself again.
           </p>
           <Link
             href="/about"

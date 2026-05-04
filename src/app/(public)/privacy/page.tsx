@@ -7,14 +7,6 @@ export const metadata: Metadata = {
     "How Healing with Boo handles your personal data — what we collect, why, where it's stored, and your rights under UK GDPR.",
 };
 
-function EditMe({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="bg-yellow-100/70 text-on-surface px-1.5 py-0.5 rounded text-sm">
-      [edit me — {children}]
-    </mark>
-  );
-}
-
 export default function PrivacyPage() {
   return (
     <div className="bg-surface">
@@ -43,13 +35,8 @@ export default function PrivacyPage() {
             </h2>
             <p>
               The data controller for personal information collected on this
-              website is{" "}
-              <EditMe>Leah Cook trading as Healing with Boo (your full legal name if different)</EditMe>
-              , based at 22 Churchill Road, Boscombe, BH1 4ES.
-            </p>
-            <p className="mt-4">
-              <span className="text-on-surface-variant">ICO registration number:</span>{" "}
-              <EditMe>your ICO number, or remove this line if not registered</EditMe>
+              website is Leah Cook, trading as Healing with Boo, based in
+              Boscombe, BH1 4ES.
             </p>
             <p className="mt-4">
               You can contact us at{" "}

@@ -7,14 +7,6 @@ export const metadata: Metadata = {
     "Terms covering bookings, payments, cancellations, and your sessions with Healing with Boo.",
 };
 
-function EditMe({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="bg-yellow-100/70 text-on-surface px-1.5 py-0.5 rounded text-sm">
-      [edit me — {children}]
-    </mark>
-  );
-}
-
 export default function TermsPage() {
   return (
     <div className="bg-surface">
@@ -42,9 +34,10 @@ export default function TermsPage() {
             </h2>
             <p>
               Massage therapy and shamanic healing sessions are delivered at
-              22 Churchill Road, Boscombe, BH1 4ES. Each session is tailored
-              to what you need on the day. Leah will check in with you on
-              pressure, comfort, and intention throughout.
+              Leah&apos;s home studio in Boscombe, BH1 4ES. The full address is
+              shared with you once your booking is confirmed. Each session is
+              tailored to what you need on the day. Leah will check in with you
+              on pressure, comfort, and intention throughout.
             </p>
           </section>
 
@@ -116,9 +109,6 @@ export default function TermsPage() {
               <li>Severe mental health concerns where bodywork could be unsettling</li>
             </ul>
             <p className="mt-4">
-              <EditMe>add or remove any conditions specific to your practice</EditMe>
-            </p>
-            <p className="mt-4">
               These sessions are complementary to medical care, not a
               replacement. If anything Leah notices during a session causes
               concern, she may recommend you see a GP.
@@ -131,9 +121,11 @@ export default function TermsPage() {
             </h2>
             <p>
               Children&apos;s healing sessions are available with the consent
-              of a parent or guardian, who must be present throughout. The
-              minimum age is{" "}
-              <EditMe>your minimum age, e.g. 8</EditMe>.
+              of a parent or guardian, who must be present throughout. There
+              isn&apos;t a strict minimum age &mdash; what matters is that the
+              child is willing to have the session and able to lie still for a
+              little while. In practice this is usually from around age 5, but
+              please get in touch and we can talk it through.
             </p>
           </section>
 
@@ -162,8 +154,7 @@ export default function TermsPage() {
               else that cannot be excluded by law.
             </p>
             <p className="mt-4 text-on-surface-variant text-sm">
-              Insurance provider:{" "}
-              <EditMe>your insurance provider name (optional to disclose)</EditMe>
+              Insurance provider: ABT (Association of Beauty Therapists).
             </p>
           </section>
 

@@ -146,8 +146,8 @@ export default function ContactPage() {
                 <span className="material-symbols-outlined text-primary text-2xl mt-0.5">location_on</span>
                 <div>
                   <p className="font-label font-medium text-on-surface mb-1">Location</p>
-                  <p className="text-on-surface-variant text-sm">22 Churchill Road</p>
                   <p className="text-on-surface-variant text-sm">Boscombe BH1 4ES</p>
+                  <p className="text-on-surface-variant text-xs mt-1">Full address shared in your booking confirmation</p>
                 </div>
               </div>
             </div>
@@ -201,8 +201,8 @@ export default function ContactPage() {
           <div className="rounded-2xl overflow-hidden bg-surface-container-high h-64 md:h-80 flex items-center justify-center relative">
             <div className="text-center">
               <span className="material-symbols-outlined text-outline text-5xl mb-3 block">map</span>
-              <p className="font-headline text-xl text-on-surface">22 Churchill Road</p>
-              <p className="text-sm text-on-surface-variant mt-1">Boscombe BH1 4ES</p>
+              <p className="font-headline text-xl text-on-surface">Boscombe BH1 4ES</p>
+              <p className="text-sm text-on-surface-variant mt-1">Full address shared once your booking is confirmed</p>
             </div>
           </div>
         </section>
